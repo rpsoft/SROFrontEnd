@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Script examples
+# https://github.com/Murodese/pynab/blob/master/monitor.sh
+# http://www.leehodgkinson.com/blog/quickly-setup-multiple-pane-and-multiple-window-sessions-in-your-terminal/
+
+SESSION=$USER
+
+# -2: forces 256 colors,
+byobu-tmux -2 new-session -d -s $SESSION
+
+# dev window
+byobu-tmux rename-window -t $SESSION:0 'Dev'
+byobu-tmux splitw -v
+byobu-tmux splitw -v
+# byobu-tmux splitw -v
+
+# Select 1st pane cd and venv
+byobu-tmux select-pane -t 0
+byobu-tmux send-keys "cd ." C-m
+byobu-tmux send-keys "npm run start" C-m
+#byobu-tmux send-keys "clear" C-m
+#
+# # Same with 2nd pane
+# byobu-tmux select-pane -t 1
+# byobu-tmux rename-window -t 0 gulp
+# byobu-tmux send-keys "cd ." C-m
+# byobu-tmux send-keys "gulp watch" C-m
+
+# Same with 4nd pane
+byobu-tmux select-pane -t 2
+byobu-tmux send-keys "npm run test:watch" C-m
+
+byobu-tmux select-pane -t 3
+byobu-tmux send-keys "cd database/" C-m
+byobu-tmux send-keys "sudo ./RUN.sh" C-m
+
+# Set default window as the dev split plane
+byobu-tmux select-window -t $SESSION:0
+
+# Attach to the session you just created
+# (flip between windows with alt -left and right)
+byobu-tmux -2 attach-session -t $SESSION
