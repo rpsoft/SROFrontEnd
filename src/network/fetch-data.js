@@ -14,7 +14,7 @@ export default class fetchData {
     try {
       result = await this.httpClient.send('', { path })
       //console.log(result);
-      result = JSON.parse(result)
+      // result = JSON.parse(result)
     } catch(error) {
       console.error('fetching template list error > ' + error)
     }
@@ -24,6 +24,10 @@ export default class fetchData {
 
   async getAllEntries() {
     return await this.getGeneric( urlBase + 'allEntries' )
+  }
+
+  async getAllEntriesPaged(page,limit) {
+    return await this.getGeneric( urlBase + 'allEntriesPaged?page='+page+"&limit="+limit )
   }
 
   async getEntriesForQuery(query) {

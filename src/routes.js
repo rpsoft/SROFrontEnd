@@ -16,7 +16,9 @@ import { Router, Route, IndexRoute, IndexRedirect } from 'react-router'
 import {
   // Core components
   AppContainer,
+  BrowserContainer,
   BrowseRecords,
+  CommonView,
   RecordView,
   RecordContainer,
 } from './components/'
@@ -32,9 +34,12 @@ const urlBase = URL_BASE
 var routes = (history) => (
   <Router history={history}>
     <Route path={"/"} component={AppContainer} >
-      <IndexRoute component={BrowseRecords} />
+      <IndexRoute component={CommonView} />
 
-      <Route path="browser" component={BrowseRecords} />
+      <Route path="browser" component={BrowserContainer}>
+        <Route path={urlBase + "browser"} component={BrowseRecords} />
+        <Route path={urlBase + "browser/:page(/:pageLimit)"} component={BrowseRecords} />
+      </Route>
 {/*
       <Route path="categories" component={CategoriesContainer} >
         <Route path={urlBase + "categories/list/:categoryId"} component={CategoriesView} />
@@ -44,7 +49,7 @@ var routes = (history) => (
       <Route path="records" component={RecordContainer} >
         {/* <Route path={urlBase + "record/create"} component={RecordCreate} /> */}
         <Route path={urlBase + "record/:recordId(/:recordName)"} component={RecordView} />
-      </Route>
+        </Route>
 
     </Route>
   </Router>

@@ -30,12 +30,13 @@ export default class Entry extends Component {
   }
 
   render() {
-        return <div>
+        return <Card style={{marginBottom:10,padding:15}}>
+                    <div>
                       {
-                        this.getItems(this.props.entryData.items.item)
-
+                        //this.getItems(this.props.entryData.items.item)
+                        this.props.entryData
                       }
-                      <br/>
-              </div>
+                    </div>
+              </Card>
   }
 }

@@ -11,6 +11,10 @@ import {URL_BASE} from '../links'
 
 import Entry from './record/entry'
 
+import XmlReader from 'xml-reader'
+import xmlQuery from 'xml-query'
+
+
 class CommonView extends Component {
 
   constructor() {
@@ -20,30 +24,11 @@ class CommonView extends Component {
     };
   }
 
-
-  //
-  async componentWillMount() {
-    let fetch = new fetchData();
-    this.setState({allContent : await fetch.getAllEntries() })
-   }
-
-
   render() {
-
-    if (!this.state.allContent){
-      return <div>Loading content</div>
-    }
-
-    return (
-      <div style={{ padding:8, height:"100%"}}>
-              AQUI HAY LAGOs Muchos
-              {this.state.allContent.entries.entry.map( (entry, i ) => {
-                return <Entry key={i} entryData={entry}></Entry>
-              })}
-
-
+    return <div style={{ padding:8, height:"100%"}}>
+      <Card>THIS IS THE HEADER!</Card>
+          {this.props.children}
      </div>
-    );
   }
 }
 
