@@ -6,7 +6,6 @@ export default class BrowserContainer extends Component {
   render() {
     return (
       <div>
-          <div>THIS IS THE HEADER!</div>
         {/* <h1>
           Registers container!!!
           {this.props.params.recordId}

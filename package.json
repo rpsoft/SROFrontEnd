@@ -55,6 +55,7 @@
     "halogen": "^0.2.0",
     "http-image-size": "^1.1.0",
     "immutable": "^3.8.1",
+    "jquery": "^3.2.1",
     "material-ui": "^0.16.0",
     "nuka-carousel": "^2.0.4",
     "probe-image-size": "^3.0.0",

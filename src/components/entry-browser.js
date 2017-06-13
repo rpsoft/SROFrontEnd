@@ -21,7 +21,7 @@ import Entry from './record/entry'
 import XmlReader from 'xml-reader'
 import xmlQuery from 'xml-query'
 
-class BrowseRecords extends Component {
+class EntryBrowser extends Component {
 
     constructor() {
       super()
@@ -95,4 +95,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BrowseRecords);
+)(EntryBrowser);

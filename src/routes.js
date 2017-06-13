@@ -16,11 +16,15 @@ import { Router, Route, IndexRoute, IndexRedirect } from 'react-router'
 import {
   // Core components
   AppContainer,
+  Home,
   BrowserContainer,
-  BrowseRecords,
-  CommonView,
-  RecordView,
-  RecordContainer,
+  Browse,
+  Search,
+  // RecordView,
+  // RecordContainer,
+  Project,
+  About,
+  Entry,
 } from './components/'
 
 import App from './App'
@@ -33,25 +37,35 @@ const urlBase = URL_BASE
 
 var routes = (history) => (
   <Router history={history}>
-    <Route path={"/"} component={AppContainer} >
-      <IndexRoute component={CommonView} />
 
-      <Route path="browser" component={BrowserContainer}>
-        <Route path={urlBase + "browser"} component={BrowseRecords} />
-        <Route path={urlBase + "browser/:page(/:pageLimit)"} component={BrowseRecords} />
-      </Route>
-{/*
-      <Route path="categories" component={CategoriesContainer} >
-        <Route path={urlBase + "categories/list/:categoryId"} component={CategoriesView} />
-        <Route path={urlBase + "categories/list/:categoryId/:subcategoryId"} component={CategoriesView} />
-      </Route>
- */}
-      <Route path="records" component={RecordContainer} >
-        {/* <Route path={urlBase + "record/create"} component={RecordCreate} /> */}
-        <Route path={urlBase + "record/:recordId(/:recordName)"} component={RecordView} />
+      <Route path={"/"} component={AppContainer} >
+        <IndexRoute component={Home} />
+
+        <Route path="browser" component={BrowserContainer}>
+          <Route path={urlBase + "browser"} component={Browse} ></Route>
+          <Route path={urlBase + "browser/:page(/:pageLimit)"} component={Browse} ></Route>
         </Route>
 
-    </Route>
+        <Route path="search" component={BrowserContainer}>
+          <IndexRoute component={Search} />
+          <Route path={urlBase + "search(/:query)(/:page)"} component={Search} ></Route>
+          <Route path={urlBase + "search(/:query)(/:page)(/:pageLimit)"} component={Search} ></Route>
+        </Route>
+
+        <Route path="project" component={BrowserContainer}>
+          <IndexRoute component={Project} />
+        </Route>
+
+        <Route path="about" component={BrowserContainer}>
+          <IndexRoute component={About} />
+        </Route>
+
+        <Route path="entry" component={BrowserContainer}>
+          <Route path={urlBase + "entry/:entryID"} component={Entry} ></Route>
+          {/* <IndexRoute component={Entry} /> */}
+        </Route>
+
+      </Route>
   </Router>
 )
 
