@@ -28,6 +28,8 @@ export default function xml2HTMLTranslator(xmlData){
 
   var innerTagTokens,replaced;
 
+  xmlData = xmlData.replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+
   for ( var i = 0; i < xmlData.length; i++ ){
 
     if ( xmlData[i] === '<'){
@@ -40,7 +42,7 @@ export default function xml2HTMLTranslator(xmlData){
       endDel = i+1;
 
       innerTagTokens = xmlData.substring(startDel,endDel).match(/\S+/g) || []
-      replaced = innerTagTokens[0].replace(/(<\/?)([a-z]*)(>?)/, replacer);
+      replaced = innerTagTokens[0].replace(/(<\/?)([A-z]*)(>?)/, replacer);
 
       innerTagTokens[0] = replaced
       docArray.push(innerTagTokens.join(" "));
@@ -57,4 +59,4 @@ export default function xml2HTMLTranslator(xmlData){
   return docArray.join(" ");
 }
 
- // console.log(xml2HTMLTranslator(xmlData))
+console.log(xml2HTMLTranslator(xmlData)+" LALALA")
