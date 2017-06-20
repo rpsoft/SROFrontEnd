@@ -49,7 +49,6 @@ export default class Entry extends Component {
 
     var doc = htm[0].getElementsByTagName("doc")[0]
 
-    console.log(doc)
     this.setState({rawContent: doc.innerHTML})
    }
 
@@ -60,19 +59,44 @@ export default class Entry extends Component {
           return <div>Loading record</div>
         }
 
-        console.log(this.state.rawContent)
 
-        console.log(xmlTranslator(this.state.rawContent) )
 
+
+
+        let translatedhtml = xmlTranslator(this.state.rawContent)
+
+        console.log(translatedhtml)
+
+        var doc = $.parseHTML(translatedhtml)
+        var paragraphs = $("p",doc)
+        var metadata = $(".ab[type=metadata]", doc)[0]
+        var date = $(".ab[type=metadata] > .date", doc)[0]
+        var RegisterRef = $(".ab[type=metadata] > span[type=RegisterRef]", doc)[0]
+        var ArberRef = $(".ab[type=metadata] > span[type=ArberRef]", doc)[0]
+        var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
+        var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
+        var status = $(".ab[type=metadata] > span[type=status]", doc)[0]
+        // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         return <div style={{marginTop:10}}>
                 <span>Entry: {this.props.params.entryID}</span>
                 <Card className="entryContainer" style={{marginTop:10,padding:15}}>
-                        <div dangerouslySetInnerHTML={{__html: xmlTranslator(this.state.rawContent) }}>
-                          {/* {
-                            this.state.textContent.map( (content,v) => <div key={v} style={{marginTop:5}}>{content}</div>)//this.props.entryData.find('item').map( node => traverseAllNodes(node))
-                          } */}
-                        </div>
+
+                      <div>
+                        {
+                          paragraphs.map( (i,para) => { return <div className="item" key={i} dangerouslySetInnerHTML={{__html: para.innerHTML }}></div> } )
+                        }
+                      </div>
+
+                      <div className="metadata">
+                        <div>{date.innerHTML}</div>
+                        <div>{RegisterRef.innerHTML}</div>
+                        <div>{ArberRef.innerHTML}</div>
+                        <div>{RegisterID.innerHTML}</div>
+                        <div>{works.innerHTML}</div>
+                        <div>{status.innerHTML}</div>
+                      </div>
                 </Card>
+
               </div>
   }
 }
