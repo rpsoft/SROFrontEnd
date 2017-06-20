@@ -1,3 +1,11 @@
 .entryContainer item { background-color: #c1c1c1; display: inline;}
 .entryContainer title { display: inline; }
 .entryContainer p { display: inline; }
+
+.metadata span {
+  display: block;
+}
+
+.item {
+  margin-bottom: 10px;
+}
