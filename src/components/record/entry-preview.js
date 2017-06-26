@@ -34,20 +34,19 @@ export default class EntryPreview extends Component {
           for ( var i = 0 ; i < data.getElementsByTagName("sum")[0].getElementsByTagName("p").length; i++){
             summaries.push(data.getElementsByTagName("sum")[0].getElementsByTagName("p")[i])
           }
-        }else {
+        } else {
           for ( var i = 0 ; i < data.getElementsByTagName("doc")[0].getElementsByTagName("p").length; i++){
             var node = data.getElementsByTagName("doc")[0].getElementsByTagName("p")[i]
             node.innerText.trim().length > 0 ? summaries.push(node) : null
           }
-          
         }
 
+        let maxPreviewElements = 3
 
-        // debugger;
         return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none"}}>
                   <Card style={{marginBottom:10,padding:15}}>
                     {
-                    summaries.map( (n,i) => <div key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML) }} ></div>)
+                    summaries.map( (n,i) => i < maxPreviewElements ? <div key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML) }} ></div> : "")
                     }
                   </Card>
               </Link>

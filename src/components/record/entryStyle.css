@@ -9,3 +9,11 @@
 .item {
   margin-bottom: 10px;
 }
+
+.seg {
+  font-style: italic;
+}
+
+.persName { font-style: italic; margin-bottom: 10px;}
+
+.entryID { font-weight: bold; margin-bottom: 10px;}

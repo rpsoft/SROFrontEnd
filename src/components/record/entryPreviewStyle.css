@@ -1,2 +1,6 @@
-.previewEntry .hi {font-weight: bold}
+.previewEntry .hi {}
 .previewEntry {margin-left: 20px;}
+
+.previewEntry .previous:first-of-type + span {
+  font-weight: bold;
+}

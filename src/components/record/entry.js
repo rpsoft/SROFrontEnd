@@ -43,13 +43,14 @@ export default class Entry extends Component {
   async loadPageFromProps(props){
      let fetch = new fetchData();
 
-     var data = await fetch.getEntry(props.params.entryID);
+    var data = await fetch.getEntry(props.params.entryID);
+    data = xmlTranslator(data)
 
-    var htm = $.parseHTML(data)
+    //
+    // var htm = $.parseHTML(data)
+    // var doc = htm[0]
 
-    var doc = htm[0].getElementsByTagName("doc")[0]
-
-    this.setState({rawContent: doc.innerHTML})
+    this.setState({rawContent: data})
    }
 
 
@@ -59,15 +60,8 @@ export default class Entry extends Component {
           return <div>Loading record</div>
         }
 
-
-
-
-
-        let translatedhtml = xmlTranslator(this.state.rawContent)
-
-        console.log(translatedhtml)
-
-        var doc = $.parseHTML(translatedhtml)
+        var doc = $.parseHTML(this.state.rawContent)
+        var head = $(".head",doc)[0]
         var paragraphs = $("p",doc)
         var metadata = $(".ab[type=metadata]", doc)[0]
         var date = $(".ab[type=metadata] > .date", doc)[0]
@@ -76,25 +70,29 @@ export default class Entry extends Component {
         var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
         var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
         var status = $(".ab[type=metadata] > span[type=status]", doc)[0]
+
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         return <div style={{marginTop:10}}>
-                <span>Entry: {this.props.params.entryID}</span>
-                <Card className="entryContainer" style={{marginTop:10,padding:15}}>
 
-                      <div>
+                <Card className="entryContainer" style={{marginTop:10,padding:15}}>
+                    <div className="entryID">Entry: {this.props.params.entryID}</div>
+
+                    <div className="persName" dangerouslySetInnerHTML={{__html: head ? head.innerHTML : ""  }}></div>
+
+                    <div>
                         {
                           paragraphs.map( (i,para) => { return <div className="item" key={i} dangerouslySetInnerHTML={{__html: para.innerHTML }}></div> } )
                         }
-                      </div>
+                    </div>
 
-                      <div className="metadata">
-                        <div>{date.innerHTML}</div>
-                        <div>{RegisterRef.innerHTML}</div>
-                        <div>{ArberRef.innerHTML}</div>
-                        <div>{RegisterID.innerHTML}</div>
-                        <div>{works.innerHTML}</div>
-                        <div>{status.innerHTML}</div>
-                      </div>
+                    <div className="metadata">
+                      <div dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></div>
+                      <div dangerouslySetInnerHTML={{__html: RegisterRef ? RegisterRef.innerHTML : ""}}></div>
+                      <div dangerouslySetInnerHTML={{__html: ArberRef ? ArberRef.innerHTML : ""}}></div>
+                      <div dangerouslySetInnerHTML={{__html: RegisterID ? RegisterID.innerHTML : ""}}></div>
+                      <div dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></div>
+                      <div dangerouslySetInnerHTML={{__html: status ? status.innerHTML : ""}}></div>
+                    </div>
                 </Card>
 
               </div>
