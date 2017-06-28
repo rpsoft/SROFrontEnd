@@ -10,9 +10,9 @@ export AppContainer from './app-container'
 
 
 export CommonView from './common-view'
-export Home from './home'
-export Project from './project.js'
-export About from './about.js'
+export StaticPage from './staticPage'
+// export Project from './project.js'
+// export About from './about.js'
 export BrowserContainer from './browser-container'
 export Browse from './browse'
 export Search from './search'

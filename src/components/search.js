@@ -39,7 +39,7 @@ class Search extends Component {
       super()
       this.state = {
         query:props.params.query,
-        searchType:"fulltext"
+        searchType:'fulltext'
         // isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       };
 
@@ -62,19 +62,19 @@ class Search extends Component {
 
        var data;
 
-       var xmlField = ""
+       var xmlField = ''
        switch (props.params.sortField){
-         case "id":
-          xmlField = "@xml:id"
+         case 'id':
+          xmlField = '@xml:id'
           break;
-         case "date":
-          xmlField = "@xml:id"
+         case 'date':
+          xmlField = 'date//text()[last()]'
           break;
          default:
-          xmlField = "@xml:id"
+          xmlField = '@xml:id'
        }
 
-       var direction = props.params.direction ? props.params.direction : "ascending"
+       var direction = props.params.direction ? props.params.direction : 'ascending'
 
        if ( props.params.sortField && props.params.direction){
          data = await fetch.getEntriesForQueryWithSorting(props.params.query,currentPage,pageLimit,xmlField, direction); //getAllEntriesPaged(currentPage,pageLimit);
@@ -97,10 +97,10 @@ class Search extends Component {
 
 
     render() {
-      var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
+      var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
 
       if (!this.state.allContent){
-        return <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
+        return <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{loadingIndicator}</div>
       }
 
       var pageResults = <div></div>
@@ -109,42 +109,59 @@ class Search extends Component {
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}
                                     currentPage={this.state.currentPage}
-                                    linkRoot={"search/"+this.state.query}
+                                    linkRoot={'search/'+this.state.query}
                                     sorting={this.state.sorting}/>
       }
 
+      let sortLinkStyle = {marginRight:10}
+      let sortbuttonStyle = {height:25,marginBottom:5}
+
       return (
-        <div style={{ padding:8, height:"100%"}}>
-          <span>YOU ARE IN: SEARCH</span>
+        <div style={{ padding:8, height:'100%'}}>
+          {/* <span>YOU ARE IN: SEARCH</span> */}
 
           <Card style={{marginTop:10,marginBottom:10,paddingLeft:10}}>
-            {/* <span style={{float:"left",top:10}}>Search Type:</span> */}
+            {/* <span style={{float:'left',top:10}}>Search Type:</span> */}
               <SelectField
                         value={this.state.searchType}
                         onChange={(value,i,j) => this.handleChangeSearchType(value,i,j)}
-                        style={{float:"right"}}
-                        // floatingLabelText="Search type"
-                        // floatingLabelFixed={true}
-                        // floatingLabelStyle={{color: 'blue'}}
+                        style={{float:'right',width:200}}
                         >
 
-               <MenuItem value={"fulltext"} primaryText="Full Text Search" />
-               <MenuItem value={"people"} primaryText="People Search" />
-               <MenuItem value={"title"} primaryText="Title Search" />
-               {/* <MenuItem value={3} primaryText="Date Range Search" /> */}
+               <MenuItem value={'fulltext'} primaryText='Full Text Search' />
+               <MenuItem value={'people'} primaryText='People Search' />
+               <MenuItem value={'title'} primaryText='Title Search' />
 
-               {/* <MenuItem value={2} primaryText="Every Night" />
-               <MenuItem value={3} primaryText="Weeknights" />
-               <MenuItem value={4} primaryText="Weekends" />
-               <MenuItem value={5} primaryText="Weekly" /> */}
              </SelectField>
 
             <span style={{marginRight:5,marginLeft:10}}>Search text:</span> <TextField
-                hintText="Type here your search terms"
+                hintText='Type here your search terms'
+                style={{width: 250}}
                 value = {this.state.query}
                 onChange={(event,value) => {this.setState({query: value})}}
                 onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
               />
+          </Card>
+
+          <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
+            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending'} style={sortLinkStyle}>
+              <RaisedButton label='Date (earliest)' style={sortbuttonStyle}/>
+            </Link>
+            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+              <RaisedButton label='Date (latest)' style={sortbuttonStyle}/>
+            </Link>
+            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+              <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
+            </Link>
+            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+              <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
+            </Link>
+            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+              <RaisedButton label='Enterers (A-Z)'  style={sortbuttonStyle}/>
+            </Link>
+            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+              <RaisedButton label='All names (A-Z)'  style={sortbuttonStyle}/>
+            </Link>
           </Card>
 
           {pageResults}

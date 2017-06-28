@@ -56,7 +56,7 @@ class BrowseList extends Component {
     }
 
      processEntriesFromXML (xmlcontent) {
-       console.log ( xmlcontent)
+      //  console.log ( xmlcontent)
 
        var htm = $.parseHTML(xmlcontent)
 

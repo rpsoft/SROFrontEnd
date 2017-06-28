@@ -16,14 +16,10 @@ import { Router, Route, IndexRoute, IndexRedirect } from 'react-router'
 import {
   // Core components
   AppContainer,
-  Home,
+  StaticPage,
   BrowserContainer,
   Browse,
   Search,
-  // RecordView,
-  // RecordContainer,
-  Project,
-  About,
   Entry,
 } from './components/'
 
@@ -39,7 +35,7 @@ var routes = (history) => (
   <Router history={history}>
 
       <Route path={"/"} component={AppContainer} >
-        <IndexRoute component={Home} />
+        <IndexRoute component={StaticPage} />
 
         <Route path="browser" component={BrowserContainer}>
           <Route path={urlBase + "browser"} component={Browse} ></Route>
@@ -55,11 +51,11 @@ var routes = (history) => (
         </Route>
 
         <Route path="project" component={BrowserContainer}>
-          <IndexRoute component={Project} />
+          <IndexRoute component={StaticPage} />
         </Route>
 
         <Route path="about" component={BrowserContainer}>
-          <IndexRoute component={About} />
+          <IndexRoute component={StaticPage} />
         </Route>
 
         <Route path="entry" component={BrowserContainer}>

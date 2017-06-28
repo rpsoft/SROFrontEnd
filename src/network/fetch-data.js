@@ -24,6 +24,10 @@ export default class fetchData {
     return await this.getGeneric( urlBase + 'allEntries' )
   }
 
+  async getStaticPage(page) {
+    return await this.getGeneric( urlBase + 'staticPage?page='+page )
+  }
+
   async getAllEntriesPaged(page,limit) {
     return await this.getGeneric( urlBase + 'allEntriesPaged?page='+page+"&limit="+limit )
   }
