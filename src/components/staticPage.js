@@ -16,30 +16,37 @@ export default class StaticPage extends Component {
       };
     }
 
-  async componentWillMount() {
-         let fetch = new fetchData();
+  async fetchPage(page) {
+    let fetch = new fetchData();
 
-         var pageToRequest = ""
+    var pageToRequest = ""
 
-         switch (this.props.location.pathname) {
-           case "/":
-            pageToRequest = "home"
-           break;
-           case "/project":
-            pageToRequest = "project"
-           break;
-           case "/about":
-            pageToRequest = "about"
-           break;
-           default:
-             pageToRequest = "home"
-         }
+    switch (page) {
+      case "/":
+       pageToRequest = "home"
+      break;
+      case "/project":
+       pageToRequest = "project"
+      break;
+      case "/about":
+       pageToRequest = "about"
+      break;
+      default:
+        pageToRequest = "home"
+    }
 
 
-         var rawHtml = await fetch.getStaticPage(pageToRequest)
-         this.setState({rawHtml})
-   }
+    var rawHtml = await fetch.getStaticPage(pageToRequest)
+    this.setState({rawHtml})
+  }
 
+  componentWillReceiveProps(next){
+      this.fetchPage(next.location.pathname)
+  }
+
+  componentWillMount() {
+      this.fetchPage(this.props.location.pathname)
+  }
 
   render() {
 
