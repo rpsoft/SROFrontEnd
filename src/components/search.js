@@ -60,12 +60,32 @@ class Search extends Component {
        var currentPage = props.params.page ? props.params.page : 1
        var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
 
-       var data = await fetch.getEntriesForQuery(props.params.query,currentPage,pageLimit); //getAllEntriesPaged(currentPage,pageLimit);
+       var data;
+
+       var xmlField = ""
+       switch (props.params.sortField){
+         case "id":
+          xmlField = "@xml:id"
+          break;
+         case "date":
+          xmlField = "@xml:id"
+          break;
+         default:
+          xmlField = "@xml:id"
+       }
+
+       var direction = props.params.direction ? props.params.direction : "ascending"
+
+       if ( props.params.sortField && props.params.direction){
+         data = await fetch.getEntriesForQueryWithSorting(props.params.query,currentPage,pageLimit,xmlField, direction); //getAllEntriesPaged(currentPage,pageLimit);
+       } else {
+         data = await fetch.getEntriesForQuery(props.params.query,currentPage,pageLimit); //getAllEntriesPaged(currentPage,pageLimit);
+       }
 
        var ast = XmlReader.parseSync(data);
        var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
-       this.setState({allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), query: props.params.query})
+       this.setState({sorting:{sortField: props.params.sortField, direction: direction}, allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), query: props.params.query})
       // console.log(this.state)
      }
 
@@ -85,7 +105,12 @@ class Search extends Component {
 
       var pageResults = <div></div>
       if( this.state.pagesAvailable ){
-          pageResults = <BrowseList allContent={this.state.allContent} pagesAvailable={this.state.pagesAvailable} pageLimit={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={"search/"+this.state.query} />
+          pageResults = <BrowseList allContent={this.state.allContent}
+                                    pagesAvailable={this.state.pagesAvailable}
+                                    pageLimit={this.state.pageLimit}
+                                    currentPage={this.state.currentPage}
+                                    linkRoot={"search/"+this.state.query}
+                                    sorting={this.state.sorting}/>
       }
 
       return (

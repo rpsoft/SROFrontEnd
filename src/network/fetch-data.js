@@ -32,6 +32,10 @@ export default class fetchData {
     return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit  )
   }
 
+  async getEntriesForQueryWithSorting(query,page,limit,sortField,direction) {
+    return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit+"&sortField="+sortField+"&direction="+direction  )
+  }
+
   async getEntry(entryID) {
     return await this.getGeneric( urlBase + 'entry?entryID=' + entryID )
   }

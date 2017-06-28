@@ -45,8 +45,9 @@ export default class EntryPreview extends Component {
 
         return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none"}}>
                   <Card style={{marginBottom:10,padding:15}}>
+                    <span>{data.getElementsByTagName("docid")[0].innerText}</span>
                     {
-                    summaries.map( (n,i) => i < maxPreviewElements ? <div key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML) }} ></div> : "")
+                    summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML) }} ></span> : "")
                     }
                   </Card>
               </Link>

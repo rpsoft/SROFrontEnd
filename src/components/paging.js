@@ -12,7 +12,8 @@ export default class Paging extends Component {
       pages:props.pages,
       entriesPerPage:props.entriesPerPage,
       currentPage:props.currentPage,
-      linkRoot: props.linkRoot
+      linkRoot: props.linkRoot,
+      sorting: props.sorting
     }
 
   }
@@ -22,7 +23,8 @@ export default class Paging extends Component {
       pages:next.pages,
       entriesPerPage:next.entriesPerPage,
       currentPage:next.currentPage,
-      linkRoot: next.linkRoot
+      linkRoot: next.linkRoot,
+      sorting: next.sorting
     });
 
   }
@@ -30,6 +32,8 @@ export default class Paging extends Component {
   render() {
 
     var numberOfPagesEitherSide = 5;
+
+    var sorting = this.state.sorting ? "/"+this.state.sorting.sortField+"/"+this.state.sorting.direction : null;
 
     return <span style={{marginBottom:10,padding:5,textAlign:"center"}}>
 
@@ -60,7 +64,7 @@ export default class Paging extends Component {
                                             if ( shouldprint){
                                               return <span key={i}>
                                                         {leftDelimiter}
-                                                        <Link to={"/"+this.state.linkRoot+"/"+(i)+"/"+this.state.entriesPerPage} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
+                                                        <Link to={"/"+this.state.linkRoot+"/"+(i)+"/"+this.state.entriesPerPage + (sorting ? sorting : "")} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
                                                         {rightDelimiter}
                                                     </span>
                                             }
@@ -68,7 +72,7 @@ export default class Paging extends Component {
                                         } else  {
                                           return <span key={i}>
 
-                                                    <Link to={"/"+this.state.linkRoot+"/"+(i)+"/"+this.state.entriesPerPage} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
+                                                    <Link to={"/"+this.state.linkRoot+"/"+(i)+"/"+this.state.entriesPerPage + (sorting ? sorting : "")} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
 
                                                 </span>
                                         }

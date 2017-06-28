@@ -39,7 +39,8 @@ class BrowseList extends Component {
         currentPage : props.currentPage,
         pageLimit: props.pageLimit,
         isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
-        linkRoot: props.linkRoot
+        linkRoot: props.linkRoot,
+        sorting: props.sorting,
       };
     }
 
@@ -49,7 +50,8 @@ class BrowseList extends Component {
         pagesAvailable : next.pagesAvailable,
         currentPage : next.currentPage,
         pageLimit: next.pageLimit,
-        linkRoot: next.linkRoot
+        linkRoot: next.linkRoot,
+        sorting: next.sorting,
       });
     }
 
@@ -83,12 +85,12 @@ class BrowseList extends Component {
 
       return (
         <div style={{ padding:8, height:"100%"}}>
-                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot}/>
+                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting}/>
 
-                <div>Entries:</div>
+
                 {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
 
-                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} />
+                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting}/>
        </div>
       );
     }
