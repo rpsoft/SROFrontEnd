@@ -32,6 +32,12 @@ import { browserHistory } from 'react-router';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+// DAte picker
+import 'react-date-picker/index.css'
+
+import { DateField, DatePicker } from 'react-date-picker'
+
+
 
 class Search extends Component {
 
@@ -39,7 +45,7 @@ class Search extends Component {
       super()
       this.state = {
         query:props.params.query,
-        searchType:'fulltext'
+        searchType:'normal'
         // isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       };
 
@@ -95,6 +101,10 @@ class Search extends Component {
 
      }
 
+    onDateChange = (dateString, { dateMoment, timestamp }) => {
+      console.log(dateString)
+    }
+
 
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
@@ -116,31 +126,120 @@ class Search extends Component {
       let sortLinkStyle = {marginRight:10}
       let sortbuttonStyle = {height:25,marginBottom:5}
 
+      let date = '2017-04-24'
+
+      let advancedSearch = <span style={{marginRight:5,paddingLeft:10}}>
+        <span>Person Names: <TextField
+            hintText='Text within person names'
+            style={{width: 250}}
+            value = {this.state.query}
+            onChange={(event,value) => {this.setState({query: value})}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+          /></span>
+        <span>Copies: <TextField
+            hintText='Text in titles within register entries'
+            style={{width: 250}}
+            value = {this.state.query}
+            onChange={(event,value) => {this.setState({query: value})}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+          /></span>
+        <span>Min Date
+          <DateField
+             dateFormat="YYYY-MM-DD"
+             forceValidDate={true}
+             defaultValue={-15000000000000}
+             style={{marginLeft:5,marginRight:5}}
+             onChange={(dateString, { dateMoment, timestamp}) => {}}
+           >
+             <DatePicker
+               navigation={true}
+               locale="en"
+               forceValidDate={true}
+               weekNumbers={false}
+               weekStartDay={0}
+             />
+           </DateField>
+
+           Max Date
+             <DateField
+                dateFormat="YYYY-MM-DD"
+                forceValidDate={true}
+                defaultValue={-15000000000000}
+                style={{marginLeft:5,marginRight:5}}
+                onChange={(dateString, { dateMoment, timestamp}) => {console.log(dateMoment._d.getMi);debugger}}
+              >
+                <DatePicker
+                  navigation={true}
+                  locale="en"
+                  forceValidDate={true}
+                  weekNumbers={false}
+                  weekStartDay={0}
+                />
+              </DateField>
+
+        </span>
+        <span>Fees (in pence): <TextField
+            hintText='Min'
+            style={{width: 40}}
+            value = {this.state.query}
+            onChange={(event,value) => {this.setState({query: value})}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+          />
+          <TextField
+              hintText='Max'
+              style={{width: 40,marginLeft:10}}
+              value = {this.state.query}
+              onChange={(event,value) => {this.setState({query: value})}}
+              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            />
+
+        </span>
+
+
+
+
+          <span style={{width:"100%",textAlign:"right"}}>
+              <div style={{float:"left"}}>Entry ID: <TextField
+                hintText='SRO ID Code (allows partial codes)'
+                style={{width: 250}}
+                value = {this.state.query}
+                onChange={(event,value) => {this.setState({query: value})}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+              /></div>
+              <RaisedButton label='Go Search' style={{marginRight:10}}/>
+          </span>
+
+      </span>
+
+      let standardSearch = <span><span style={{}}>Search text:</span>
+                            <TextField
+                              hintText='Type here your search terms'
+                              style={{width: 250}}
+                              value = {this.state.query}
+                              onChange={(event,value) => {this.setState({query: value})}}
+                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+                            /></span>
+
+
       return (
         <div style={{ padding:8, height:'100%'}}>
           {/* <span>YOU ARE IN: SEARCH</span> */}
 
           <Card style={{marginTop:10,marginBottom:10,paddingLeft:10}}>
-            {/* <span style={{float:'left',top:10}}>Search Type:</span> */}
-              <SelectField
-                        value={this.state.searchType}
-                        onChange={(value,i,j) => this.handleChangeSearchType(value,i,j)}
-                        style={{float:'right',width:200}}
-                        >
 
-               <MenuItem value={'fulltext'} primaryText='Full Text Search' />
-               <MenuItem value={'people'} primaryText='People Search' />
-               <MenuItem value={'title'} primaryText='Title Search' />
+            <RaisedButton label='Advanced options'
+                          style={{float:"right",marginTop:10,marginRight:5,height:30}}
+                          onClick={ () => {
+                            (this.state.searchType === 'normal') ?
+                            this.setState({searchType : "advanced"}) :
+                            this.setState({searchType : "normal"}) }
+                          }/>
 
-             </SelectField>
+            {
+              this.state.searchType == "advanced" ? advancedSearch : standardSearch
+            }
 
-            <span style={{marginRight:5,marginLeft:10}}>Search text:</span> <TextField
-                hintText='Type here your search terms'
-                style={{width: 250}}
-                value = {this.state.query}
-                onChange={(event,value) => {this.setState({query: value})}}
-                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
-              />
+
           </Card>
 
           <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>

@@ -12,6 +12,7 @@ var listeningPort = 7531
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
+  disableHostCheck: true, 
   historyApiFallback: true,
   proxy: {
     // [urlBase + 'images']: {

@@ -40,7 +40,7 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.12.2",
     "webpack-dev-middleware": "^1.8.4",
-    "webpack-dev-server": "^1.12.1",
+    "webpack-dev-server": "^1.16.5",
     "webpack-hot-middleware": "^2.13.2"
   },
   "dependencies": {
@@ -61,6 +61,7 @@
     "probe-image-size": "^3.0.0",
     "react": "^15.5.3",
     "react-css-modules": "^4.1.0",
+    "react-date-picker": "^5.3.28",
     "react-dom": "^15.5.3",
     "react-image-lightbox": "^3.4.2",
     "react-measure": "^1.4.5",
