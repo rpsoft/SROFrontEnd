@@ -44,8 +44,10 @@ class Search extends Component {
     constructor(props) {
       super()
       this.state = {
-        query:props.params.query,
-        searchType:'normal'
+        query: props.params.query,
+        searchType:'normal',
+        advancedSearch : {enabled:false},
+        sorting:{sortField: "date", direction: "ascending"}
         // isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       };
 
@@ -78,7 +80,7 @@ class Search extends Component {
           break;
          default:
           xmlField = '@xml:id'
-       }
+      }
 
        var direction = props.params.direction ? props.params.direction : 'ascending'
 
@@ -95,21 +97,73 @@ class Search extends Component {
       // console.log(this.state)
      }
 
-     handleChangeSearchType = (value, i, type ) => {
-        //console.log(type) // Search type
-        this.setState({searchType:type})
+    handleQueryElement = (name,value) => {
 
-     }
+      var adSearch = this.state.advancedSearch
+
+      adSearch.enabled = true
+
+      adSearch[name] = value
+
+      this.setState({advancedSearch: adSearch})
+
+      console.log(JSON.stringify(this.state.advancedSearch))
+
+    }
+
+    handleDisableAdv = () => {
+      var adSearch = this.state.advancedSearch
+      adSearch.enabled = false;
+      this.setState({advancedSearch: adSearch})
+      console.log(JSON.stringify(this.state.advancedSearch))
+    }
+
+    async handleAdvancedSearch () {
+      let fetch = new fetchData();
+      var props = this.props
+      var currentPage = props.params.page ? props.params.page : 1
+      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
+
+      var xmlField = ''
+      switch (props.params.sortField){
+        case 'id':
+         xmlField = '@xml:id'
+         break;
+        case 'date':
+         xmlField = 'date//text()[last()]'
+         break;
+        default:
+         xmlField = '@xml:id'
+      }
+
+      var direction = props.params.direction ? props.params.direction : 'ascending'
+
+      var data = await fetch.getEntriesAdvancedSearch(this.state.advancedSearch, currentPage, pageLimit, xmlField, direction);
+      var ast = XmlReader.parseSync(data);
+      var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
+
+      this.setState({sorting:{sortField: props.params.sortField, direction: direction}, allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), query: props.params.query})
+    }
+
+    handleChangeSearchType = (value, i, type ) => {
+      //console.log(type) // Search type
+      this.setState({searchType:type})
+    }
 
     onDateChange = (dateString, { dateMoment, timestamp }) => {
       console.log(dateString)
     }
 
-
     render() {
+
+
+      var args = JSON.stringify(this.state.advancedSearch)
+      var linkRoot = this.state.advancedSearch.enabled ? 'advSearch/'+args : 'search/'+this.state.query
+
+
       var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
 
-      if (!this.state.allContent){
+      if (!this.state.allContent ){
         return <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{loadingIndicator}</div>
       }
 
@@ -119,7 +173,7 @@ class Search extends Component {
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}
                                     currentPage={this.state.currentPage}
-                                    linkRoot={'search/'+this.state.query}
+                                    linkRoot={linkRoot}
                                     sorting={this.state.sorting}/>
       }
 
@@ -128,90 +182,98 @@ class Search extends Component {
 
       let date = '2017-04-24'
 
-      let advancedSearch = <span style={{marginRight:5,paddingLeft:10}}>
-        <span>Person Names: <TextField
-            hintText='Text within person names'
-            style={{width: 250}}
-            value = {this.state.query}
-            onChange={(event,value) => {this.setState({query: value})}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
-          /></span>
-        <span>Copies: <TextField
-            hintText='Text in titles within register entries'
-            style={{width: 250}}
-            value = {this.state.query}
-            onChange={(event,value) => {this.setState({query: value})}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
-          /></span>
-        <span>Min Date
-          <DateField
-             dateFormat="YYYY-MM-DD"
-             forceValidDate={true}
-             defaultValue={-15000000000000}
-             style={{marginLeft:5,marginRight:5}}
-             onChange={(dateString, { dateMoment, timestamp}) => {}}
-           >
-             <DatePicker
-               navigation={true}
-               locale="en"
-               forceValidDate={true}
-               weekNumbers={false}
-               weekStartDay={0}
-             />
-           </DateField>
+      let advSearchFieldStyle = {display:"block"}
 
-           Max Date
-             <DateField
-                dateFormat="YYYY-MM-DD"
+      let advancedSearch = <span>
+        <span style={advSearchFieldStyle}>Person Names: <TextField
+            hintText={this.state.advancedSearch.person ? "" : 'Text within person names'}
+            style={{width: 250}}
+            value = {this.state.advancedSearch.person}
+            onChange={(event,value) => {this.handleQueryElement("person",value)}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            id='personName'
+          /></span>
+        <span style={advSearchFieldStyle}>Copies: <TextField
+            hintText={this.state.advancedSearch.copies ? "" : 'Text in titles within register entries'}
+            style={{width: 250}}
+            value = {this.state.advancedSearch.copies}
+            onChange={(event,value) => {this.handleQueryElement("copies",value)}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            id='copies'
+          /></span>
+        <span style={advSearchFieldStyle}>
+            Min Date
+            <DateField
+               dateFormat="YYYY-MM-DD"
+               forceValidDate={true}
+               defaultValue={-15000000000000}
+               style={{marginLeft:5,marginRight:15}}
+               onChange={(dateString, { dateMoment, timestamp}) => {this.handleQueryElement("minDate",dateMoment)}}
+             >
+               <DatePicker
+                 navigation={true}
+                 locale="en"
+                 forceValidDate={true}
+                 weekNumbers={false}
+                 weekStartDay={0}
+                 id='dPickMin'
+               />
+            </DateField>
+
+            Max Date
+            <DateField
+              dateFormat="YYYY-MM-DD"
+              forceValidDate={true}
+              defaultValue={1000000000000}
+              style={{marginLeft:5,marginRight:5}}
+              onChange={(dateString, { dateMoment, timestamp}) => {this.handleQueryElement("maxDate",dateMoment)}}
+            >
+              <DatePicker
+                navigation={true}
+                locale="en"
                 forceValidDate={true}
-                defaultValue={-15000000000000}
-                style={{marginLeft:5,marginRight:5}}
-                onChange={(dateString, { dateMoment, timestamp}) => {console.log(dateMoment._d.getMi);debugger}}
-              >
-                <DatePicker
-                  navigation={true}
-                  locale="en"
-                  forceValidDate={true}
-                  weekNumbers={false}
-                  weekStartDay={0}
-                />
-              </DateField>
+                weekNumbers={false}
+                weekStartDay={0}
+                id='dPickMax'
+              />
+            </DateField>
 
         </span>
-        <span>Fees (in pence): <TextField
-            hintText='Min'
+        <span style={advSearchFieldStyle}>Fees (in pence): <TextField
+            hintText={this.state.advancedSearch.minFees ? "" : 'Min'}
             style={{width: 40}}
-            value = {this.state.query}
-            onChange={(event,value) => {this.setState({query: value})}}
+            value = {this.state.advancedSearch.minFees}
+            onChange={(event,value) => {this.handleQueryElement("minFees",value)}}
             onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            id='minFees'
           />
           <TextField
-              hintText='Max'
+              hintText={this.state.advancedSearch.maxFees ? "" : 'Max'}
               style={{width: 40,marginLeft:10}}
-              value = {this.state.query}
-              onChange={(event,value) => {this.setState({query: value})}}
+              value = {this.state.advancedSearch.maxFees}
+              onChange={(event,value) => {this.handleQueryElement("maxFees",value)}}
               onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+              id='maxFees'
             />
 
         </span>
 
+        <span style={{...advSearchFieldStyle,width:"100%",textAlign:"right"}}>
+            <div style={{float:"left"}}>Entry ID: <TextField
+              hintText={this.state.advancedSearch.entry ? "" : 'SRO ID Code (allows partial codes)' }
+              style={{width: 250}}
+              value = {this.state.advancedSearch.entry}
+              onChange={(event,value) => {this.handleQueryElement("entry",value)}}
+              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+              id='entry'
+            /></div>
+            <RaisedButton label='Go Search' style={{marginRight:10}} onClick={ () => {this.handleAdvancedSearch()}}/>
+        </span>
 
-
-
-          <span style={{width:"100%",textAlign:"right"}}>
-              <div style={{float:"left"}}>Entry ID: <TextField
-                hintText='SRO ID Code (allows partial codes)'
-                style={{width: 250}}
-                value = {this.state.query}
-                onChange={(event,value) => {this.setState({query: value})}}
-                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
-              /></div>
-              <RaisedButton label='Go Search' style={{marginRight:10}}/>
-          </span>
-
+        <div style={{height:10}}></div>
       </span>
 
-      let standardSearch = <span><span style={{}}>Search text:</span>
+      let standardSearch = <span><span>Search text:</span>
                             <TextField
                               hintText='Type here your search terms'
                               style={{width: 250}}
@@ -231,8 +293,8 @@ class Search extends Component {
                           style={{float:"right",marginTop:10,marginRight:5,height:30}}
                           onClick={ () => {
                             (this.state.searchType === 'normal') ?
-                            this.setState({searchType : "advanced"}) :
-                            this.setState({searchType : "normal"}) }
+                            this.setState({searchType : "advanced"} ) :
+                            this.setState({searchType : "normal"});this.handleDisableAdv() }
                           }/>
 
             {
@@ -263,7 +325,7 @@ class Search extends Component {
             </Link>
           </Card>
 
-          {pageResults}
+          {pageResults || loadingIndicator}
 
        </div>
       );

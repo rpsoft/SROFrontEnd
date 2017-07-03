@@ -44,6 +44,7 @@
     "webpack-hot-middleware": "^2.13.2"
   },
   "dependencies": {
+    "amdefine": "^1.0.1",
     "babel-polyfill": "^6.16.0",
     "babili": "^0.0.10",
     "browserify-css": "^0.10.0",

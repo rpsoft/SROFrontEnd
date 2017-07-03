@@ -36,6 +36,11 @@ export default class fetchData {
     return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit  )
   }
 
+  // Need to change this to post function, with JSON data inside. Get rid of the long address... just advSearch as identifying bit
+  async getEntriesAdvancedSearch(args,page,limit,sortField,direction) {
+    return await this.getGeneric( urlBase + "advSearch?args="+encodeURI(JSON.stringify(args))+"&page="+page+"&limit="+limit+"&sortField="+sortField+"&direction="+direction )
+  }
+
   async getEntriesForQueryWithSorting(query,page,limit,sortField,direction) {
     return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit+"&sortField="+sortField+"&direction="+direction  )
   }
