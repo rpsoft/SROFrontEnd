@@ -44,7 +44,7 @@ class Search extends Component {
     constructor(props) {
       super()
       this.state = {
-        query: props.params.query,
+        //query: props.params.query,
         searchType:'normal',
         advancedSearch : {enabled:false},
         sorting:{sortField: "date", direction: "ascending"}
@@ -93,7 +93,7 @@ class Search extends Component {
        var ast = XmlReader.parseSync(data);
        var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
-       this.setState({sorting:{sortField: props.params.sortField, direction: direction}, allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), query: props.params.query})
+       this.setState({sorting:{sortField: props.params.sortField, direction: direction}, allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), advancedSearch: {query: props.params.query}})
       // console.log(this.state)
      }
 
@@ -158,7 +158,7 @@ class Search extends Component {
 
 
       var args = JSON.stringify(this.state.advancedSearch)
-      var linkRoot = this.state.advancedSearch.enabled ? 'advSearch/'+args : 'search/'+this.state.query
+      var linkRoot = this.state.advancedSearch.enabled ? 'advSearch/'+args : 'search/'+this.state.advancedSearch.query
 
 
       var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
@@ -190,7 +190,7 @@ class Search extends Component {
             style={{width: 250}}
             value = {this.state.advancedSearch.person}
             onChange={(event,value) => {this.handleQueryElement("person",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
             id='personName'
           /></span>
         <span style={advSearchFieldStyle}>Copies: <TextField
@@ -198,7 +198,7 @@ class Search extends Component {
             style={{width: 250}}
             value = {this.state.advancedSearch.copies}
             onChange={(event,value) => {this.handleQueryElement("copies",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
             id='copies'
           /></span>
         <span style={advSearchFieldStyle}>
@@ -244,7 +244,7 @@ class Search extends Component {
             style={{width: 40}}
             value = {this.state.advancedSearch.minFees}
             onChange={(event,value) => {this.handleQueryElement("minFees",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
             id='minFees'
           />
           <TextField
@@ -252,7 +252,7 @@ class Search extends Component {
               style={{width: 40,marginLeft:10}}
               value = {this.state.advancedSearch.maxFees}
               onChange={(event,value) => {this.handleQueryElement("maxFees",value)}}
-              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
               id='maxFees'
             />
 
@@ -264,7 +264,7 @@ class Search extends Component {
               style={{width: 250}}
               value = {this.state.advancedSearch.entry}
               onChange={(event,value) => {this.handleQueryElement("entry",value)}}
-              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
               id='entry'
             /></div>
             <RaisedButton label='Go Search' style={{marginRight:10}} onClick={ () => {this.handleAdvancedSearch()}}/>
@@ -276,10 +276,10 @@ class Search extends Component {
       let standardSearch = <span><span>Search text:</span>
                             <TextField
                               hintText='Type here your search terms'
-                              style={{width: 250}}
-                              value = {this.state.query}
-                              onChange={(event,value) => {this.setState({query: value})}}
-                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){browserHistory.push('/search/'+this.state.query)}}}
+                              style={{width: 250,marginLeft:5}}
+                              value = {this.state.advancedSearch.query}
+                              onChange={(event,value) => {this.handleQueryElement("query",value)}}
+                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
                             /></span>
 
 
@@ -298,29 +298,32 @@ class Search extends Component {
                           }/>
 
             {
-              this.state.searchType == "advanced" ? advancedSearch : standardSearch
+              standardSearch
+            }
+            {
+              this.state.searchType == "advanced" ? advancedSearch : <span></span>
             }
 
 
           </Card>
 
           <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
-            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending'} style={sortLinkStyle}>
+            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending'} style={sortLinkStyle}>
               <RaisedButton label='Date (earliest)' style={sortbuttonStyle}/>
             </Link>
-            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
               <RaisedButton label='Date (latest)' style={sortbuttonStyle}/>
             </Link>
-            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
               <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
             </Link>
-            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
               <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
             </Link>
-            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
               <RaisedButton label='Enterers (A-Z)'  style={sortbuttonStyle}/>
             </Link>
-            <Link to={'/search/'+this.state.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
+            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
               <RaisedButton label='All names (A-Z)'  style={sortbuttonStyle}/>
             </Link>
           </Card>

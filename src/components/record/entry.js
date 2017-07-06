@@ -60,6 +60,8 @@ export default class Entry extends Component {
           return <div>Loading record</div>
         }
 
+
+        console.log(this.state.rawContent)
         var doc = $.parseHTML(this.state.rawContent)
         var head = $(".head",doc)[0]
         var paragraphs = $("p",doc)
@@ -70,6 +72,7 @@ export default class Entry extends Component {
         var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
         var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
         var status = $(".ab[type=metadata] > span[type=status]", doc)[0]
+        var price = $(".num[type=totalPence]", doc) ? $(".num[type=totalPence]", doc).attr("value") : ""
 
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         return <div style={{marginTop:10}}>
@@ -92,6 +95,7 @@ export default class Entry extends Component {
                       <div dangerouslySetInnerHTML={{__html: RegisterID ? RegisterID.innerHTML : ""}}></div>
                       <div dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></div>
                       <div dangerouslySetInnerHTML={{__html: status ? status.innerHTML : ""}}></div>
+                      <div dangerouslySetInnerHTML={{__html: price ? price : ""}}></div>
                     </div>
                 </Card>
 

@@ -38,7 +38,33 @@ export default class fetchData {
 
   // Need to change this to post function, with JSON data inside. Get rid of the long address... just advSearch as identifying bit
   async getEntriesAdvancedSearch(args,page,limit,sortField,direction) {
-    return await this.getGeneric( urlBase + "advSearch?args="+encodeURI(JSON.stringify(args))+"&page="+page+"&limit="+limit+"&sortField="+sortField+"&direction="+direction )
+
+    var keys = Object.keys(args);
+    var preparedQuery = ""
+    for (var a in keys ){
+      if ( keys[a] == "enabled" ){
+        continue;
+      }
+
+      if ( args[keys[a]] && args[keys[a]] != undefined)
+      preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]]
+    }
+
+
+    preparedQuery = preparedQuery.replace("&","")
+
+    console.log(preparedQuery)
+    // "query="+args.query+"&person="+args.person+"&copies="+args.copies+"&minDate="+args.minDate+"&maxDate="+args.maxDate+"&minFees="+args.minFees+"&maxFees="+args.maxFees+"&entry="+args.entry
+    //                                          +"&page="+page
+    //                                          +"&limit="+limit
+    //                                          +"&sortField="+sortField
+    //                                          +"&direction="+direction
+
+    return await this.getGeneric( urlBase + "advSearch?"+preparedQuery
+                                          +"&page="+page
+                                          +"&limit="+limit
+                                          +"&sortField="+sortField
+                                          +"&direction="+direction )
   }
 
   async getEntriesForQueryWithSorting(query,page,limit,sortField,direction) {
