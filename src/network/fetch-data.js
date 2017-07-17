@@ -36,9 +36,10 @@ export default class fetchData {
     return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit  )
   }
 
-  // Need to change this to post function, with JSON data inside. Get rid of the long address... just advSearch as identifying bit
-  async getEntriesAdvancedSearch(args,page,limit,sortField,direction) {
-
+  objectToGetVariables(args){
+    if ( !args){
+      return ""
+    }
     var keys = Object.keys(args);
     var preparedQuery = ""
     for (var a in keys ){
@@ -49,22 +50,25 @@ export default class fetchData {
       if ( args[keys[a]] && args[keys[a]] != undefined)
       preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]]
     }
-
-
     preparedQuery = preparedQuery.replace("&","")
+    return preparedQuery
+  }
 
-    console.log(preparedQuery)
-    // "query="+args.query+"&person="+args.person+"&copies="+args.copies+"&minDate="+args.minDate+"&maxDate="+args.maxDate+"&minFees="+args.minFees+"&maxFees="+args.maxFees+"&entry="+args.entry
-    //                                          +"&page="+page
-    //                                          +"&limit="+limit
-    //                                          +"&sortField="+sortField
-    //                                          +"&direction="+direction
+  // Need to change this to post function, with JSON data inside. Get rid of the long address... just advSearch as identifying bit, .... or not...
 
-    return await this.getGeneric( urlBase + "advSearch?"+preparedQuery
-                                          +"&page="+page
-                                          +"&limit="+limit
-                                          +"&sortField="+sortField
-                                          +"&direction="+direction )
+  async getEntriesAdvancedSearch(args,page,limit,sortField,direction,filters) {
+
+    var preparedQuery = this.objectToGetVariables(args)
+
+      preparedQuery = urlBase + "advSearch?"+preparedQuery
+                                            +"&page="+page
+                                            +"&limit="+limit
+                                            +"&sortField="+sortField
+                                            +"&direction="+direction
+                                            +"&filters="+JSON.stringify(filters)
+     console.log(preparedQuery)
+
+    return await this.getGeneric( preparedQuery  )
   }
 
   async getEntriesForQueryWithSorting(query,page,limit,sortField,direction) {

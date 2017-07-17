@@ -32,25 +32,36 @@ import { browserHistory } from 'react-router';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-// DAte picker
+// Date picker
 import 'react-date-picker/index.css'
-
 import { DateField, DatePicker } from 'react-date-picker'
-
 
 
 class Search extends Component {
 
     constructor(props) {
       super()
-      this.state = {
-        //query: props.params.query,
-        searchType:'normal',
-        advancedSearch : {enabled:false},
-        sorting:{sortField: "date", direction: "ascending"}
-        // isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
-      };
+      var advSearch = {enabled:false}
+      if (Object.keys(props.location.query).length > 0 ){
+        advSearch.enabled = true
+        for ( var k in props.location.query ){
+          advSearch[k] = props.location.query[k]
+        }
+      }
 
+      var allFields = ["person","copies","minDate","maxDate","minFees","maxFees","entry","query"]
+
+      for (var i in allFields){
+        advSearch[allFields[i]] = advSearch[allFields[i]] ? advSearch[allFields[i]] : ""
+      }
+
+      //console.log("should be: "+JSON.stringify(advSearch))
+
+      this.state = {
+        searchType:'normal',
+        advancedSearch : advSearch,
+        sorting:{sortField: "date", direction: "ascending"}
+      }
     }
 
 
@@ -63,90 +74,69 @@ class Search extends Component {
      }
 
     async loadPageFromProps(props){
-       let fetch = new fetchData();
-
-       var currentPage = props.params.page ? props.params.page : 1
-       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
-
-       var data;
-
-       var xmlField = ''
-       switch (props.params.sortField){
-         case 'id':
-          xmlField = '@xml:id'
-          break;
-         case 'date':
-          xmlField = 'date//text()[last()]'
-          break;
-         default:
-          xmlField = '@xml:id'
-      }
-
-       var direction = props.params.direction ? props.params.direction : 'ascending'
-
-       if ( props.params.sortField && props.params.direction){
-         data = await fetch.getEntriesForQueryWithSorting(props.params.query,currentPage,pageLimit,xmlField, direction); //getAllEntriesPaged(currentPage,pageLimit);
-       } else {
-         data = await fetch.getEntriesForQuery(props.params.query,currentPage,pageLimit); //getAllEntriesPaged(currentPage,pageLimit);
-       }
-
-       var ast = XmlReader.parseSync(data);
-       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
-
-       this.setState({sorting:{sortField: props.params.sortField, direction: direction}, allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), advancedSearch: {query: props.params.query}})
-      // console.log(this.state)
-     }
+      await this.handleAdvancedSearch(props)
+    }
 
     handleQueryElement = (name,value) => {
-
       var adSearch = this.state.advancedSearch
-
-      adSearch.enabled = true
-
+    //  adSearch.enabled = true
       adSearch[name] = value
-
       this.setState({advancedSearch: adSearch})
-
-      console.log(JSON.stringify(this.state.advancedSearch))
-
+    //  console.log(JSON.stringify(this.state.advancedSearch))
     }
 
-    handleDisableAdv = () => {
+    toggleAdvancedSearch = () => {
       var adSearch = this.state.advancedSearch
-      adSearch.enabled = false;
+      if ( adSearch.enabled ){
+        adSearch.enabled = false
+      } else {
+        adSearch.enabled = true;
+      }
       this.setState({advancedSearch: adSearch})
-      console.log(JSON.stringify(this.state.advancedSearch))
+  //    console.log(JSON.stringify(this.state.advancedSearch))
     }
 
-    async handleAdvancedSearch () {
+    async handleAdvancedSearch (pps,filters) {
       let fetch = new fetchData();
-      var props = this.props
+      var props = pps ? pps : this.props
       var currentPage = props.params.page ? props.params.page : 1
       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
 
-      var xmlField = ''
-      switch (props.params.sortField){
-        case 'id':
-         xmlField = '@xml:id'
-         break;
-        case 'date':
-         xmlField = 'date//text()[last()]'
-         break;
-        default:
-         xmlField = '@xml:id'
-      }
+      var xmlField = props.params.sortField
+
 
       var direction = props.params.direction ? props.params.direction : 'ascending'
 
-      var data = await fetch.getEntriesAdvancedSearch(this.state.advancedSearch, currentPage, pageLimit, xmlField, direction);
+      if(this.state.advancedSearch.query.length < 1){
+
+        return ;
+      }
+
+      this.setState({loading : true})
+      console.log(JSON.stringify(filters))
+      // here we distinguish between advanced and simple search
+      var readyData = this.state.advancedSearch.enabled ? this.state.advancedSearch : {query: this.state.advancedSearch.query}
+
+      var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
       var ast = XmlReader.parseSync(data);
       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
-      this.setState({sorting:{sortField: props.params.sortField, direction: direction}, allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit), query: props.params.query})
+      this.setState({loading : false})
+
+      var advSearch = this.state.advancedSearch
+
+      this.setState({ sorting:{sortField: props.params.sortField,
+                      direction: direction},
+                      allContent : data,
+                      pagesAvailable : parseInt(pagesAvailable),
+                      currentPage : parseInt(currentPage),
+                      pageLimit: parseInt(pageLimit),
+                      advancedSearch: advSearch })
+
+
     }
 
     handleChangeSearchType = (value, i, type ) => {
-      //console.log(type) // Search type
       this.setState({searchType:type})
     }
 
@@ -154,39 +144,45 @@ class Search extends Component {
       console.log(dateString)
     }
 
+    prepareURLVariables = () => {
+      var adVar = this.state.advancedSearch
+      let fetch = new fetchData();
+      return fetch.objectToGetVariables(adVar)
+    }
+
+    toggleFilters = (filters) => {
+      // this.setState({filters: filters})
+      this.handleAdvancedSearch(null,filters)
+    }
+
     render() {
 
-
       var args = JSON.stringify(this.state.advancedSearch)
-      var linkRoot = this.state.advancedSearch.enabled ? 'advSearch/'+args : 'search/'+this.state.advancedSearch.query
-
+      var linkRoot = 'search/'+this.state.advancedSearch.query
 
       var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
 
-      if (!this.state.allContent ){
-        return <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{loadingIndicator}</div>
-      }
 
-      var pageResults = <div></div>
+      var pageResults = this.state.loading ? <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{loadingIndicator}</div> : <div></div>
       if( this.state.pagesAvailable ){
           pageResults = <BrowseList allContent={this.state.allContent}
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}
                                     currentPage={this.state.currentPage}
                                     linkRoot={linkRoot}
-                                    sorting={this.state.sorting}/>
+                                    sorting={this.state.sorting}
+                                    advSearchParameters={this.state.advancedSearch}
+                                    toggleFilter={(filter) => { this.toggleFilters(filter) }}/>
       }
 
       let sortLinkStyle = {marginRight:10}
-      let sortbuttonStyle = {height:25,marginBottom:5}
-
-      let date = '2017-04-24'
+      let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
 
       let advSearchFieldStyle = {display:"block"}
 
       let advancedSearch = <span>
         <span style={advSearchFieldStyle}>Person Names: <TextField
-            hintText={this.state.advancedSearch.person ? "" : 'Text within person names'}
+            hintText={'Text within person names'}
             style={{width: 250}}
             value = {this.state.advancedSearch.person}
             onChange={(event,value) => {this.handleQueryElement("person",value)}}
@@ -194,7 +190,7 @@ class Search extends Component {
             id='personName'
           /></span>
         <span style={advSearchFieldStyle}>Copies: <TextField
-            hintText={this.state.advancedSearch.copies ? "" : 'Text in titles within register entries'}
+            hintText={'Text in titles within register entries'}
             style={{width: 250}}
             value = {this.state.advancedSearch.copies}
             onChange={(event,value) => {this.handleQueryElement("copies",value)}}
@@ -240,7 +236,7 @@ class Search extends Component {
 
         </span>
         <span style={advSearchFieldStyle}>Fees (in pence): <TextField
-            hintText={this.state.advancedSearch.minFees ? "" : 'Min'}
+            hintText={'Min'}
             style={{width: 40}}
             value = {this.state.advancedSearch.minFees}
             onChange={(event,value) => {this.handleQueryElement("minFees",value)}}
@@ -248,7 +244,7 @@ class Search extends Component {
             id='minFees'
           />
           <TextField
-              hintText={this.state.advancedSearch.maxFees ? "" : 'Max'}
+              hintText={'Max'}
               style={{width: 40,marginLeft:10}}
               value = {this.state.advancedSearch.maxFees}
               onChange={(event,value) => {this.handleQueryElement("maxFees",value)}}
@@ -260,7 +256,7 @@ class Search extends Component {
 
         <span style={{...advSearchFieldStyle,width:"100%",textAlign:"right"}}>
             <div style={{float:"left"}}>Entry ID: <TextField
-              hintText={this.state.advancedSearch.entry ? "" : 'SRO ID Code (allows partial codes)' }
+              hintText={'SRO ID Code (allows partial codes)' }
               style={{width: 250}}
               value = {this.state.advancedSearch.entry}
               onChange={(event,value) => {this.handleQueryElement("entry",value)}}
@@ -275,6 +271,7 @@ class Search extends Component {
 
       let standardSearch = <span><span>Search text:</span>
                             <TextField
+                              id='query'
                               hintText='Type here your search terms'
                               style={{width: 250,marginLeft:5}}
                               value = {this.state.advancedSearch.query}
@@ -282,51 +279,48 @@ class Search extends Component {
                               onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
                             /></span>
 
+      let orderingBar = <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
+                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                          <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
+                        </Link>
+                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                          <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
+                        </Link>
+                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                          <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
+                        </Link>
+                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                          <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
+                        </Link>
+                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                          <RaisedButton label='Enterers (A-Z)'  style={sortbuttonStyle}/>
+                        </Link>
+                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                          <RaisedButton label='All names (A-Z)'  style={sortbuttonStyle}/>
+                        </Link>
+                      </Card>
+
 
       return (
         <div style={{ padding:8, height:'100%'}}>
-          {/* <span>YOU ARE IN: SEARCH</span> */}
 
           <Card style={{marginTop:10,marginBottom:10,paddingLeft:10}}>
 
             <RaisedButton label='Advanced options'
                           style={{float:"right",marginTop:10,marginRight:5,height:30}}
-                          onClick={ () => {
-                            (this.state.searchType === 'normal') ?
-                            this.setState({searchType : "advanced"} ) :
-                            this.setState({searchType : "normal"});this.handleDisableAdv() }
+                          onClick={ () => { this.toggleAdvancedSearch() }
                           }/>
 
             {
               standardSearch
             }
             {
-              this.state.searchType == "advanced" ? advancedSearch : <span></span>
+              this.state.advancedSearch.enabled ? advancedSearch : <span></span>
             }
 
-
           </Card>
 
-          <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
-            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending'} style={sortLinkStyle}>
-              <RaisedButton label='Date (earliest)' style={sortbuttonStyle}/>
-            </Link>
-            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
-              <RaisedButton label='Date (latest)' style={sortbuttonStyle}/>
-            </Link>
-            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
-              <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
-            </Link>
-            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
-              <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
-            </Link>
-            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
-              <RaisedButton label='Enterers (A-Z)'  style={sortbuttonStyle}/>
-            </Link>
-            <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending'} style={sortLinkStyle}>
-              <RaisedButton label='All names (A-Z)'  style={sortbuttonStyle}/>
-            </Link>
-          </Card>
+          {this.state.pagesAvailable ? orderingBar : <span></span>}
 
           {pageResults || loadingIndicator}
 

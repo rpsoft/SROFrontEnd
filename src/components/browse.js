@@ -44,18 +44,52 @@ class Browse extends Component {
         this.loadPageFromProps(this.props)
      }
 
-    async loadPageFromProps(props){
-       let fetch = new fetchData();
-       var currentPage = props.params.page ? props.params.page : 1
-       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
+    async loadPageFromProps(pps,filters){
+      let fetch = new fetchData();
+      var props = pps ? pps : this.props
+      var currentPage = props.params.page ? props.params.page : 1
+      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
 
-       var data = await fetch.getAllEntriesPaged(currentPage,pageLimit);
-       var ast = XmlReader.parseSync(data);
-       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
+      var xmlField = props.params.sortField
 
-       this.setState({allContent : data, pagesAvailable : parseInt(pagesAvailable), currentPage : parseInt(currentPage), pageLimit: parseInt(pageLimit)})
+
+      var direction = props.params.direction ? props.params.direction : 'ascending'
+
+      // if(this.state.advancedSearch.query.length < 1){
+      //
+      //   return ;
+      // }
+
+      this.setState({loading : true})
+      console.log(JSON.stringify(filters))
+      // here we distinguish between advanced and simple search
+      var readyData = {query: ""}
+
+      var data;
+      if ( filters && filters.length > 0 ){
+        data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
+      } else {
+        data = await fetch.getAllEntriesPaged(currentPage, pageLimit);
+      }
+
+      var ast = XmlReader.parseSync(data);
+      var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
+
+      this.setState({loading : false})
+
+      var advSearch = this.state.advancedSearch
+
+      this.setState({ sorting:{sortField: props.params.sortField,
+                      direction: direction},
+                      allContent : data,
+                      pagesAvailable : parseInt(pagesAvailable),
+                      currentPage : parseInt(currentPage),
+                      pageLimit: parseInt(pageLimit),
+                      advancedSearch: advSearch })
+
+
      }
-     //
+
     //  processEntriesFromXML (xmlcontent) {
     //    var ast = XmlReader.parseSync(xmlcontent);
     //    var xq = xmlQuery(ast);
@@ -74,6 +108,11 @@ class Browse extends Component {
     //   return toReturn;
     //  }
 
+    toggleFilters = (filters) => {
+      // this.setState({filters: filters})
+      this.loadPageFromProps(this.props,filters)
+    }
+
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
@@ -83,8 +122,13 @@ class Browse extends Component {
 
       return (
         <div style={{ padding:8, height:"100%"}}>
-                <span>YOU ARE IN: BROWSE</span>
-                <BrowseList allContent={this.state.allContent} pagesAvailable={this.state.pagesAvailable} pageLimit={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={"browser"}/>
+
+                <BrowseList allContent={this.state.allContent}
+                            pagesAvailable={this.state.pagesAvailable}
+                            pageLimit={this.state.pageLimit}
+                            currentPage={this.state.currentPage}
+                            linkRoot={"browser"}
+                            toggleFilter={(filter) => { this.toggleFilters(filter) }}/>
        </div>
       );
     }

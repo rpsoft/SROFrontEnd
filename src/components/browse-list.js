@@ -26,25 +26,31 @@ import Paging from './paging'
 // This is the library for all the cool progress indicator components
 import Halogen from 'halogen';
 
-
 import $ from 'jquery';
+
+import Checkbox from 'material-ui/Checkbox';
+
 
 class BrowseList extends Component {
 
     constructor(props) {
       super()
+
       this.state = {
         allContent : props.allContent,
         pagesAvailable : props.pagesAvailable,
         currentPage : props.currentPage,
         pageLimit: props.pageLimit,
-        isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
+        // isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
         linkRoot: props.linkRoot,
         sorting: props.sorting,
+        advSearchParameters : props.advSearchParameters,
+        toggleFilter : props.toggleFilter
       };
     }
 
     componentWillReceiveProps(next){
+
       this.setState({
         allContent : next.allContent,
         pagesAvailable : next.pagesAvailable,
@@ -52,6 +58,8 @@ class BrowseList extends Component {
         pageLimit: next.pageLimit,
         linkRoot: next.linkRoot,
         sorting: next.sorting,
+        advSearchParameters : next.advSearchParameters,
+        toggleFilter : next.toggleFilter
       });
     }
 
@@ -76,6 +84,25 @@ class BrowseList extends Component {
       return toReturn;
      }
 
+    handleFilterClick(item){
+      var dat = this.state
+      dat[item] = dat[item] ? false : true
+      this.setState(dat)
+
+      var enabledFilters = []
+      for ( var k in Object.keys(dat) ){
+        var key = Object.keys(dat)[k]
+        if ( key.indexOf("filter") == 0 ){
+            var kitems = key.split("_")
+            if ( dat[key] ){
+              enabledFilters.push(kitems[1]+"_"+kitems[2])
+            }
+        }
+      }
+      // console.log(JSON.stringify(enabledFilters))
+      this.props.toggleFilter(enabledFilters  )
+    }
+
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
@@ -84,13 +111,53 @@ class BrowseList extends Component {
       }
 
       return (
-        <div style={{ padding:8, height:"100%"}}>
-                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting}/>
+
+        <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
+              <div style={{backgroundColor: "#dcdcdc", padding:8, height:"100%",width:"20%",position:"absolute"}}>
+                  <div style={{marginLeft:"10%"}}>
+
+                  <h4>Date:</h4>
+                  {["1570-1580","1581-1590","1591-1600","1670-1680","1681-1690","1691-1700","1770-1780","1781-1790","1791-1800"].map((item,i) =>
+                                              <Checkbox label={item}
+                                                        labelPosition="left"
+                                                        key={i}
+                                                        value={this.state["filter_date_"+item]}
+                                                        onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
+                                                />) }
+
+                  <h4>Volume:</h4>
+                  {["1","2","3","4"].map((item,i) => <Checkbox label={item}
+                            labelPosition="left"
+                            key={i}
+                            value={this.state["filter_volume_"+item]}
+                            onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
+                    />) }
+
+                  <h4>Entry type:</h4>
+                  {["Entered","Stock"].map((item,i) => <Checkbox label={item}
+                            labelPosition="left"
+                            key={i}
+                            value={this.state["filter_entryType_"+item]}
+                            onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
+                    />) }
+
+                  <h4>Enterer Role:</h4>
+                  {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
+                            labelPosition="left"
+                            key={i}
+                            value={this.state["filter_entererRole_"+item]}
+                            onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
+                    />) }
+                  </div>
+              </div>
+              <div style={{ padding:8, height:"100%", width:"75%", marginLeft: "23%",paddingTop:0}}>
+                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
 
 
                 {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
 
-                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting}/>
+                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+              </div>
        </div>
       );
     }
