@@ -24,6 +24,7 @@ class CommonView extends Component {
     let logoStyle = {height: 50,marginLeft:5}
     let buttonStyle = {marginRight:10}
     let bodyStyle = {padding:10, maxWidth:960,minWidth:540,marginLeft:"auto",marginRight:"auto"}
+    let bgStyle = {height: 50,marginLeft:5, backgroundColor: "#002147"}
 
     return <div><Card style={{ ...bodyStyle, minHeight:"90vh"}}>
         <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20}}><span>Stationers Register Online</span></Card>
@@ -49,8 +50,24 @@ class CommonView extends Component {
      </Card>
 
        <Card style={{ ...bodyStyle, marginTop:10, marginBottom:10, textAlign:"center"}}>
+       <a href="http://www.bathspa.ac.uk" target="_blank">
+         <img src="https://thehub.bathspa.ac.uk/MediaFolder/Marketing/branding/logos/bsu-logo.png" style={logoStyle} />
+       </a>
+       <a href="http://www.create.ac.uk" target="_blank">
          <img src="http://www.create.ac.uk/wp-content/uploads/logos/create_primary_logo_160.jpg" style={logoStyle} />
+       </a>
+       <a href="http://www.bibsoc.org.uk/" target="_blank">
+         <img src="http://www.bibsoc.org.uk/sites/bibsoc.adaptivetechnologies.com/themes/bibsoc/logo.png" style={bgStyle} />
+       </a>
+       <a href="https://stationers.org/" target="_blank">
+         <img src="https://stationers.org/images/module-images/small-crest.png" style={logoStyle} /></a>
+       <a href="http://gla.ac.uk" target="_blank">
          <img src="http://www.gla.ac.uk/media/media_434161_en.jpg" style={logoStyle} />
+       </a>
+       <a href="http://www.ox.ac.uk" target="_blank">
+         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/University_of_Oxford.svg/1280px-University_of_Oxford.svg.png" style={logoStyle} />
+       </a>
+
       </Card>
     </div>
   }
