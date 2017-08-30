@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import { templateListSet } from '../actions/actions';
 import fetchData from '../network/fetch-data';
+import { push } from 'react-router-redux'
 
 // Material UI imports
 import RaisedButton from 'material-ui/RaisedButton';
@@ -133,6 +134,8 @@ class Search extends Component {
                       pageLimit: parseInt(pageLimit),
                       advancedSearch: advSearch })
 
+      //this.props.iradondequiero('/search/william/7/20/date/descending?query=william');
+      //store.dispatch(push('/search/william/7/20/date/descending?query=william'))
 
     }
 
@@ -289,15 +292,15 @@ class Search extends Component {
                         <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
                           <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
                         </Link>
-                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                        {/* <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
                           <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
-                        </Link>
-                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
+                        </Link> */}
+                        {/* <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
                           <RaisedButton label='Enterers (A-Z)'  style={sortbuttonStyle}/>
                         </Link>
                         <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
                           <RaisedButton label='All names (A-Z)'  style={sortbuttonStyle}/>
-                        </Link>
+                        </Link> */}
                       </Card>
 
 
@@ -337,6 +340,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  iradondequiero: (url) => dispatch(push(url))
 })
 
 export default connect(

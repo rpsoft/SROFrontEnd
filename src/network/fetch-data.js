@@ -32,9 +32,9 @@ export default class fetchData {
     return await this.getGeneric( urlBase + 'allEntriesPaged?page='+page+"&limit="+limit )
   }
 
-  async getEntriesForQuery(query,page,limit) {
-    return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit  )
-  }
+  // async getEntriesForQuery(query,page,limit) {
+  //   return await this.getGeneric( urlBase + "data?query="+query+"&page="+page+"&limit="+limit  )
+  // }
 
   objectToGetVariables(args){
     if ( !args){
@@ -63,9 +63,9 @@ export default class fetchData {
       preparedQuery = urlBase + "advSearch?"+preparedQuery
                                             +"&page="+page
                                             +"&limit="+limit
-                                            +"&sortField="+sortField
-                                            +"&direction="+direction
-                                            +"&filters="+JSON.stringify(filters)
+                                            + ( sortField ? "&sortField="+sortField : "" )
+                                            + ( direction ? "&direction="+direction : "" )
+                                            + ((filters && filters.length > 0 ) ? "&filters="+JSON.stringify(filters) : "")
      console.log(preparedQuery)
 
     return await this.getGeneric( preparedQuery  )

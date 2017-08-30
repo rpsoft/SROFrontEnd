@@ -26,8 +26,8 @@ class CommonView extends Component {
     let bodyStyle = {padding:10, maxWidth:960,minWidth:540,marginLeft:"auto",marginRight:"auto"}
     let bgStyle = {height: 50,marginLeft:5, backgroundColor: "#002147"}
 
-    return <div><Card style={{ ...bodyStyle, minHeight:"90vh"}}>
-        <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20}}><span>Stationers Register Online</span></Card>
+    return <div><Card style={{ ...bodyStyle, minHeight:"130vh"}}>
+        <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20}}><span>Stationers' Register Online</span></Card>
         <Card style={{padding:5}}>
           <Link to={'/'} style={buttonStyle}>
             <RaisedButton label="Home" />

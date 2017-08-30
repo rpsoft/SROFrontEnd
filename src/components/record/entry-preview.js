@@ -41,15 +41,41 @@ export default class EntryPreview extends Component {
           }
         }
 
+        //findEnterer
+
+
+        var pers = data.getElementsByTagName("doc")[0].getElementsByTagName("persname")
+        var enterer;
+        try {
+          for ( var i = 0 ; i < pers.length; i++){
+              var person = pers[i]
+              if ( person.getAttribute("role").toLowerCase().indexOf("enterer") > -1 ){
+                enterer = (person.getElementsByTagName("forename")[0] ? person.getElementsByTagName("forename")[0].innerText : "")
+                          + " " +
+                          (person.getElementsByTagName("surname")[0] ? person.getElementsByTagName("surname")[0].innerText : "");
+                break;
+              }
+
+          }
+        } catch ( e ){
+          enterer = " "
+        }
+      //  debugger;
+
+
         let maxPreviewElements = 3
 
         return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none"}}>
-                  <Card style={{marginBottom:10,padding:15}}>
-                    <span>{data.getElementsByTagName("docid")[0].innerText}</span>
-                    <span style={{marginLeft:5,marginRight:5}}>{data.getElementsByTagName("date")[1].innerText}</span>
-                    {
-                    summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML) }} ></span> : "")
-                    }
+                  <Card style={{marginBottom:10,padding:10}}>
+                    <span>
+                      <span>{data.getElementsByTagName("docid")[0].innerText}</span>
+                      <span className={"viewFull"}>View Full</span>
+                      <span style={{marginLeft:5,marginRight:5,fontSize:10}}>(Testing: {data.getElementsByTagName("date")[1].innerText})</span><br/>
+                      <span className={"previewEnterer"} >{enterer}</span>
+                      {
+                      summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML)}} ></span> : "")
+                      }
+                    </span>
                   </Card>
               </Link>
   }

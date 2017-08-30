@@ -1,6 +1,20 @@
 .previewEntry .hi {}
-.previewEntry {margin-left: 20px;}
+.previewEntry {margin-left: 20px; height:30px; overflow-y: hidden;}
 
 .previewEntry .previous:first-of-type + span {
   font-weight: bold;
+}
+
+.previewEnterer { font-weight: bold;}
+
+.viewFull {
+  border: black 1px solid;
+  padding-left: 2px;
+  padding-right: 2px;
+  position: absolute;
+  right: 17px;
+}
+
+.viewFull:hover {
+  background-color: rgba(51,51,51,0.2);
 }
