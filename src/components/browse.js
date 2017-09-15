@@ -60,7 +60,7 @@ class Browse extends Component {
       //   return ;
       // }
 
-      this.setState({loading : true})
+      this.setState({allContent : null})
       console.log(JSON.stringify(filters))
       // here we distinguish between advanced and simple search
       var readyData = {query: ""}
@@ -75,7 +75,7 @@ class Browse extends Component {
       var ast = XmlReader.parseSync(data);
       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
-      this.setState({loading : false})
+    //  this.setState({loading : false})
 
       var advSearch = this.state.advancedSearch
 
@@ -110,25 +110,35 @@ class Browse extends Component {
 
     toggleFilters = (filters) => {
       // this.setState({filters: filters})
+    //  this.setState({isLoading : true})
       this.loadPageFromProps(this.props,filters)
+      //this.setState({isLoading : false})
     }
 
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
-      if (!this.state.allContent){
-        return <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
-      }
+      var browseListResults;
 
-      return (
-        <div style={{ padding:8, height:"100%"}}>
-
-                <BrowseList allContent={this.state.allContent}
+      // if (!this.state.allContent || this.state.loading){
+      //
+      //   browseListResults = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
+      // } else {
+        browseListResults = <BrowseList
+                            allContent={this.state.allContent}
                             pagesAvailable={this.state.pagesAvailable}
                             pageLimit={this.state.pageLimit}
                             currentPage={this.state.currentPage}
                             linkRoot={"browser"}
-                            toggleFilter={(filter) => { this.toggleFilters(filter) }}/>
+                            toggleFilter={(filter) => { this.toggleFilters(filter) }}
+                          />
+      // }
+
+      return (
+        <div style={{ padding:8, height:"100%",minHeight:"70vh"}}>
+
+          {browseListResults}
+
        </div>
       );
     }

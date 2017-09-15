@@ -45,7 +45,8 @@ class BrowseList extends Component {
         linkRoot: props.linkRoot,
         sorting: props.sorting,
         advSearchParameters : props.advSearchParameters,
-        toggleFilter : props.toggleFilter
+        toggleFilter : props.toggleFilter,
+
       };
     }
 
@@ -59,7 +60,8 @@ class BrowseList extends Component {
         linkRoot: next.linkRoot,
         sorting: next.sorting,
         advSearchParameters : next.advSearchParameters,
-        toggleFilter : next.toggleFilter
+        toggleFilter : next.toggleFilter,
+
       });
     }
 
@@ -85,9 +87,15 @@ class BrowseList extends Component {
      }
 
     handleFilterClick(item){
+
+
       var dat = this.state
+      //dat.loading = true;
+
+      this.setState({loading:true})
+
+      console.log(this.state.loading)
       dat[item] = dat[item] ? false : true
-      this.setState(dat)
 
       var enabledFilters = []
       for ( var k in Object.keys(dat) ){
@@ -99,21 +107,30 @@ class BrowseList extends Component {
             }
         }
       }
-      // console.log(JSON.stringify(enabledFilters))
-      this.props.toggleFilter(enabledFilters  )
+
+      this.props.toggleFilter(enabledFilters)
+      this.setState({loading:false})
     }
 
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
-      if (!this.state.allContent){
-        return <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
-      }
+      var resultsToShow ;
 
+      if ( !this.state.allContent || this.state.loading){
+        resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
+      } else {
+        resultsToShow = <span>
+                        <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+                        {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
+                        <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+                        </span>
+      }
+      console.log(this.state.loading)
       return (
 
         <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
-              <div style={{backgroundColor: "#dcdcdc", padding:8, height:"100%",width:"20%",position:"absolute"}}>
+              <div style={{backgroundColor: "#dcdcdc", padding:8, height:"99%",minHeight:"70vh",width:"20%",position:"absolute"}}>
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>
@@ -151,12 +168,9 @@ class BrowseList extends Component {
                   </div>
               </div>
               <div style={{ padding:8, height:"100%", width:"75%", marginLeft: "23%",paddingTop:0}}>
-                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
 
+                {resultsToShow}
 
-                {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
-
-                <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
               </div>
        </div>
       );
@@ -171,6 +185,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    iradondequiero: (url) => dispatch(push(url))
 })
 
 export default connect(
