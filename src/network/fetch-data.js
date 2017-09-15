@@ -46,6 +46,9 @@ export default class fetchData {
       if ( keys[a] == "enabled" ){
         continue;
       }
+      if ( keys[a] == "filters" ){
+        continue;
+      }
 
       if ( args[keys[a]] && args[keys[a]] != undefined)
       preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]]

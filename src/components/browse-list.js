@@ -46,7 +46,6 @@ class BrowseList extends Component {
         sorting: props.sorting,
         advSearchParameters : props.advSearchParameters,
         toggleFilter : props.toggleFilter,
-
       };
     }
 
@@ -61,7 +60,6 @@ class BrowseList extends Component {
         sorting: next.sorting,
         advSearchParameters : next.advSearchParameters,
         toggleFilter : next.toggleFilter,
-
       });
     }
 
@@ -96,6 +94,11 @@ class BrowseList extends Component {
 
       console.log(this.state.loading)
       dat[item] = dat[item] ? false : true
+// <<<<<<< HEAD
+// =======
+//       dat["isLoading"] = true;
+//       this.setState(dat)
+// >>>>>>> 84d174fb78f7e35aed47ffc1a4cb96eba1ee55d8
 
       var enabledFilters = []
       for ( var k in Object.keys(dat) ){
@@ -117,6 +120,7 @@ class BrowseList extends Component {
 
       var resultsToShow ;
 
+
       if ( !this.state.allContent || this.state.loading){
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
       } else {
@@ -130,7 +134,9 @@ class BrowseList extends Component {
       return (
 
         <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
-              <div style={{backgroundColor: "#dcdcdc", padding:8, height:"99%",minHeight:"70vh",width:"20%",position:"absolute"}}>
+
+              <div style={{backgroundColor: "#dcdcdc", padding:8, minHeight:"75vh",height:"99%",width:"20%",position:"absolute"}}>
+
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>

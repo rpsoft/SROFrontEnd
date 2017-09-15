@@ -134,7 +134,7 @@ class Search extends Component {
                       pageLimit: parseInt(pageLimit),
                       advancedSearch: advSearch })
 
-      //his.props.iradondequiero('/search/william/7/20/date/descending?query=william');
+      //this.props.iradondequiero('/search/william/7/20/date/descending?query=william');
       //store.dispatch(push('/search/william/7/20/date/descending?query=william'))
 
     }
