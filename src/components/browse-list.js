@@ -45,7 +45,8 @@ class BrowseList extends Component {
         linkRoot: props.linkRoot,
         sorting: props.sorting,
         advSearchParameters : props.advSearchParameters,
-        toggleFilter : props.toggleFilter
+        toggleFilter : props.toggleFilter,
+        isLoading : false
       };
     }
 
@@ -59,7 +60,8 @@ class BrowseList extends Component {
         linkRoot: next.linkRoot,
         sorting: next.sorting,
         advSearchParameters : next.advSearchParameters,
-        toggleFilter : next.toggleFilter
+        toggleFilter : next.toggleFilter,
+        isLoading : false
       });
     }
 
@@ -87,6 +89,7 @@ class BrowseList extends Component {
     handleFilterClick(item){
       var dat = this.state
       dat[item] = dat[item] ? false : true
+      dat["isLoading"] = true;
       this.setState(dat)
 
       var enabledFilters = []
@@ -106,14 +109,15 @@ class BrowseList extends Component {
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
-      if (!this.state.allContent){
+
+      if (!this.state.allContent || this.state.isLoading){
         return <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
       }
 
       return (
 
         <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
-              <div style={{backgroundColor: "#dcdcdc", padding:8, height:"100%",width:"20%",position:"absolute"}}>
+              <div style={{backgroundColor: "#dcdcdc", padding:8, minHeight:"75vh",height:"99%",width:"20%",position:"absolute"}}>
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>

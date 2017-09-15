@@ -60,6 +60,8 @@ class Search extends Component {
 
       this.state = {
         searchType:'normal',
+        currentPage : 1,
+        pageLimit: 20,
         advancedSearch : advSearch,
         sorting:{sortField: "date", direction: "ascending"}
       }
@@ -68,10 +70,12 @@ class Search extends Component {
 
     async componentWillReceiveProps(next) {
         this.loadPageFromProps(next)
+        console.log("BOOM: componentWillReceiveProps")
     }
 
     async componentWillMount() {
         this.loadPageFromProps(this.props)
+        console.log("BOOM: componentWillMount")
      }
 
     async loadPageFromProps(props){
@@ -97,35 +101,44 @@ class Search extends Component {
   //    console.log(JSON.stringify(this.state.advancedSearch))
     }
 
-    async handleAdvancedSearch (pps,filters) {
+   issueAdvancedSearch() {
+      this.props.gotoUrl('/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending?'+this.prepareURLVariables());
+   }
+
+    async handleAdvancedSearch (pps) {
       let fetch = new fetchData();
       var props = pps ? pps : this.props
-      var currentPage = props.params.page ? props.params.page : 1
-      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
-
+      var currentPage = props.params.page && (! isNaN(props.params.page)) ? props.params.page : 1
+      var pageLimit = props.params.pageLimit && (! isNaN(props.params.pageLimit)) ? props.params.pageLimit : 20
       var xmlField = props.params.sortField
-
-
       var direction = props.params.direction ? props.params.direction : 'ascending'
-
-      if(this.state.advancedSearch.query.length < 1){
-
+      // debugger
+      if(this.state.advancedSearch.query.length < 1){ // If there is no query, then there is no search.
         return ;
       }
 
       this.setState({loading : true})
-      console.log(JSON.stringify(filters))
-      // here we distinguish between advanced and simple search
-      var readyData = this.state.advancedSearch.enabled ? this.state.advancedSearch : {query: this.state.advancedSearch.query}
 
-      var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
+      console.log(JSON.stringify(this.state.filters))
+      // here we distinguish between advanced and simple search
+
+      var advSearch = this.state.advancedSearch
+
+      for ( var k in props.location.query ){
+        advSearch[k] = props.location.query[k]
+      }
+
+      var readyData = this.state.advancedSearch.enabled ? advSearch : {query: this.state.advancedSearch.query}
+
+      // debugger
+      var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, this.state.filters);
       var ast = XmlReader.parseSync(data);
       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
       this.setState({loading : false})
 
-      var advSearch = this.state.advancedSearch
 
+    //  debugger
       this.setState({ sorting:{sortField: props.params.sortField,
                       direction: direction},
                       allContent : data,
@@ -134,7 +147,9 @@ class Search extends Component {
                       pageLimit: parseInt(pageLimit),
                       advancedSearch: advSearch })
 
-      //this.props.iradondequiero('/search/william/7/20/date/descending?query=william');
+
+      console.log("did everything!"+ " "+ JSON.stringify(advSearch))
+      //this.props.gotoUrl('/search/william/7/20/date/descending?query=william');
       //store.dispatch(push('/search/william/7/20/date/descending?query=william'))
 
     }
@@ -153,9 +168,16 @@ class Search extends Component {
       return fetch.objectToGetVariables(adVar)
     }
 
-    toggleFilters = (filters) => {
+    toggleFilters (filters){
+
+      this.props.gotoUrl('/search/'
+                +this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/ascending?'
+                +this.prepareURLVariables()
+                +((filters && filters.length > 0 ) ? "&filters="+JSON.stringify(filters) : ""));
       // this.setState({filters: filters})
-      this.handleAdvancedSearch(null,filters)
+      // console.log(filters)
+      // this.handleAdvancedSearch(this.props)
+      //this.handleAdvancedSearch(this.props)
     }
 
     render() {
@@ -189,7 +211,7 @@ class Search extends Component {
             style={{width: 250}}
             value = {this.state.advancedSearch.person}
             onChange={(event,value) => {this.handleQueryElement("person",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.issueAdvancedSearch()}}}
             id='personName'
           /></span>
         <span style={advSearchFieldStyle}>Copies: <TextField
@@ -197,7 +219,7 @@ class Search extends Component {
             style={{width: 250}}
             value = {this.state.advancedSearch.copies}
             onChange={(event,value) => {this.handleQueryElement("copies",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.issueAdvancedSearch()}}}
             id='copies'
           /></span>
         <span style={advSearchFieldStyle}>
@@ -243,7 +265,7 @@ class Search extends Component {
             style={{width: 40}}
             value = {this.state.advancedSearch.minFees}
             onChange={(event,value) => {this.handleQueryElement("minFees",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
+            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.issueAdvancedSearch()}}}
             id='minFees'
           />
           <TextField
@@ -251,7 +273,7 @@ class Search extends Component {
               style={{width: 40,marginLeft:10}}
               value = {this.state.advancedSearch.maxFees}
               onChange={(event,value) => {this.handleQueryElement("maxFees",value)}}
-              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
+              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.issueAdvancedSearch()}}}
               id='maxFees'
             />
 
@@ -263,10 +285,10 @@ class Search extends Component {
               style={{width: 250}}
               value = {this.state.advancedSearch.entry}
               onChange={(event,value) => {this.handleQueryElement("entry",value)}}
-              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
+              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.issueAdvancedSearch()}}}
               id='entry'
             /></div>
-            <RaisedButton label='Go Search' style={{marginRight:10}} onClick={ () => {this.handleAdvancedSearch()}}/>
+            <RaisedButton label='Go Search' style={{marginRight:10}} onClick={ () => {this.issueAdvancedSearch()}}/>
         </span>
 
         <div style={{height:10}}></div>
@@ -279,7 +301,7 @@ class Search extends Component {
                               style={{width: 250,marginLeft:5}}
                               value = {this.state.advancedSearch.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value)}}
-                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearch()}}}
+                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.issueAdvancedSearch()}}}
                             /></span>
 
       let orderingBar = <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
@@ -340,7 +362,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  iradondequiero: (url) => dispatch(push(url))
+  gotoUrl: (url) => dispatch(push(url))
 })
 
 export default connect(
