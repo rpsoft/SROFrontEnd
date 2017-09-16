@@ -40,6 +40,8 @@ var routes = (history) => (
         <Route path="browser" component={BrowserContainer}>
           <Route path={urlBase + "browser"} component={Browse} ></Route>
           <Route path={urlBase + "browser/:page(/:pageLimit)"} component={Browse} ></Route>
+          <Route path={urlBase + "browser/:page(/:pageLimit)(/:sortField)"} component={Browse} ></Route>
+          <Route path={urlBase + "browser/:page(/:pageLimit)(/:sortField)(/:direction)"} component={Browse} ></Route>
         </Route>
 
         <Route path="search" component={BrowserContainer}>

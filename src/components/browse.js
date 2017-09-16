@@ -27,12 +27,15 @@ import Paging from './paging'
 // This is the library for all the cool progress indicator components
 import Halogen from 'halogen';
 
+import urlUtils from './urlUtils'
+
 class Browse extends Component {
 
     constructor() {
       super()
       this.state = {
         isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
+        linkRoot: "browser",
       };
     }
 
@@ -49,11 +52,9 @@ class Browse extends Component {
       var props = pps ? pps : this.props
       var currentPage = props.params.page ? props.params.page : 1
       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
-
       var xmlField = props.params.sortField
-
-
       var direction = props.params.direction ? props.params.direction : 'ascending'
+      var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
 
       // if(this.state.advancedSearch.query.length < 1){
       //
@@ -67,6 +68,7 @@ class Browse extends Component {
 
       var data;
       if ( filters && filters.length > 0 ){
+        // debugger
         data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
       } else {
         data = await fetch.getAllEntriesPaged(currentPage, pageLimit);
@@ -107,36 +109,48 @@ class Browse extends Component {
     //    }
     //   return toReturn;
     //  }
+    //
+    // toggleFilters = (filters) => {
+    //   // this.setState({filters: filters})
+    // //  this.setState({isLoading : true})
+    // //  this.loadPageFromProps(this.props,filters)
+    //   //this.setState({isLoading : false})
 
-    toggleFilters = (filters) => {
-      // this.setState({filters: filters})
-    //  this.setState({isLoading : true})
-      this.loadPageFromProps(this.props,filters)
-      //this.setState({isLoading : false})
-    }
+
+    // }
 
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
       var browseListResults;
+      let sortLinkStyle = {marginRight:10}
+      let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
 
-      // if (!this.state.allContent || this.state.loading){
-      //
-      //   browseListResults = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
-      // } else {
+      let orderingBar = <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advancedSearch)} style={sortLinkStyle}>
+                          <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
+                        </Link>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
+                          <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
+                        </Link>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
+                          <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
+                        </Link>
+                      </Card>
+
+
         browseListResults = <BrowseList
                             allContent={this.state.allContent}
                             pagesAvailable={this.state.pagesAvailable}
                             pageLimit={this.state.pageLimit}
                             currentPage={this.state.currentPage}
                             linkRoot={"browser"}
-                            toggleFilter={(filter) => { this.toggleFilters(filter) }}
+                            location={this.props.location}
                           />
-      // }
 
       return (
         <div style={{ padding:8, height:"100%",minHeight:"70vh"}}>
-
+          {orderingBar}
           {browseListResults}
 
        </div>
