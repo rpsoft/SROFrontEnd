@@ -12,6 +12,8 @@ import $ from 'jquery'
 
 import xmlTranslator from '../../tools/xmlTranslator'
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 function traverseAllNodes (xmlNode) {
     var res = '';
 
@@ -44,15 +46,22 @@ export default class Entry extends Component {
      let fetch = new fetchData();
 
     var data = await fetch.getEntry(props.params.entryID);
+
+    var preTranslation = data
+
     data = xmlTranslator(data)
 
     //
     // var htm = $.parseHTML(data)
     // var doc = htm[0]
 
-    this.setState({rawContent: data})
+    this.setState({rawContent: data, preTranslation: preTranslation})
    }
 
+  getDownloadable (){
+    var downloadData = "data:application/octet-stream," + encodeURIComponent(this.state.preTranslation);
+    window.open(downloadData, 'SRO-document.xml');
+  }
 
   render() {
 
@@ -73,6 +82,7 @@ export default class Entry extends Component {
         var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
         var status = $(".ab[type=metadata] > span[type=status]", doc)[0]
         var price = $(".num[type=totalPence]", doc) ? $(".num[type=totalPence]", doc).attr("value") : ""
+
 
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         return <div style={{marginTop:10}}>
@@ -97,7 +107,10 @@ export default class Entry extends Component {
                       <div dangerouslySetInnerHTML={{__html: status ? status.innerHTML : ""}}></div>
                       <div dangerouslySetInnerHTML={{__html: price ? price : ""}}></div>
                     </div>
+
+                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}}onClick={() => this.getDownloadable()} label={"Download XML"} />
                 </Card>
+
 
               </div>
   }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import { Link } from 'react-router'
-import fetchData from '../network/fetch-data';
+import fetchData from '../network/fetch-data'
+import urlUtils from './urlUtils'
 
 export default class Paging extends Component {
 
@@ -31,17 +32,17 @@ export default class Paging extends Component {
 
   }
 
-  prepareURLVariables = () => {
-    var adVar = this.state.advSearchParameters
-    let fetch = new fetchData();
-    return "?"+fetch.objectToGetVariables(adVar)
-  }
+  // prepareURLVariables = () => {
+  //   var adVar = this.state.advSearchParameters
+  //   let fetch = new fetchData();
+  //   return "?"+fetch.objectToGetVariables(adVar)
+  // }
 
   render() {
 
     var numberOfPagesEitherSide = 5;
 
-    var sorting = this.state.sorting ? "/"+this.state.sorting.sortField+"/"+this.state.sorting.direction : null;
+    //var sorting = this.state.sorting ? "/"+this.state.sorting.sortField+"/"+this.state.sorting.direction : null;
     // debugger
     return <span style={{marginBottom:10,padding:5,textAlign:"center"}}>
 
@@ -72,7 +73,7 @@ export default class Paging extends Component {
                                             if ( shouldprint){
                                               return <span key={i}>
                                                         {leftDelimiter}
-                                                        <Link to={"/"+this.state.linkRoot+"/"+(i)+"/"+this.state.entriesPerPage + (sorting ? sorting : "")+this.prepareURLVariables()} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
+                                                        <Link to={urlUtils.formatUrl(this.state.linkRoot,i,this.state.entriesPerPage, this.state.sorting,this.state.advSearchParameters)} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
                                                         {rightDelimiter}
                                                     </span>
                                             }
@@ -80,7 +81,7 @@ export default class Paging extends Component {
                                         } else  {
                                           return <span key={i}>
 
-                                                    <Link to={"/"+this.state.linkRoot+"/"+(i)+"/"+this.state.entriesPerPage + (sorting ? sorting : "")+this.prepareURLVariables()} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
+                                                    <Link to={urlUtils.formatUrl(this.state.linkRoot,i,this.state.entriesPerPage,this.state.sorting,this.state.advSearchParameters)} style={{marginRight:3, fontWeight: i == this.state.currentPage ? "bolder" : "auto"}}>{i}</Link>
 
                                                 </span>
                                         }

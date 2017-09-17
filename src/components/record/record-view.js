@@ -120,7 +120,7 @@ export default class RecordView extends Component {
 
     return (
       <Card style={{padding:30, minHeight:600}}>
-              HELLO
+              Record view
       </Card>
     );
   }

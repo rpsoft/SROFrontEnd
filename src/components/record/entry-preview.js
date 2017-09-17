@@ -30,12 +30,22 @@ export default class EntryPreview extends Component {
 
         let summaries = [];
 
-        if ( data.getElementsByTagName("sum").length > 0 ){
-          for ( var i = 0 ; i < data.getElementsByTagName("sum")[0].getElementsByTagName("p").length; i++){
-            summaries.push(data.getElementsByTagName("sum")[0].getElementsByTagName("p")[i])
-          }
+        if ( data.getElementsByTagName("sum").length > 0 && data.getElementsByTagName("sum")[0].getElementsByTagName("p").length > 0){
+
+          var sumElement = data.getElementsByTagName("sum")[0].getElementsByTagName("p");
+
+          // if (sumElement.length > 0 ){
+            for ( var i = 0 ; i < sumElement.length; i++){
+              summaries.push(sumElement[i])
+            }
+          // } else {
+          //     debugger
+          // }
+
         } else {
+
           for ( var i = 0 ; i < data.getElementsByTagName("doc")[0].getElementsByTagName("p").length; i++){
+
             var node = data.getElementsByTagName("doc")[0].getElementsByTagName("p")[i]
             node.innerText.trim().length > 0 ? summaries.push(node) : null
           }
@@ -64,13 +74,17 @@ export default class EntryPreview extends Component {
 
 
         let maxPreviewElements = 3
+        var date = data.getElementsByTagName("date")[1].getAttribute("when")
+        date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notBefore")
+        date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notAfter")
 
+        // debugger
         return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none"}}>
                   <Card style={{marginBottom:10,padding:10}}>
                     <span>
                       <span>{data.getElementsByTagName("docid")[0].innerText}</span>
                       <span className={"viewFull"}>View Full</span>
-                      <span style={{marginLeft:5,marginRight:5,fontSize:10}}>(Testing: {data.getElementsByTagName("date")[1].innerText})</span><br/>
+                      <span style={{marginLeft:5,marginRight:5,fontSize:10}}>({date})</span><br/>
                       <span className={"previewEnterer"} >{enterer}</span>
                       {
                       summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML)}} ></span> : "")

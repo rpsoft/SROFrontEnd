@@ -11,7 +11,7 @@ export default class BrowserContainer extends Component {
           {this.props.params.recordId}
           {this.props.params.recordName}
         </h1> */}
-        {this.props.children}
+        {React.cloneElement(this.props.children, this.props)}
       </div>
     );
   }

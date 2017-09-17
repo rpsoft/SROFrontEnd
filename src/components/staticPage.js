@@ -8,12 +8,13 @@ import fetchData from '../network/fetch-data';
 
 export default class StaticPage extends Component {
 
-    constructor(props) {
+  constructor(props) {
       super()
       this.state = {
         page : props.page
         //isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       };
+
     }
 
   async fetchPage(page) {
@@ -40,6 +41,13 @@ export default class StaticPage extends Component {
     this.setState({rawHtml})
   }
 
+  componentDidUpdate() {
+    if ( this.props.location.query && this.props.location.query.g ){
+        location.hash =  "#"+this.props.location.query.g
+    }
+
+  }
+
   componentWillReceiveProps(next){
       this.fetchPage(next.location.pathname)
   }
@@ -54,9 +62,9 @@ export default class StaticPage extends Component {
 
 
         return <Card style={{marginTop:20,marginBottom:10,padding:15,textAlign:"left"}}>
-            <span>{this.props.location.pathname}</span>
+                    {/* <span>{this.props.location.pathname}</span> */}
                     <div dangerouslySetInnerHTML={{__html: rawContent }}></div>
-                     {this.props.children}
+                    {/* {this.props.children} */}
               </Card>
   }
 }

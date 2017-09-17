@@ -60,7 +60,7 @@ export default class fetchData {
   // Need to change this to post function, with JSON data inside. Get rid of the long address... just advSearch as identifying bit, .... or not...
 
   async getEntriesAdvancedSearch(args,page,limit,sortField,direction,filters) {
-
+    
     var preparedQuery = this.objectToGetVariables(args)
 
       preparedQuery = urlBase + "advSearch?"+preparedQuery
