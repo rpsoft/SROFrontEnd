@@ -115,6 +115,7 @@ class Search extends Component {
       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
       var xmlField = props.params.sortField ? props.params.sortField : 'date'
       var direction = props.params.direction ? props.params.direction : 'ascending'
+      var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
       var query = props.query
 
       var advSearch = this.state.advancedSearch
@@ -140,7 +141,7 @@ class Search extends Component {
       this.setState({loading : false})
 
 
-
+      //debugger
       this.setState({ sorting:{sortField: props.params.sortField,
                       direction: direction},
                       allContent : data,
@@ -192,9 +193,9 @@ class Search extends Component {
 
       var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
 
-
       var pageResults = this.state.loading ? <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{loadingIndicator}</div> : <div></div>
-      if( this.state.pagesAvailable ){
+      // if( this.state.pagesAvailable ){
+        // console.log("PAGES heyy")
           pageResults = <BrowseList allContent={this.state.allContent}
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}
@@ -204,7 +205,9 @@ class Search extends Component {
                                     advSearchParameters={this.state.advancedSearch}
                                     toggleFilter={(filter) => { this.toggleFilters(filter) }}
                                     location={this.props.location}/>
-      }
+      // } else {
+      //   console.log("BLAAHH")
+      // }
 
       let sortLinkStyle = {marginRight:10}
       let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
@@ -353,7 +356,7 @@ class Search extends Component {
 
           {this.state.pagesAvailable ? orderingBar : <span></span>}
 
-          {pageResults || loadingIndicator}
+          {pageResults}
 
        </div>
       );

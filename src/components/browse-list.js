@@ -139,6 +139,7 @@ class BrowseList extends Component {
 
 
       if ( !this.state.allContent || this.state.loading){
+        
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
       } else {
         resultsToShow = <span>
