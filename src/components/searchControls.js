@@ -75,15 +75,30 @@ class SearchControls extends Component {
     }
 
     handleAdvancedSearchButton () {
-        var advSearch = {query: this.state.query}
-      var url = urlUtils.formatUrl("search"
-                                      ,this.state.currentPage ? this.state.currentPage : 1
-                                      ,this.state.pageLimit ? this.state.pageLimit : 20
-                                      ,this.state.sorting
-                                      ,advSearch);
+      var advSearch = {query: this.state.query}
+
+      var url;
+      if ( advSearch.query ){
+        url = urlUtils.formatUrl("search"
+                                        ,this.state.currentPage ? this.state.currentPage : 1
+                                        ,this.state.pageLimit ? this.state.pageLimit : 20
+                                        ,this.state.sorting
+                                        ,advSearch);
+
+      } else {
+        url = "/search"
+      }
+
       console.log("GOTO gfdgfds: "+url);
       this.props.goToUrl(url);
+
     }
+
+    handleToggleAdvancedSearch () {
+      this.props.toggleAdvancedSearch()
+      this.handleAdvancedSearchButton()
+    }
+
 
     render() {
 
@@ -104,7 +119,7 @@ class SearchControls extends Component {
 
             <RaisedButton label='Advanced options'
                           style={{float:"right",marginTop:5,marginRight:5,height:37}}
-                          onClick={ () => { this.props.toggleAdvancedSearch() }
+                          onClick={ () => { this.handleToggleAdvancedSearch() }
                           }/>
 
             { standardSearch }

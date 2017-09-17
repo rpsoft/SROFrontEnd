@@ -115,17 +115,23 @@ class Search extends Component {
       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
       var xmlField = props.params.sortField ? props.params.sortField : 'date'
       var direction = props.params.direction ? props.params.direction : 'ascending'
+      var query = props.query
 
-      if(!this.state.advancedSearch.query || this.state.advancedSearch.query.length < 1){
+      var advSearch = this.state.advancedSearch
+      advSearch.query = query;
 
+      this.setState({loading : true, query: query, advancedSearch: advSearch})
+
+      //  debugger
+      if(!advSearch.query || advSearch.query.length < 1){
+        this.setState({loading : false})
         return ;
       }
 
-      this.setState({loading : true})
-      // console.log(JSON.stringify(filters))
+
+       console.log(JSON.stringify(filters))
       // here we distinguish between advanced and simple search
       var readyData = this.state.advancedSearch.enabled ? this.state.advancedSearch : {query: this.state.advancedSearch.query}
-
 
       var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
       var ast = XmlReader.parseSync(data);
@@ -133,7 +139,7 @@ class Search extends Component {
 
       this.setState({loading : false})
 
-      var advSearch = this.state.advancedSearch
+
 
       this.setState({ sorting:{sortField: props.params.sortField,
                       direction: direction},
@@ -165,6 +171,7 @@ class Search extends Component {
 
     toggleFilters = (filters) => {
       // this.setState({filters: filters})
+      //console.log("filters:: "+filters)
       this.handleAdvancedSearch(null,filters)
     }
 
