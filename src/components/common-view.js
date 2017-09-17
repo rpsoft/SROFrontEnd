@@ -110,10 +110,10 @@ class CommonView extends Component {
           >
             <Menu>
               <MenuItem value={1} primaryText="About" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
-              <MenuItem value={2} primaryText="- The Stationers' Register" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
+              <MenuItem value={2} primaryText="- The Stationers' Register" onClick={ (e) => {this.props.goToUrl("/about?g=stationersRegister"); this.handleRequestClose()}}/>
               <MenuItem value={3} primaryText="- The Stationers' Company" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
               <MenuItem value={4} primaryText="- History of Copyright" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
-              <a href={"#bibliography"}><MenuItem value={5} primaryText="- Bibliography" /></a>
+              <MenuItem value={5} primaryText="- Bibliography" onClick={ (e) => {this.props.goToUrl("/about?g=bibliography"); this.handleRequestClose(); }} />
               <Divider /><Divider /><Divider />
               <MenuItem value={6} primaryText="Project" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
               <MenuItem value={7} primaryText="- History" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>

@@ -36,6 +36,7 @@ class Browse extends Component {
       this.state = {
         isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
         linkRoot: "browser",
+        sorting:{sortField: "date", direction: "ascending"}
       };
     }
 
@@ -145,8 +146,12 @@ class Browse extends Component {
                             pageLimit={this.state.pageLimit}
                             currentPage={this.state.currentPage}
                             linkRoot={"browser"}
+                            sorting={this.state.sorting}
+                            advSearchParameters={this.state.advancedSearch}
+                            //toggleFilter={(filter) => { this.toggleFilters(filter) }}
                             location={this.props.location}
                           />
+
 
       return (
         <div style={{ padding:8, height:"100%",minHeight:"70vh"}}>

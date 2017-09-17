@@ -43,6 +43,14 @@ class BrowseList extends Component {
       //debugger
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : [];
 
+      var advSearch = props.advSearchParameters
+
+      if ( !advSearch ){
+        advSearch = {}
+      }
+
+      advSearch.filters = filters;
+
       var newState = {
         allContent : props.allContent,
         pagesAvailable : props.pagesAvailable,
@@ -50,7 +58,7 @@ class BrowseList extends Component {
         pageLimit: props.pageLimit,
         linkRoot: props.linkRoot,
         sorting: props.sorting,
-        advSearchParameters : props.advSearchParameters,
+        advSearchParameters : advSearch,
       }
 
       for ( var f in filters){
@@ -65,6 +73,16 @@ class BrowseList extends Component {
 
         var filters = next.location.query.filters ? next.location.query.filters.split(",") : [];
 
+
+        var advSearch = next.advSearchParameters
+
+        if ( !advSearch ){
+          advSearch = {}
+        }
+
+        advSearch.filters = filters;
+
+
         var newState = {
           allContent : next.allContent,
           pagesAvailable : next.pagesAvailable,
@@ -72,7 +90,7 @@ class BrowseList extends Component {
           pageLimit: next.pageLimit,
           linkRoot: next.linkRoot,
           sorting: next.sorting,
-          advSearchParameters : next.advSearchParameters,
+          advSearchParameters : advSearch,
           toggleFilter : next.toggleFilter,
         }
 
@@ -126,7 +144,7 @@ class BrowseList extends Component {
 
       advParams.filters = enabledFilters
 
-      var url = urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit,this.state.sorting,advParams);
+      var url = urlUtils.formatUrl(this.state.linkRoot,1,this.state.pageLimit,this.state.sorting,advParams);
       console.log(url);
 
       this.props.goToUrl(url);
@@ -139,9 +157,10 @@ class BrowseList extends Component {
 
 
       if ( !this.state.allContent || this.state.loading){
-        
+
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
       } else {
+        // debugger
         resultsToShow = <span>
                         <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
                         {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
@@ -160,7 +179,7 @@ class BrowseList extends Component {
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>
-                  {["1570-1580","1581-1590","1591-1600","1670-1680"].map((item,i) => <Checkbox label={item}
+                  {["1556-1557","1558-1559","1560-1561","1562-1563","1564-1565","1566-1567","1568-1569"].map((item,i) => <Checkbox label={item}
                             labelPosition="left"
                             key={i}
                             checked={this.state["filter_date_"+item]}
