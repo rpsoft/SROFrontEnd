@@ -193,7 +193,7 @@ class Search extends Component {
 
       var loadingIndicator = (<Halogen.MoonLoader color={'blue'}/>)
 
-      var pageResults = this.state.loading ? <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{loadingIndicator}</div> : <div></div>
+      var pageResults = this.state.loading ? <div style={{width:100,height:100, marginLeft: 'auto', marginRight: 'auto' ,paddingTop: 30}}>{this.state.query.length > 0 ? loadingIndicator : ""}</div> : <div></div>
       // if( this.state.pagesAvailable ){
         // console.log("PAGES heyy")
           pageResults = <BrowseList allContent={this.state.allContent}

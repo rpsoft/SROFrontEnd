@@ -179,7 +179,7 @@ class BrowseList extends Component {
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>
-                  {["1556-1557","1558-1559","1560-1561","1562-1563","1564-1565","1566-1567","1568-1569"].map((item,i) => <Checkbox label={item}
+                  {["1555-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"].map((item,i) => <Checkbox label={item}
                             labelPosition="left"
                             key={i}
                             checked={this.state["filter_date_"+item]}
