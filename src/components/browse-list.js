@@ -117,7 +117,7 @@ class BrowseList extends Component {
       return (
 
         <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
-              <div style={{backgroundColor: "#dcdcdc", padding:8, minHeight:"75vh",height:"99%",width:"20%",position:"absolute"}}>
+              <div style={{backgroundColor: "#dcdcdc", padding:8, minHeight:"75vh",height:"98%",width:"20%",position:"absolute"}}>
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>
