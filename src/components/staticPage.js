@@ -54,7 +54,7 @@ export default class StaticPage extends Component {
 
 
         return <Card style={{marginTop:20,marginBottom:10,padding:15,textAlign:"left"}}>
-                    <span>{this.props.location.pathname}</span>
+                    {/* <span>{this.props.location.pathname}</span> */}
                     <div dangerouslySetInnerHTML={{__html: rawContent }}></div>
                     {/* {this.props.children} */}
               </Card>
