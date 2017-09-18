@@ -158,7 +158,7 @@ class BrowseList extends Component {
 
       if ( !this.state.allContent || this.state.loading){
 
-        resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
+        resultsToShow = this.state.advSearchParameters && this.state.advSearchParameters.query && this.state.advSearchParameters.query.length > 0 ? <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div> : <div>No results to show</div>
       } else {
         // debugger
         resultsToShow = <span>
@@ -173,7 +173,9 @@ class BrowseList extends Component {
 
 
         <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
-              <div style={{backgroundColor: "#dcdcdc", padding:8, minHeight:"75vh",height:"98%",width:"20%",position:"absolute"}}>
+
+              <div style={{backgroundColor: "#dcdcdc", paddingTop:8, paddingBottom: 45, width:"20%",position:"absolute"}}>
+
                   <div style={{marginLeft:"10%"}}>
 
                   <h4>Date:</h4>

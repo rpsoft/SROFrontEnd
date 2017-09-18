@@ -154,7 +154,7 @@ class Browse extends Component {
 
 
       return (
-        <div style={{ padding:8, height:"100%",minHeight:"70vh"}}>
+        <div style={{ paddingTop:8, height:"100%",minHeight:"70vh"}}>
           {orderingBar}
           {browseListResults}
 
