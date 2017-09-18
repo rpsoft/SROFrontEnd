@@ -72,7 +72,8 @@ class Browse extends Component {
         // debugger
         data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
       } else {
-        data = await fetch.getAllEntriesPaged(currentPage, pageLimit);
+
+        data = await fetch.getAllEntriesPaged(currentPage, pageLimit, xmlField, direction);
       }
 
       var ast = XmlReader.parseSync(data);
@@ -124,20 +125,7 @@ class Browse extends Component {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
 
       var browseListResults;
-      let sortLinkStyle = {marginRight:10}
-      let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
 
-      let orderingBar = <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
-                        </Link>
-                      </Card>
 
 
         browseListResults = <BrowseList
@@ -154,8 +142,8 @@ class Browse extends Component {
 
 
       return (
-        <div style={{ paddingTop:8, height:"100%",minHeight:"70vh"}}>
-          {orderingBar}
+        <div style={{  height:"100%",minHeight:"70vh"}}>
+          {/* {orderingBar} */}
           {browseListResults}
 
        </div>

@@ -168,11 +168,33 @@ class BrowseList extends Component {
                         </span>
       }
 
+      let sortLinkStyle = {marginRight:10}
+      let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
+
+
+
+      let orderingBar = <Card style={{ paddingTop:5, paddingLeft:5,paddingRight:5,textAlign:'center',marginBottom:5}}>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+                          <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
+                        </Link>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+                          <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
+                        </Link>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+                          <RaisedButton label='Volume/page (Asc)'  style={sortbuttonStyle}/>
+                        </Link>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+                          <RaisedButton label='Volume/page (Desc)'  style={sortbuttonStyle}/>
+                        </Link>
+                      </Card>
+
 
       return (
 
 
-        <div style={{height:"100%", width:"100%",position: "relative",paddingTop:8}}>
+        <div style={{height:"100%", width:"100%",position: "relative"}}>
+
+              {orderingBar}
 
               <div style={{backgroundColor: "#dcdcdc", paddingTop:8, paddingBottom: 45, width:"20%",position:"absolute"}}>
 
@@ -197,7 +219,7 @@ class BrowseList extends Component {
                     />) }
 
                   <h4>Entry type:</h4>
-                  {["Entered","Stock"].map((item,i) => <Checkbox label={item}
+                  {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
                             labelPosition="left"
                             key={i}
                             checked={this.state["filter_entryType_"+item]}

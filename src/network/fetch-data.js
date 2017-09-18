@@ -28,8 +28,11 @@ export default class fetchData {
     return await this.getGeneric( urlBase + 'staticPage?page='+page )
   }
 
-  async getAllEntriesPaged(page,limit) {
-    return await this.getGeneric( urlBase + 'allEntriesPaged?page='+page+"&limit="+limit )
+  async getAllEntriesPaged(page,limit,sortField,direction) {
+    return await this.getGeneric( urlBase + 'allEntriesPaged?page='+page
+                                          +"&limit="+limit
+                                          + ( sortField ? "&sortField="+sortField : "" )
+                                          + ( direction ? "&direction="+direction : "" ) )
   }
 
   // async getEntriesForQuery(query,page,limit) {
@@ -50,6 +53,19 @@ export default class fetchData {
         continue;
       }
 
+      if ( keys[a] == "minDate" && args[keys[a]] ){
+        if ( args[keys[a]].year && args[keys[a]].month && args[keys[a]].day)
+        preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+        continue;
+      }
+
+      if ( keys[a] == "maxDate" && args[keys[a]] ){
+        if ( args[keys[a]].year && args[keys[a]].month && args[keys[a]].day)
+        preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+        continue;
+      }
+
+
       if ( args[keys[a]] && args[keys[a]] != undefined)
       preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]]
     }
@@ -60,7 +76,7 @@ export default class fetchData {
   // Need to change this to post function, with JSON data inside. Get rid of the long address... just advSearch as identifying bit, .... or not...
 
   async getEntriesAdvancedSearch(args,page,limit,sortField,direction,filters) {
-    
+
     var preparedQuery = this.objectToGetVariables(args)
 
       preparedQuery = urlBase + "advSearch?"+preparedQuery

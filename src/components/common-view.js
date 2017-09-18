@@ -88,7 +88,7 @@ class CommonView extends Component {
           >
             <Menu>
               <MenuItem value={1} primaryText="Browse" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
-              <MenuItem value={2} primaryText="Copies" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
+              {/* <MenuItem value={2} primaryText="Copies" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/> */}
               <MenuItem value={3} primaryText="Names" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
               <MenuItem value={4} primaryText="By Date" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
               <MenuItem value={5} primaryText="By Volume" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
