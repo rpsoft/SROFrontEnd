@@ -383,14 +383,14 @@ class Search extends Component {
         </span>
 
         <span style={{...advSearchFieldStyle,width:"100%",textAlign:"right"}}>
-            {/* <div style={{float:"left"}}>Entry ID: <TextField
+            <div style={{float:"left"}}>Entry ID: <TextField
               hintText={'SRO ID Code (allows partial codes)' }
               style={{width: 250}}
               value = {this.state.advancedSearch.entry}
               onChange={(event,value) => {this.handleQueryElement("entry",value)}}
               onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
               id='entry'
-            /></div> */}
+            /></div>
             <RaisedButton label='Go Search' style={{marginRight:10}} onClick={ () => {this.handleAdvancedSearchButton()}}/>
         </span>
 
