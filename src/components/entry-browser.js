@@ -37,7 +37,7 @@ class EntryBrowser extends Component {
 
       var currentPage = this.props.params.page ? this.props.params.page : 1
       var pageLimit = this.props.params.pageLimit ? this.props.params.pageLimit : 20
-
+      
       var data = await fetch.getAllEntriesPaged(currentPage,pageLimit);
 
       var ast = XmlReader.parseSync(data);

@@ -51,7 +51,7 @@ class Search extends Component {
         }
       }
 
-      var allFields = ["person","copies","minDate","maxDate","minFees","maxFees","entry","query"]
+      var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"] //"copies",
 
       for (var i in allFields){
         advSearch[allFields[i]] = advSearch[allFields[i]] ? advSearch[allFields[i]] : ""
@@ -95,6 +95,39 @@ class Search extends Component {
       adSearch[name] = value
       this.setState({advancedSearch: adSearch})
     //  console.log(JSON.stringify(this.state.advancedSearch))
+    }
+
+    handleDateQueryElement = (name,value) => {
+      var state = this.state
+      var adSearch = this.state.advancedSearch
+
+      var dateKey = name.split("_")[0]
+      var dateElement = name.split("_")[1]
+
+      if ( !adSearch[dateKey] ){
+        switch (dateKey) {
+          case "minDate":
+            adSearch[dateKey] = {year:"1400",month:"01",day:"01"}
+            break;
+          default: // Assume maxDate.
+            adSearch[dateKey] = {year:"1900",month:"12",day:"31"}
+        }
+      }
+
+      //debugger
+
+      adSearch[dateKey][dateElement] = value < 10 ? ( Number.isInteger(Number(value)) && (Number(value) > 0) ? "0"+value : "" ) : ""+value
+
+      console.log(adSearch[dateKey])
+
+      state.advancedSearch = adSearch
+
+      state[name] = value  // This is the value of the textfield to keep track of the input.
+
+      // "minDate": {"year":"1400","month":"10","day":"20"},"maxDate":{"year":"1900","month":"05","day":"20"},"minFees":"","maxFees":"","entry":"","filters":[]}
+
+      this.setState(state)
+      console.log(JSON.stringify(this.state.advancedSearch))
     }
 
     toggleAdvancedSearch = () => {
@@ -214,6 +247,8 @@ class Search extends Component {
 
       let advSearchFieldStyle = {display:"block"}
 
+      let dateInputStyle= {marginLeft: 5,width: 40}
+
       let advancedSearch = <span>
         <span style={advSearchFieldStyle}>Person Names: <TextField
             hintText={'Text within person names'}
@@ -223,17 +258,46 @@ class Search extends Component {
             onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
             id='personName'
           /></span>
-        <span style={advSearchFieldStyle}>Copies: <TextField
+        {/* <span style={advSearchFieldStyle}>Copies:handleDateQueryElement <TextField
             hintText={'Text in titles within register entries'}
             style={{width: 250}}
             value = {this.state.advancedSearch.copies}
             onChange={(event,value) => {this.handleQueryElement("copies",value)}}
             onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
             id='copies'
-          /></span>
+          /></span> */}
         <span style={advSearchFieldStyle}>
-            Min Date
-            <DateField
+            Min Date:
+
+            <TextField
+                hintText={'YYYY'}
+                style={dateInputStyle}
+                value = {this.state.minDate_year}
+                onChange={(event,value) => {this.handleDateQueryElement("minDate_year",value)}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
+                id='minDate_year'
+              />
+              -
+            <TextField
+                hintText={'MM'}
+                style={{...dateInputStyle,width:30}}
+                value = {this.state.minDate_month}
+                onChange={(event,value) => {this.handleDateQueryElement("minDate_month",value)}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
+                id='minDate_month'
+              />
+              -
+            <TextField
+                hintText={'DD'}
+                style={{...dateInputStyle,width:30}}
+                value = {this.state.minDate_day}
+                onChange={(event,value) => {this.handleDateQueryElement("minDate_day",value)}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
+                id='minDate_day'
+              />
+
+
+            {/* <DateField
                dateFormat="YYYY-MM-DD"
                forceValidDate={true}
                defaultValue={-15000000000000}
@@ -248,10 +312,40 @@ class Search extends Component {
                  weekStartDay={0}
                  id='dPickMin'
                />
-            </DateField>
+            </DateField> */}
 
-            Max Date
-            <DateField
+            Max Date:
+            <TextField
+                hintText={'YYYY'}
+                style={dateInputStyle}
+                //defaultValue={2017}
+                value = {this.state.maxDate_year}
+                onChange={(event,value) => {this.handleDateQueryElement("maxDate_year",value)}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
+                id='maxDate_year'
+              />
+              -
+            <TextField
+                hintText={'MM'}
+                //defaultValue = {12}
+                style={{...dateInputStyle,width:30}}
+                value = {this.state.maxDate_month}
+                onChange={(event,value) => {this.handleDateQueryElement("maxDate_month",value)}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
+                id='maxDate_month'
+              />
+              -
+            <TextField
+                hintText={'DD'}
+                style={{...dateInputStyle,width:30}}
+              //  defaultValue={31}
+                value = {this.state.maxDate_day}
+                onChange={(event,value) => {this.handleDateQueryElement("maxDate_day",value)}}
+                onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
+                id='maxDate_day'
+              />
+
+            {/* <DateField
               dateFormat="YYYY-MM-DD"
               forceValidDate={true}
               defaultValue={1000000000000}
@@ -266,7 +360,7 @@ class Search extends Component {
                 weekStartDay={0}
                 id='dPickMax'
               />
-            </DateField>
+            </DateField> */}
 
         </span>
         <span style={advSearchFieldStyle}>Fees (in pence): <TextField
@@ -289,14 +383,14 @@ class Search extends Component {
         </span>
 
         <span style={{...advSearchFieldStyle,width:"100%",textAlign:"right"}}>
-            <div style={{float:"left"}}>Entry ID: <TextField
+            {/* <div style={{float:"left"}}>Entry ID: <TextField
               hintText={'SRO ID Code (allows partial codes)' }
               style={{width: 250}}
               value = {this.state.advancedSearch.entry}
               onChange={(event,value) => {this.handleQueryElement("entry",value)}}
               onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
               id='entry'
-            /></div>
+            /></div> */}
             <RaisedButton label='Go Search' style={{marginRight:10}} onClick={ () => {this.handleAdvancedSearchButton()}}/>
         </span>
 
@@ -320,8 +414,11 @@ class Search extends Component {
                         <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
                           <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
                         </Link>
+                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "ascending"}, this.state.advancedSearch)} style={sortLinkStyle}>
+                          <RaisedButton label='Volume/page (Asc)'  style={sortbuttonStyle}/>
+                        </Link>
                         <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Volume/page'  style={sortbuttonStyle}/>
+                          <RaisedButton label='Volume/page (Desc)'  style={sortbuttonStyle}/>
                         </Link>
                         {/* <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
                           <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
@@ -354,7 +451,7 @@ class Search extends Component {
 
           </Card>
 
-          {this.state.pagesAvailable ? orderingBar : <span></span>}
+          {/* {this.state.pagesAvailable ? orderingBar : <span></span>} */}
 
           {pageResults}
 
