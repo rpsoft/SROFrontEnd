@@ -237,7 +237,7 @@ class BrowseList extends Component {
                     />) }
                   </div>
               </div>
-              <div style={{ padding:8, height:"100%", width:"75%", marginLeft: "23%",paddingTop:0}}>
+              <div style={{ padding:8, height:"100%", minHeight:"1000px", width:"75%", marginLeft: "23%",paddingTop:0}}>
 
                 {resultsToShow}
 
