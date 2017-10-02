@@ -142,7 +142,7 @@ class Browse extends Component {
 
 
       return (
-        <div style={{  height:"100%",minHeight:"70vh"}}>
+        <div style={{  height:"100%",minHeight:"1000px"}}>
           {/* {orderingBar} */}
           {browseListResults}
 
