@@ -158,9 +158,9 @@ class BrowseList extends Component {
 
       if ( !this.state.allContent || this.state.loading){
 
-        resultsToShow = this.state.advSearchParameters && this.state.advSearchParameters.query && this.state.advSearchParameters.query.length > 0 ? <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div> : <div>No results to show</div>
+        resultsToShow = this.state.advSearchParameters && this.state.advSearchParameters.query && this.state.advSearchParameters.query.length > 0 ? <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div> : <div>No results to show / Have you entered a query?</div>
       } else {
-        // debugger
+      
         resultsToShow = <span>
                         <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
                         {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
@@ -195,52 +195,52 @@ class BrowseList extends Component {
         <div style={{height:"100%", width:"100%",position: "relative"}}>
 
               {orderingBar}
+              <div style={{display:"flex", flexDirection: "row"}}>
 
-              <div style={{backgroundColor: "#dcdcdc", paddingTop:8, paddingBottom: 45, width:"20%",position:"absolute"}}>
+                <div style={{backgroundColor: "#dcdcdc", padding:15,paddingRight:5, width:"18%"}}>
 
-                  <div style={{marginLeft:"10%"}}>
+                    <h4>Date:</h4>
+                    {["1555-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"].map((item,i) => <Checkbox label={item}
+                              labelPosition="left"
+                              key={i}
+                              checked={this.state["filter_date_"+item]}
+                              value={this.state["filter_date_"+item]}
+                              onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
+                      />) }
 
-                  <h4>Date:</h4>
-                  {["1555-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"].map((item,i) => <Checkbox label={item}
-                            labelPosition="left"
-                            key={i}
-                            checked={this.state["filter_date_"+item]}
-                            value={this.state["filter_date_"+item]}
-                            onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
-                    />) }
+                    <h4>Volume:</h4>
+                    {["A","B","C"].map((item,i) => <Checkbox label={item}
+                              labelPosition="left"
+                              key={i}
+                              checked={this.state["filter_volume_"+item]}
+                              value={this.state["filter_volume_"+item]}
+                              onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
+                      />) }
 
-                  <h4>Volume:</h4>
-                  {["A","B","C"].map((item,i) => <Checkbox label={item}
-                            labelPosition="left"
-                            key={i}
-                            checked={this.state["filter_volume_"+item]}
-                            value={this.state["filter_volume_"+item]}
-                            onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
-                    />) }
+                    <h4>Entry type:</h4>
+                    {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
+                              labelPosition="left"
+                              key={i}
+                              checked={this.state["filter_entryType_"+item]}
+                              value={this.state["filter_entryType_"+item]}
+                              onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
+                      />) }
 
-                  <h4>Entry type:</h4>
-                  {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
-                            labelPosition="left"
-                            key={i}
-                            checked={this.state["filter_entryType_"+item]}
-                            value={this.state["filter_entryType_"+item]}
-                            onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
-                    />) }
+                    <h4>Enterer Role:</h4>
+                    {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
+                              labelPosition="left"
+                              key={i}
+                              checked={this.state["filter_entererRole_"+item]}
+                              value={this.state["filter_entererRole_"+item]}
+                              onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
+                      />) }
 
-                  <h4>Enterer Role:</h4>
-                  {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
-                            labelPosition="left"
-                            key={i}
-                            checked={this.state["filter_entererRole_"+item]}
-                            value={this.state["filter_entererRole_"+item]}
-                            onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
-                    />) }
-                  </div>
-              </div>
-              <div style={{ padding:8, height:"100%", width:"75%", marginLeft: "23%",paddingTop:0}}>
+                </div>
+                <div style={{ padding:5, paddingLeft:10, paddingTop:0, height:"100%", width:"82%"}}>
 
-                {resultsToShow}
+                  {resultsToShow}
 
+                </div>
               </div>
        </div>
       );
