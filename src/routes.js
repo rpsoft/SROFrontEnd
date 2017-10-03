@@ -46,10 +46,10 @@ var routes = (history) => (
 
         <Route path="search" component={BrowserContainer}>
           <IndexRoute component={Search} />
-          <Route path={urlBase + "search(/:query)(/:page)"} component={Search} ></Route>
-          <Route path={urlBase + "search(/:query)(/:page)(/:pageLimit)"} component={Search} ></Route>
-          <Route path={urlBase + "search(/:query)(/:page)(/:pageLimit)(/:sortField)"} component={Search} ></Route>
-          <Route path={urlBase + "search(/:query)(/:page)(/:pageLimit)(/:sortField)(/:direction)"} component={Search} ></Route>
+          <Route path={urlBase + "search"} component={Search} ></Route>
+          <Route path={urlBase + "search(/:page)(/:pageLimit)"} component={Search} ></Route>
+          <Route path={urlBase + "search(/:page)(/:pageLimit)(/:sortField)"} component={Search} ></Route>
+          <Route path={urlBase + "search(/:page)(/:pageLimit)(/:sortField)(/:direction)"} component={Search} ></Route>
         </Route>
 
         <Route path="project" component={BrowserContainer}>

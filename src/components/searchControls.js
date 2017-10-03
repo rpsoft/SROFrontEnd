@@ -43,9 +43,14 @@ class SearchControls extends Component {
 
     constructor(props) {
       super()
-
-      this.state = { query : ""  }
-
+      //debugger
+      if ( props.location.query && props.location.query.query && props.location.query.query.length > 0){
+        //debugger
+        this.state = { query : props.location.query.query , enabled: false}
+        this.handleAdvancedSearchButton(props); props.changeQuery(props.location.query.query)
+      } else {
+        this.state = { query : "", enabled: false}
+      }
     }
 
 
@@ -74,27 +79,34 @@ class SearchControls extends Component {
       return fetch.objectToGetVariables(adVar)
     }
 
-    handleAdvancedSearchButton () {
+    handleAdvancedSearchButton (props) {
       var advSearch = {query: this.state.query}
 
-      var url;
-      if ( advSearch.query ){
-        url = urlUtils.formatUrl("search"
+      // var url;
+      // if ( advSearch.query && advSearch.query.length > 0 ){
+
+      var  url = urlUtils.formatUrl("search"
                                         ,this.state.currentPage ? this.state.currentPage : 1
                                         ,this.state.pageLimit ? this.state.pageLimit : 20
                                         ,this.state.sorting
                                         ,advSearch);
 
-      } else {
-        url = "/search"
-      }
+      // } else {
+      //   url = "/search"
+      // }
 
       console.log("GOTO gfdgfds: "+url);
-      this.props.goToUrl(url);
+
+      if ( props ){
+        props.goToUrl(url);
+      } else {
+        this.props.goToUrl(url);
+      }
 
     }
 
     handleToggleAdvancedSearch () {
+      // this.setState({enabled: this.state.enabled ? false : true})
       this.props.toggleAdvancedSearch()
       this.handleAdvancedSearchButton()
     }
@@ -105,7 +117,7 @@ class SearchControls extends Component {
       let standardSearch = <span><span>Search text:</span>
                             <TextField
                               id='query'
-                              hintText='Type here your search'
+                              hintText=''
                               style={{width: 200,marginLeft:5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value)}}
@@ -117,8 +129,9 @@ class SearchControls extends Component {
 
           <span style={{paddingLeft:10, width:500, height: 40, display: "inline-block"}}>
 
-            <RaisedButton label='Advanced options'
-                          style={{float:"right",marginTop:5,marginRight:5,height:37}}
+            <RaisedButton label='Advanced'
+                          backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
+                          style={{float:"right",marginTop:5,height:37}}
                           onClick={ () => { this.handleToggleAdvancedSearch() }
                           }/>
 

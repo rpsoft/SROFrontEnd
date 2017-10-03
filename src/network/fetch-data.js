@@ -78,7 +78,7 @@ export default class fetchData {
   async getEntriesAdvancedSearch(args,page,limit,sortField,direction,filters) {
 
     var preparedQuery = this.objectToGetVariables(args)
-
+    console.log(preparedQuery)
       preparedQuery = urlBase + "advSearch?"+preparedQuery
                                             +"&page="+page
                                             +"&limit="+limit

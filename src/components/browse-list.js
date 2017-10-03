@@ -59,6 +59,7 @@ class BrowseList extends Component {
         linkRoot: props.linkRoot,
         sorting: props.sorting,
         advSearchParameters : advSearch,
+        loading : props.loading,
       }
 
       for ( var f in filters){
@@ -92,13 +93,17 @@ class BrowseList extends Component {
           sorting: next.sorting,
           advSearchParameters : advSearch,
           toggleFilter : next.toggleFilter,
+          loading : next.loading,
         }
+
+        // if ( newState.advSearchParameters )
 
         for ( var f in filters){
           newState["filter_"+filters[f]] = true
         }
         // debugger
       this.setState(newState);
+      // console.log(JSON.stringify(newState))
     }
 
      processEntriesFromXML (xmlcontent) {
@@ -156,16 +161,20 @@ class BrowseList extends Component {
       var resultsToShow ;
 
 
-      if ( !this.state.allContent || this.state.loading){
-
-        resultsToShow = this.state.advSearchParameters && this.state.advSearchParameters.query && this.state.advSearchParameters.query.length > 0 ? <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div> : <div>No results to show / Have you entered a query?</div>
+      if ( this.state.loading ){
+        resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
       } else {
-      
-        resultsToShow = <span>
-                        <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
-                        {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
-                        <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
-                        </span>
+
+        if (!this.state.allContent) {
+          resultsToShow = <span> No results to show yet </span>
+        } else {
+
+          resultsToShow = <span>
+                          <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+                          {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
+                          <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+                          </span>
+        }
       }
 
       let sortLinkStyle = {marginRight:10}

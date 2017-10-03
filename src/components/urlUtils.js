@@ -29,7 +29,7 @@ var urlUtils = (function() {
   }
 
   var formatUrl = function(linkRoot,page,entriesPerPage,sorting,params) {
-    var url = "/"+linkRoot + (params && params.query ? "/"+params.query : "")
+    var url = "/"+linkRoot
               +"/"+page+"/"+entriesPerPage
               + (sorting ? "/"+(sorting.sortField ? sorting.sortField : "date")+"/"+(sorting.direction ? sorting.direction : "ascending") : "")+prepareURLVariables(params)
     return url;

@@ -87,7 +87,7 @@ class CommonView extends Component {
             onRequestClose={this.handleRequestClose}
           >
             <Menu>
-              <MenuItem value={1} primaryText="Browse" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
+              <MenuItem value={1} primaryText="All" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
               {/* <MenuItem value={2} primaryText="Copies" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/> */}
               <MenuItem value={3} primaryText="Names" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
               <MenuItem value={4} primaryText="By Date" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
@@ -133,7 +133,7 @@ class CommonView extends Component {
             // linkRoot={"browser"}
             changeQuery = { this.changeQuery }
             toggleAdvancedSearch = { this.toggleAdvancedSearch }
-            routeParams={{query:"hello"}}
+            routeParams={{query:""}}
             location={this.props.location}
           />
 
