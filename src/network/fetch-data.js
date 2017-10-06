@@ -85,7 +85,7 @@ export default class fetchData {
                                             + ( sortField ? "&sortField="+sortField : "" )
                                             + ( direction ? "&direction="+direction : "" )
                                             + ((filters && filters.length > 0 ) ? "&filters="+JSON.stringify(filters) : "")
-     console.log(preparedQuery)
+    // console.log(preparedQuery)
 
     return await this.getGeneric( preparedQuery  )
   }

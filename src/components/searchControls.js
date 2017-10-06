@@ -70,6 +70,7 @@ class SearchControls extends Component {
 
 
       this.setState({query: value})
+      this.props.changeQuery(value)
     //  console.log(JSON.stringify(this.state.advancedSearch))
     }
 

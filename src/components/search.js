@@ -154,6 +154,7 @@ class Search extends Component {
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
       var query = props.query
 
+
       var advSearch = this.state.advancedSearch
       advSearch.query = query;
 
@@ -162,12 +163,15 @@ class Search extends Component {
       var anyActive = false;
 
       for( var k in advSearch ){
-        if ( advSearch[k] && advSearch[k].length > 0){
+
+        if ( advSearch[k] && JSON.stringify(advSearch[k]).length > 0){
           anyActive = true;
           break;
         }
       }
 
+    //  console.log(anyActive)
+      //debugger
       if(!anyActive){
         this.setState({loading : false})
         return;
@@ -175,9 +179,9 @@ class Search extends Component {
 
       console.log(JSON.stringify(advSearch))
 
-      console.log(JSON.stringify(filters))
+    //  console.log("YEAH: "+JSON.stringify(filters))
 
-      var readyData = this.state.advancedSearch.enabled ? this.state.advancedSearch : {query: this.state.advancedSearch.query}
+      var readyData = this.state.advancedSearch
 
       var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
       var ast = XmlReader.parseSync(data);
