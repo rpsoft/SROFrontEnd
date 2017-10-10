@@ -125,7 +125,8 @@ class SearchControls extends Component {
 
             <RaisedButton label='Advanced'
                           backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
-                          style={{float:"right",marginTop:5,height:37}}
+                          style={{float:"right",paddingTop:5}}
+                          className="popover-content"
                           onClick={ () => { this.handleToggleAdvancedSearch() }
                           }/>
 
