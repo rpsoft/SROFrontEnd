@@ -8,6 +8,8 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 
 import {URL_BASE} from '../links'
 
+import Bootstrap from '../../assets/bootstrap.css';
+
 import RaisedButton from 'material-ui/RaisedButton';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
@@ -70,18 +72,18 @@ class CommonView extends Component {
 
     return <div><Card style={{ ...bodyStyle, minHeight:"92vh"}}>
         <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20, color:"#fff", backgroundImage: `url(${"assets/TitlebarOP.png"})`}}><span>Stationers' Register Online</span></Card>
-        <Card style={{paddingBottom:5,paddingLeft:5}}>
+        <Card style={{paddingBottom:5,paddingLeft:5, paddingTop:5}}>
           <Link to={'/'} style={buttonStyle}>
-            <RaisedButton label="Home" />
+            <RaisedButton className="btn btn-default" label="Home" />
           </Link>
 
 
-          <RaisedButton
+          <RaisedButton className="btn btn-default"
           onClick={(event) => {this.handleTouchTap(event,"open") }}
           label={<span>{this.state.navigationOption} <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
           />
-          <Popover
+          <Popover className="popover-content"
             open={this.state.open}
             anchorEl={this.state.anchorEl}
             anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -97,7 +99,7 @@ class CommonView extends Component {
             </Menu>
           </Popover>
 
-          <RaisedButton
+          <RaisedButton className="btn btn-default"
           onClick={(event) => {this.handleTouchTap(event,"open2")}}
           label={<span>{this.state.navigationOption2} <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
@@ -127,7 +129,7 @@ class CommonView extends Component {
           </Popover>
 
 
-          <SearchControls
+          <SearchControls 
             // allContent={this.state.allContent}
             // pagesAvailable={this.state.pagesAvailable}
             // pageLimit={this.state.pageLimit}
