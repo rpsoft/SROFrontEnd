@@ -42,7 +42,20 @@ class Browse extends Component {
     }
 
     async componentWillReceiveProps(next) {
-        this.loadPageFromProps(next)
+
+      var advSearch = this.state.advancedSearch
+      for( var k in advSearch ){
+        if ( k == "enabled" || k == "query"){
+          continue
+        }
+        if ( advSearch[k] && JSON.stringify(advSearch[k]).length > 0){
+          anyActive = true;
+          break;
+        }
+      }
+
+
+      this.loadPageFromProps(next)
     }
 
     async componentWillMount() {
@@ -56,7 +69,10 @@ class Browse extends Component {
       var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
       var xmlField = props.params.sortField
       var direction = props.params.direction ? props.params.direction : 'ascending'
+
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
+
+
 
 
       this.setState({allContent : null})
@@ -110,10 +126,8 @@ class Browse extends Component {
 
 
       return (
-        <div style={{  height:"100%",minHeight:"1000px"}}>
-          {/* {orderingBar} */}
+        <div style={{ marginTop:10, height:"100%",minHeight:"1000px"}}>
           {browseListResults}
-
        </div>
       );
     }

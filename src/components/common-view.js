@@ -69,7 +69,7 @@ class CommonView extends Component {
 
 
     return <div><Card style={{ ...bodyStyle, minHeight:"92vh"}}>
-        <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20, color:"#fff", backgroundImage: `url(${"assets/TitlebarOP.png"})`}}><span>Stationers' Register Online</span></Card>
+        <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20, color:"#fff", backgroundImage: `url(${"/assets/TitlebarOP.png"})`}}><span>Stationers' Register Online</span></Card>
         <Card style={{paddingBottom:5,paddingLeft:5, paddingTop:5}}>
           <Link to={'/'} style={buttonStyle}>
             <RaisedButton className="btn btn-default" label="Home" />

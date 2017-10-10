@@ -70,9 +70,12 @@ class SearchControls extends Component {
     // }
 
     handleQueryElement = (name,value,preventUpdate) => {
-    //  debugger
+
       this.setState({query: value})
-      this.props.changeQuery({value: value, preventUpdate: preventUpdate})
+
+      if ( this.props.location.pathname.indexOf("/search/") > -1 ){
+        this.props.changeQuery({value: value, preventUpdate: preventUpdate})
+      }
     //  console.log(JSON.stringify(this.state.advancedSearch))
     }
 
@@ -82,9 +85,9 @@ class SearchControls extends Component {
       return fetch.objectToGetVariables(adVar)
     }
 
-    switchToAdvSearch (props) {
+    switchToSearch (props) {
 
-      if ( props.location.pathname.indexOf("/browser/") > -1 ){
+      if ( props.location.pathname.indexOf("/search/") < 0 ){
 
       var advSearch = {query: this.state.query.value}
 
@@ -102,7 +105,7 @@ class SearchControls extends Component {
     handleToggleAdvancedSearch () {
       // this.setState({enabled: this.state.enabled ? false : true})
       this.props.toggleAdvancedSearch()
-      this.switchToAdvSearch (this.props)
+      this.switchToSearch (this.props)
     }
 
 
@@ -115,7 +118,7 @@ class SearchControls extends Component {
                               style={{width: 200,marginLeft:5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
-                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){ this.handleQueryElement("query",this.state.query,false); this.switchToAdvSearch (this.props); }}}
+                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){ this.handleQueryElement("query",this.state.query,false); this.switchToSearch (this.props); }}}
                             /></span>
 
       return (

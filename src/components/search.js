@@ -156,7 +156,7 @@ class Search extends Component {
       advSearch.query = query;
 
       advSearch.enabled =   props.advancedSearchEnabled
-  
+
       if ( props.query && props.query.value.length > 0 && props.query.preventUpdate ){
         this.setState({advancedSearch: advSearch})
         return {};
@@ -458,7 +458,7 @@ class Search extends Component {
       return (
         <div style={{ padding:0, height:'100%'}}>
 
-          <Card style={{marginTop:10,marginBottom:10,paddingLeft:10}}>
+          <Card style={{marginTop:10, marginBottom: this.state.advancedSearch.enabled ? 10 : 0,paddingLeft:10}}>
 
             {/* <RaisedButton label='Advanced options'
                           style={{float:"right",marginTop:10,marginRight:5,height:30}}

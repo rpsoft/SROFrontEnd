@@ -192,21 +192,44 @@ class BrowseList extends Component {
       this.props.goToUrl(url);
     }
 
+
+
     render() {
-      var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
+      let loadingStyle= {
+              display: '-webkit-flex',
+              display: 'flex',
+              WebkitFlex: '0 1 auto',
+              flex: '0 1 auto',
+              WebkitFlexDirection: 'column',
+              flexDirection: 'column',
+              WebkitFlexGrow: 1,
+              flexGrow: 1,
+              WebkitFlexShrink: 0,
+              flexShrink: 0,
+              WebkitFlexBasis: '25%',
+              flexBasis: '25%',
+              maxWidth: '25%',
+              height: '200px',
+              width: '400px',
+              WebkitAlignItems: 'center',
+              alignItems: 'center',
+              WebkitJustifyContent: 'center',
+              justifyContent: 'center'
+          }
+      var loadingIndicator = (<div style={loadingStyle}><Halogen.MoonLoader color={"blue"} margin="4px"/><span style={{fontWeight:"bold"}}>loading...</span></div>)
 
       var resultsToShow ;
 
 
       if ( this.state.loading ){
-        resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}<br/> <span style={{fontWeight:"bold"}}>loading... please wait</span></div>
+        resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
       } else {
 
         if (!this.state.allContent) {
           resultsToShow = <span> No results to show yet </span>
         } else {
 
-          resultsToShow = <span>
+          resultsToShow = <span >
                           <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
                           {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
                           <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
@@ -234,7 +257,7 @@ class BrowseList extends Component {
       //                   </Link>
       //                 </Card>
 
-    let orderingBar = <span style={{position: "absolute", float: "right", right: 0, top: -9}}>
+    let orderingBar = <span style={{position: "absolute", float: "right", right: 0, top: 0}}>
                           <SelectField
                           // floatingLabelText="Sorting options"
                           value={this.state.sortingFieldControl}
@@ -253,10 +276,9 @@ class BrowseList extends Component {
       return (
 
 
-        <div style={{height:"100%", width:"100%",position: "relative"}}>
+        <div style={{height:"100%", width:"100%",position: "relative",display:"flex"}}>
 
               {orderingBar}
-              <div style={{display:"flex", flexDirection: "row"}}>
 
                 <div style={{backgroundColor: "#dcdcdc", padding:15,paddingRight:5, width:"23%"}}>
 
@@ -297,12 +319,12 @@ class BrowseList extends Component {
                       />) }
 
                 </div>
-                <div style={{ padding:8, height:"100%", minHeight:1000, width:"75%",paddingTop:30}}>
+                <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:30}}>
 
                   {resultsToShow}
 
                 </div>
-              </div>
+
 
        </div>
       );
