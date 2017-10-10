@@ -250,6 +250,7 @@ class BrowseList extends Component {
 
                 </div>
               </div>
+            </div>
        </div>
       );
     }
