@@ -206,7 +206,7 @@ class BrowseList extends Component {
               {orderingBar}
               <div style={{display:"flex", flexDirection: "row"}}>
 
-                <div style={{backgroundColor: "#dcdcdc", padding:15,paddingRight:5, width:"18%"}}>
+                <div style={{backgroundColor: "#dcdcdc", padding:15,paddingRight:5, width:"23%"}}>
 
                     <h4>Date:</h4>
                     {["1557-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"].map((item,i) => <Checkbox label={item}
@@ -244,13 +244,14 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
                       />) }
 
-              <div style={{ padding:8, height:"100%", minHeight:"1000px", width:"75%", marginLeft: "23%",paddingTop:0}}>
+                </div>
+                <div style={{ padding:8, height:"100%", minHeight:"1000px", width:"75%",paddingTop:0}}>
 
                   {resultsToShow}
 
                 </div>
               </div>
-            </div>
+
        </div>
       );
     }
