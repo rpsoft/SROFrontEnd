@@ -29,6 +29,7 @@ var urlUtils = (function() {
   }
 
   var formatUrl = function(linkRoot,page,entriesPerPage,sorting,params) {
+
     var url = "/"+linkRoot
               +"/"+page
               +"/"+(entriesPerPage ? entriesPerPage : 10)
