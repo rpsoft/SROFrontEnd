@@ -36,7 +36,8 @@ class Browse extends Component {
       this.state = {
         isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
         linkRoot: "browser",
-        sorting:{sortField: "date", direction: "ascending"}
+        sorting:{sortField: "date", direction: "ascending"},
+        loading: false,
       };
     }
 
@@ -57,33 +58,25 @@ class Browse extends Component {
       var direction = props.params.direction ? props.params.direction : 'ascending'
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
 
-      // if(this.state.advancedSearch.query.length < 1){
-      //
-      //   return ;
-      // }
 
       this.setState({allContent : null})
       console.log(JSON.stringify(filters))
-      // here we distinguish between advanced and simple search
+
       var readyData = {query: ""}
 
-      var data;
-      if ( filters && filters.length > 0 ){
-        // debugger
-        data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
-      } else {
+      this.setState({loading : true})
 
-        data = await fetch.getAllEntriesPaged(currentPage, pageLimit, xmlField, direction);
-      }
+
+      var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
 
       var ast = XmlReader.parseSync(data);
       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
-    //  this.setState({loading : false})
 
       var advSearch = this.state.advancedSearch
 
-      this.setState({ sorting:{sortField: props.params.sortField,
+      this.setState({ loading : false,
+                      sorting:{sortField: props.params.sortField,
                       direction: direction},
                       allContent : data,
                       pagesAvailable : parseInt(pagesAvailable),
@@ -94,32 +87,6 @@ class Browse extends Component {
 
      }
 
-    //  processEntriesFromXML (xmlcontent) {
-    //    var ast = XmlReader.parseSync(xmlcontent);
-    //    var xq = xmlQuery(ast);
-    //    var length = xmlQuery(ast).find('entry').length
-    //    var toReturn = []
-    //    for ( var i = 0; i < length; i++){
-    //     //  for ( var j = 0; j < length; j++){
-    //     //    var itemsLength = xmlQuery(ast).find('entry').eq(i).find('item').length
-    //     //    console.log(xmlQuery(ast).find('entry').eq(i).find('item').eq(j).text())
-    //     //
-    //     //  }
-     //
-    //     // Awesome XML searching and use of JSX to build the nodes ;)
-    //      toReturn.push(<EntryPreview key={i} entryData={xmlQuery(ast).find('entry').eq(i).find('item').text()}></EntryPreview>)
-    //    }
-    //   return toReturn;
-    //  }
-    //
-    // toggleFilters = (filters) => {
-    //   // this.setState({filters: filters})
-    // //  this.setState({isLoading : true})
-    // //  this.loadPageFromProps(this.props,filters)
-    //   //this.setState({isLoading : false})
-
-
-    // }
 
     render() {
       var loadingIndicator = (<Halogen.MoonLoader color={"blue"}/>)
@@ -138,6 +105,7 @@ class Browse extends Component {
                             advSearchParameters={this.state.advancedSearch}
                             //toggleFilter={(filter) => { this.toggleFilters(filter) }}
                             location={this.props.location}
+                            loading= {this.state.loading }
                           />
 
 

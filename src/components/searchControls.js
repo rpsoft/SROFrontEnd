@@ -61,7 +61,7 @@ class SearchControls extends Component {
     componentWillMount() {
       var props = this.props
       if ( props.location.query && props.location.query.query && props.location.query.query.length > 0){
-        props.changeQuery(props.location.query.query)
+          props.changeQuery({value: props.location.query.query, preventUpdate: false} )
       }
      }
     //

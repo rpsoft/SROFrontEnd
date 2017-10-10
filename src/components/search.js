@@ -43,7 +43,7 @@ class Search extends Component {
 
     constructor(props) {
       super()
-      var advSearch = {enabled : props.advancedSearchEnabled, query : props.query}
+      var advSearch = {enabled : props.advancedSearchEnabled, query : props.query ? props.query.value : ""}
 
       //advSearch.enabled = true
 
@@ -81,7 +81,8 @@ class Search extends Component {
 
 
     async componentWillReceiveProps(next) {
-        this.loadPageFromProps(next)
+
+          this.loadPageFromProps(next)
     }
 
     async componentWillMount() {
@@ -97,7 +98,6 @@ class Search extends Component {
     //  adSearch.enabled = true
       adSearch[name] = value
       this.setState({advancedSearch: adSearch})
-    //  console.log(JSON.stringify(this.state.advancedSearch))
     }
 
     handleDateQueryElement = (name,value) => {
@@ -133,16 +133,16 @@ class Search extends Component {
       console.log(JSON.stringify(this.state.advancedSearch))
     }
 
-    toggleAdvancedSearch = () => {
-      var adSearch = this.state.advancedSearch
-      if ( adSearch.enabled ){
-        adSearch.enabled = false
-      } else {
-        adSearch.enabled = true;
-      }
-      this.setState({advancedSearch: adSearch})
-
-    }
+    // toggleAdvancedSearch = () => {
+    //   var adSearch = this.state.advancedSearch
+    //   if ( adSearch.enabled ){
+    //     adSearch.enabled = false
+    //   } else {
+    //     adSearch.enabled = true;
+    //   }
+    //   this.setState({advancedSearch: adSearch})
+    //
+    // }
 
     async handleAdvancedSearch (pps,filters) {
       let fetch = new fetchData();
@@ -152,26 +152,35 @@ class Search extends Component {
       var xmlField = props.params.sortField ? props.params.sortField : 'date'
       var direction = props.params.direction ? props.params.direction : 'ascending'
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
-      var query = props.query
+
+      var query = props.query ? props.query.value : ""
 
 
       var advSearch = this.state.advancedSearch
       advSearch.query = query;
+
+
+      if ( props.query && props.query.preventUpdate ){
+        this.setState({advancedSearch: advSearch})
+        return {};
+      }
+
 
       this.setState({loading : true, query: query, advancedSearch: advSearch, allContent : null})
 
       var anyActive = false;
 
       for( var k in advSearch ){
-
+        if ( k == "enabled"){
+          continue
+        }
         if ( advSearch[k] && JSON.stringify(advSearch[k]).length > 0){
           anyActive = true;
           break;
         }
       }
 
-    //  console.log(anyActive)
-      //debugger
+
       if(!anyActive){
         this.setState({loading : false})
         return;
@@ -179,7 +188,6 @@ class Search extends Component {
 
       console.log(JSON.stringify(advSearch))
 
-    //  console.log("YEAH: "+JSON.stringify(filters))
 
       var readyData = this.state.advancedSearch
 

@@ -30,7 +30,8 @@ var urlUtils = (function() {
 
   var formatUrl = function(linkRoot,page,entriesPerPage,sorting,params) {
     var url = "/"+linkRoot
-              +"/"+page+"/"+entriesPerPage
+              +"/"+page
+              +"/"+(entriesPerPage ? entriesPerPage : 10)
               + (sorting ? "/"+(sorting.sortField ? sorting.sortField : "date")+"/"+(sorting.direction ? sorting.direction : "ascending") : "")+prepareURLVariables(params)
     return url;
   };
