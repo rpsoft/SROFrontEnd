@@ -216,7 +216,7 @@ class BrowseList extends Component {
               WebkitJustifyContent: 'center',
               justifyContent: 'center'
           }
-      var loadingIndicator = (<div style={loadingStyle}><Halogen.MoonLoader color={"blue"} margin="4px"/><span style={{fontWeight:"bold"}}>loading...</span></div>)
+      var loadingIndicator = (<div style={loadingStyle}><Halogen.MoonLoader color={"#5c626d"} margin="4px"/><span style={{fontWeight:"bold"}}>loading...</span></div>)
 
       var resultsToShow ;
 
