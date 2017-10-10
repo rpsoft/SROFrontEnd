@@ -30,8 +30,6 @@ class CommonView extends Component {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
-      navigationOption : "Browse",
-      navigationOption2 : "About",
     };
   }
 
@@ -80,7 +78,7 @@ class CommonView extends Component {
 
           <RaisedButton className="btn btn-default"
           onClick={(event) => {this.handleTouchTap(event,"open") }}
-          label={<span>{this.state.navigationOption} <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
+          label={<span>Browse <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
           />
           <Popover className="popover-content"
@@ -101,7 +99,7 @@ class CommonView extends Component {
 
           <RaisedButton className="btn btn-default"
           onClick={(event) => {this.handleTouchTap(event,"open2")}}
-          label={<span>{this.state.navigationOption2} <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
+          label={<span>About <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
           />
 
@@ -129,39 +127,14 @@ class CommonView extends Component {
           </Popover>
 
 
-          <SearchControls 
-            // allContent={this.state.allContent}
-            // pagesAvailable={this.state.pagesAvailable}
-            // pageLimit={this.state.pageLimit}
-            // currentPage={this.state.currentPage}
-            // linkRoot={"browser"}
+
+          <SearchControls
             changeQuery = { this.changeQuery }
             toggleAdvancedSearch = { this.toggleAdvancedSearch }
             routeParams={{query:""}}
             location={this.props.location}
           />
 
-          {/*
-                    <DropDownMenu
-                      style={{marginBottom:0, display: "inline-flex"}}
-                      // anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                      value={1}
-                      autoWidth={true}
-                    >
-                      {/* <Link to={'/browser/1'} style={buttonStyle}> */}
-                        {/* <MenuItem value={1} primaryText="Browse" />
-                      {/* </Link>
-                    </DropDownMenu>  */}
-
-          {/* <Link to={'/search'} style={buttonStyle}>
-            <RaisedButton label="Search" />
-          </Link> */}
-          {/* <Link to={'/project'} style={buttonStyle}>
-            <RaisedButton label="Project" />
-          </Link>
-          <Link to={'/about'} style={buttonStyle}>
-            <RaisedButton label="About" />
-          </Link> */}
         </Card>
 
         {React.cloneElement(this.props.children, { advancedSearchEnabled : this.state.advancedSearchEnabled, query : this.state.query })}

@@ -9,6 +9,8 @@ import { push } from 'react-router-redux'
 // Material UI imports
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 //URL relative references kept in one place.
 import { URL_CATEGORIES_LIST, URL_BASE_MULTIMEDIA_IMAGES} from '../links';
@@ -60,6 +62,7 @@ class BrowseList extends Component {
         sorting: props.sorting,
         advSearchParameters : advSearch,
         loading : props.loading,
+        sortingFieldControl : "volAsc", // default increasing ID or volument ascending order.
       }
 
       for ( var f in filters){
@@ -69,6 +72,40 @@ class BrowseList extends Component {
       this.state = newState;
 
     }
+
+    handleSortingChange = (event, index, value) => {
+
+      {/* <MenuItem value={{sortField: "date", direction: "ascending"}} primaryText="Date (earliest)" />
+      <MenuItem value={{sortField: "date", direction: "descending"}} primaryText="Date (latest)" />
+      <MenuItem value={{sortField: "volume", direction: "ascending"}} primaryText="Volume/page (Asc)" />
+      <MenuItem value={{sortField: "volume", direction: "descending"}} primaryText="Volume/page (Desc)" /> */}
+      var sorting
+      switch (value) {
+        case "dateAsc":
+          sorting ={sortField: "date", direction: "ascending"}
+          break;
+        case "dateDesc":
+          sorting ={sortField: "date", direction: "descending"}
+          break;
+        case "volAsc":
+          sorting ={sortField: "volume", direction: "ascending"}
+          break;
+        case "volDesc":
+          sorting ={sortField: "volume", direction: "descending"}
+          break;
+        default:
+
+      }
+
+      this.setState({sorting : sorting, sortingFieldControl : value})
+
+      var url = urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit,sorting, this.state.advSearchParameters)
+
+      console.log(url)
+      this.props.goToUrl(url)
+
+    }
+
 
     componentWillReceiveProps(next){
 
@@ -182,20 +219,35 @@ class BrowseList extends Component {
 
 
 
-      let orderingBar = <Card style={{ paddingTop:5, paddingLeft:5,paddingRight:5,textAlign:'center',marginBottom:5}}>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-                          <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-                          <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-                          <RaisedButton label='Volume/page (Asc)'  style={sortbuttonStyle}/>
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-                          <RaisedButton label='Volume/page (Desc)'  style={sortbuttonStyle}/>
-                        </Link>
-                      </Card>
+      // let orderingBar = <Card style={{ paddingTop:5, paddingLeft:5,paddingRight:5,textAlign:'center',marginBottom:5}}>
+      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+      //                     <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
+      //                   </Link>
+      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+      //                     <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
+      //                   </Link>
+      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+      //                     <RaisedButton label='Volume/page (Asc)'  style={sortbuttonStyle}/>
+      //                   </Link>
+      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
+      //                     <RaisedButton label='Volume/page (Desc)'  style={sortbuttonStyle}/>
+      //                   </Link>
+      //                 </Card>
+
+    let orderingBar = <span style={{position: "absolute", float: "right", right: 0, top: -9}}>
+                          <SelectField
+                          // floatingLabelText="Sorting options"
+                          value={this.state.sortingFieldControl}
+                          onChange={this.handleSortingChange}
+                          >
+                          <MenuItem value={"dateAsc"} primaryText="Date (earliest)" />
+                          <MenuItem value={"dateDesc"} primaryText="Date (latest)" />
+                          <MenuItem value={"volAsc"} primaryText="Volume/page (Asc)" />
+                          <MenuItem value={"volDesc"} primaryText="Volume/page (Desc)" />
+
+                          </SelectField>
+                  </span>
+
 
 
       return (
@@ -245,7 +297,7 @@ class BrowseList extends Component {
                       />) }
 
                 </div>
-                <div style={{ padding:8, height:"100%", minHeight:"1000px", width:"75%",paddingTop:0}}>
+                <div style={{ padding:8, height:"100%", minHeight:1000, width:"75%",paddingTop:30}}>
 
                   {resultsToShow}
 

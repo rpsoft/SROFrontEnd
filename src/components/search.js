@@ -45,8 +45,6 @@ class Search extends Component {
       super()
       var advSearch = {enabled : props.advancedSearchEnabled, query : props.query ? props.query.value : ""}
 
-      //advSearch.enabled = true
-
       if (Object.keys(props.location.query) ){
 
         for ( var k in props.location.query ){
@@ -72,16 +70,14 @@ class Search extends Component {
 
       newState.query = advSearch.query;
       newState.sorting = {sorting:{sortField: props.routeParams.sortField, direction: props.routeParams.direction ? props.routeParams.direction : "date"}}
-      //newState.pagesAvailable = parseInt(pagesAvailable),
-      newState.currentPage = parseInt(props.routeParams.page)
-      newState.pageLimit = parseInt(props.routeParams.pageLimit)
+      newState.currentPage = parseInt(props.routeParams.page) ? parseInt(props.routeParams.page) : 1
+      newState.pageLimit = parseInt(props.routeParams.pageLimit) ? parseInt(props.routeParams.pageLimit) : 20  // Entries per page limit.
 
       this.state = newState
     }
 
 
     async componentWillReceiveProps(next) {
-
           this.loadPageFromProps(next)
     }
 
@@ -159,12 +155,12 @@ class Search extends Component {
       var advSearch = this.state.advancedSearch
       advSearch.query = query;
 
-
-      if ( props.query && props.query.preventUpdate ){
+      advSearch.enabled =   props.advancedSearchEnabled
+  
+      if ( props.query && props.query.value.length > 0 && props.query.preventUpdate ){
         this.setState({advancedSearch: advSearch})
         return {};
       }
-
 
       this.setState({loading : true, query: query, advancedSearch: advSearch, allContent : null})
 
@@ -180,7 +176,6 @@ class Search extends Component {
         }
       }
 
-
       if(!anyActive){
         this.setState({loading : false})
         return;
@@ -195,11 +190,8 @@ class Search extends Component {
       var ast = XmlReader.parseSync(data);
       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
-      this.setState({loading : false})
-
-
-      //debugger
-      this.setState({ sorting:{sortField: props.params.sortField,
+      this.setState({ loading : false,
+                      sorting:{sortField: props.params.sortField,
                       direction: direction},
                       allContent : data,
                       pagesAvailable : parseInt(pagesAvailable),
@@ -207,9 +199,6 @@ class Search extends Component {
                       pageLimit: parseInt(pageLimit),
                       advancedSearch: advSearch,
                       linkRoot: 'search', })
-
-      //this.props.iradondequiero('/search/william/7/20/date/descending?query=william');
-      //store.dispatch(push('/search/william/7/20/date/descending?query=william'))
 
     }
 
@@ -253,8 +242,7 @@ class Search extends Component {
                                       ,this.state.currentPage ? this.state.currentPage : 1
                                       ,this.state.pageLimit ? this.state.pageLimit : 20
                                       ,this.state.sorting
-                                      ,this.state.advancedSearch);
-    //  console.log("GOTO: "+url);
+                                      ,this.state.advancedSearch)
       this.props.goToUrl(url);
     }
 
@@ -481,7 +469,7 @@ class Search extends Component {
               standardSearch
             } */}
             {
-              this.props.advancedSearchEnabled ? advancedSearch : <span></span>
+              this.state.advancedSearch.enabled ? advancedSearch : <span></span>
             }
 
           </Card>
