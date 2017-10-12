@@ -113,6 +113,25 @@ class BrowseNames extends Component {
         allLetters.push (String.fromCharCode(i))
       }
 
+      let results = !letter
+
+          ? <div style={{textAlign:"center",
+                         marginTop:100, height: 630,
+                         fontSize:25,color:"rgba(128, 128, 128, 0.60)"}}>
+                         No letter selected. Click on the letters above.
+            </div>
+          : <div style={{height:730, overflowY:"scroll",
+                         padding: 20, marginTop:2,
+                         borderBottom: "3px solid rgba(128, 128, 128, 0.24)"}}>
+            { all.filter( (person) => (person.s[0] ? (person.s[0] == letter) : person.f[0] == letter ))
+              .map((v,i) => <div key={i} style={{marginBottom:10}}>
+                                <Link to={"/search/1/20?person="+this.removeVan(v.s || v.f)}>
+                                  <span>{v.s ? this.cf(v.s)+ (v.f ? "," :"") : ""}</span>
+                                  <span style={{marginLeft:2}}>{this.cf(v.f)}</span>
+                                </Link>
+                              </div>)}
+          </div>
+
       return (
         <div style={{ marginTop:10, height:"98%"}}>
 
@@ -121,16 +140,10 @@ class BrowseNames extends Component {
                 <Card><span style={{fontSize:20,display:"flex",paddingLeft:20,paddingBottom:5}}>{allLetters.map( (v,i) => <span key={i} style={{flexGrow:1}}><Link to={"/browser/names/"+v}>{v}</Link>  </span>)}</span></Card>
 
 
-                <div style={{height:730, overflowY:"scroll",padding: 20, marginTop:2, borderBottom: "3px solid rgba(128, 128, 128, 0.24)"}}>
-                  { all.filter( (person) => (person.s[0] ? (person.s[0] == letter) : person.f[0] == letter )
+                { results }
 
-                ).map((v,i) => <div key={i} style={{marginBottom:10}}>
-                                  <Link to={"/search/1/20?person="+this.removeVan(v.s || v.f)}>
-                                    <span>{v.s ? this.cf(v.s)+ (v.f ? "," :"") : ""}</span>
-                                    <span style={{marginLeft:2}}>{this.cf(v.f)}</span>
-                                  </Link>
-                                </div>)}
-                </div>
+
+
                 {/* <Table
                     height={"700px"}
                     wrapperStyle={{maxHeight:1000,overflowX:"hidden"}}
