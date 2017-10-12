@@ -167,14 +167,17 @@ class Search extends Component {
       var anyActive = false;
 
       for( var k in advSearch ){
-        if ( k == "enabled"){
+        if ( k == "enabled" || k == "filters"){
           continue
         }
+
         if ( advSearch[k] && JSON.stringify(advSearch[k]).length > 0){
           anyActive = true;
           break;
         }
       }
+
+      anyActive = anyActive || (filters && filters.length > 0)
 
       if(!anyActive){
         this.setState({loading : false})
@@ -182,7 +185,6 @@ class Search extends Component {
       }
 
       console.log(JSON.stringify(advSearch))
-
 
       var readyData = this.state.advancedSearch
 
