@@ -19,6 +19,7 @@ import {
   StaticPage,
   BrowserContainer,
   Browse,
+  BrowseNames,
   Search,
   Entry,
 } from './components/'
@@ -39,6 +40,8 @@ var routes = (history) => (
 
         <Route path="browser" component={BrowserContainer}>
           <Route path={urlBase + "browser"} component={Browse} ></Route>
+          <Route path={urlBase + "browser/names(/:letter)"} component={BrowseNames} ></Route>
+          {/* <Route path={urlBase + "browser/names/:letter"} component={BrowseNames} ></Route> */}
           <Route path={urlBase + "browser/:page(/:pageLimit)"} component={Browse} ></Route>
           <Route path={urlBase + "browser/:page(/:pageLimit)(/:sortField)"} component={Browse} ></Route>
           <Route path={urlBase + "browser/:page(/:pageLimit)(/:sortField)(/:direction)"} component={Browse} ></Route>
