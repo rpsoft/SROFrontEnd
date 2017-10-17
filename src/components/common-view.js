@@ -67,9 +67,10 @@ class CommonView extends Component {
     let bodyStyle = {padding:10, maxWidth:960,minWidth:540,marginLeft:"auto",marginRight:"auto"}
     let bgStyle = {height: 50,marginLeft:5, backgroundColor: "#002147"}
 
+    let dividerFormat = {width:"90%",marginLeft:"5%"}
 
-    return <div><Card style={{ ...bodyStyle, minHeight:"92vh"}}>
-        <Card style={{marginTop:5,marginBottom:10,padding:15,fontSize:20, color:"#fff", backgroundImage: `url(${"/assets/TitlebarOP.png"})`}}><span>Stationers' Register Online</span></Card>
+    return <div><Card style={{ ...bodyStyle, minHeight:"91vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+        <div style={{marginTop:5,marginBottom:10,padding:15,marginLeft:-10,marginRight:-10,marginTop:-10,height:100,fontSize:30, color:"#fff", backgroundImage: `url("/assets/TitlebarOP.png")`,textShadow: "2px 2px #4b474c"}}><span>Stationers' Register Online</span></div>
         <Card style={{paddingBottom:5,paddingLeft:5, paddingTop:5}}>
           <Link to={'/'} style={buttonStyle}>
             <RaisedButton className="btn btn-default" label="Home" />
@@ -92,8 +93,8 @@ class CommonView extends Component {
               <MenuItem value={1} primaryText="All" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
               {/* <MenuItem value={2} primaryText="Copies" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/> */}
               <MenuItem value={3} primaryText="Names" onClick={ (e) => {this.props.goToUrl("/browser/names"); this.handleRequestClose()}}/>
-              <MenuItem value={4} primaryText="By Date" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
-              <MenuItem value={5} primaryText="By Volume" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
+              {/* <MenuItem value={4} primaryText="By Date" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
+              <MenuItem value={5} primaryText="By Volume" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/> */}
             </Menu>
           </Popover>
 
@@ -116,7 +117,8 @@ class CommonView extends Component {
               <MenuItem value={3} primaryText="- The Stationers' Company" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
               <MenuItem value={4} primaryText="- History of Copyright" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
               <MenuItem value={5} primaryText="- Bibliography" onClick={ (e) => {this.props.goToUrl("/about?g=bibliography"); this.handleRequestClose(); }} />
-              <Divider /><Divider /><Divider />
+              <Divider style={dividerFormat}/>
+              {/* <Divider style={dividerFormat} /><Divider style={dividerFormat} /> */}
               <MenuItem value={6} primaryText="Project" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
               <MenuItem value={7} primaryText="- History" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
               <MenuItem value={8} primaryText="- Editorial" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
@@ -141,7 +143,7 @@ class CommonView extends Component {
 
      </Card>
 
-       <Card style={{ ...bodyStyle, marginTop:10, marginBottom:10, textAlign:"center"}}>
+       <Card style={{ ...bodyStyle, marginTop:10, marginBottom:10, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
        <a href="http://www.bathspa.ac.uk" target="_blank">
          <img src="https://thehub.bathspa.ac.uk/MediaFolder/Marketing/branding/logos/bsu-logo.png" style={logoStyle} />
        </a>

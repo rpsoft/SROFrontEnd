@@ -34,8 +34,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 // Date picker
-import 'react-date-picker/index.css'
-import { DateField, DatePicker } from 'react-date-picker'
+// import 'react-date-picker/index.css'
+// import { DateField, DatePicker } from 'react-date-picker'
 
 import urlUtils from './urlUtils'
 
@@ -71,7 +71,7 @@ class Search extends Component {
       newState.query = advSearch.query;
       newState.sorting = {sorting:{sortField: props.routeParams.sortField, direction: props.routeParams.direction ? props.routeParams.direction : "date"}}
       newState.currentPage = parseInt(props.routeParams.page) ? parseInt(props.routeParams.page) : 1
-      newState.pageLimit = parseInt(props.routeParams.pageLimit) ? parseInt(props.routeParams.pageLimit) : 20  // Entries per page limit.
+      newState.pageLimit = parseInt(props.routeParams.pageLimit) ? parseInt(props.routeParams.pageLimit) : 10  // Entries per page limit.
 
       this.state = newState
     }
@@ -144,7 +144,7 @@ class Search extends Component {
       let fetch = new fetchData();
       var props = pps ? pps : this.props
       var currentPage = props.params.page ? props.params.page : 1
-      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
+      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 10
       var xmlField = props.params.sortField ? props.params.sortField : 'date'
       var direction = props.params.direction ? props.params.direction : 'ascending'
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
@@ -226,7 +226,6 @@ class Search extends Component {
 
     clearAdvancedSearch () {
       var advSearch = {}
-
       var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"] //"copies",
 
       for (var i in allFields){
@@ -234,8 +233,15 @@ class Search extends Component {
       }
       advSearch.query = ""
       advSearch.enabled = true
-      debugger
-      this.setState({advancedSearch : advSearch})
+
+      this.setState({advancedSearch : advSearch,
+                      maxDate_day : "",
+                      maxDate_month : "",
+                      maxDate_year : "",
+                      minDate_day : "",
+                      minDate_month : "",
+                      minDate_year : ""
+                    })
     }
 
     handleAdvancedSearchButton () {
@@ -282,14 +288,7 @@ class Search extends Component {
             onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
             id='personName'
           /></span>
-        {/* <span style={advSearchFieldStyle}>Copies:handleDateQueryElement <TextField
-            hintText={'Text in titles within register entries'}
-            style={{width: 250}}
-            value = {this.state.advancedSearch.copies}
-            onChange={(event,value) => {this.handleQueryElement("copies",value)}}
-            onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
-            id='copies'
-          /></span> */}
+
         <span style={advSearchFieldStyle}>
             Min Date:
 
@@ -319,24 +318,6 @@ class Search extends Component {
                 onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
                 id='minDate_day'
               />
-
-
-            {/* <DateField
-               dateFormat="YYYY-MM-DD"
-               forceValidDate={true}
-               defaultValue={-15000000000000}
-               style={{marginLeft:5,marginRight:15}}
-               onChange={(dateString, { dateMoment, timestamp}) => {this.handleQueryElement("minDate",dateMoment)}}
-             >
-               <DatePicker
-                 navigation={true}
-                 locale="en"
-                 forceValidDate={true}
-                 weekNumbers={false}
-                 weekStartDay={0}
-                 id='dPickMin'
-               />
-            </DateField> */}
 
             Max Date:
             <TextField
@@ -368,23 +349,6 @@ class Search extends Component {
                 onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
                 id='maxDate_day'
               />
-
-            {/* <DateField
-              dateFormat="YYYY-MM-DD"
-              forceValidDate={true}
-              defaultValue={1000000000000}
-              style={{marginLeft:5,marginRight:5}}
-              onChange={(dateString, { dateMoment, timestamp}) => {this.handleQueryElement("maxDate",dateMoment)}}
-            >
-              <DatePicker
-                navigation={true}
-                locale="en"
-                forceValidDate={true}
-                weekNumbers={false}
-                weekStartDay={0}
-                id='dPickMax'
-              />
-            </DateField> */}
 
         </span>
         <span style={advSearchFieldStyle}>Fees (in pence): <TextField
@@ -421,40 +385,7 @@ class Search extends Component {
 
         <div style={{height:10}}></div>
       </span>
-      //
-      // let standardSearch = <span><span>Search text:</span>
-      //                       <TextField
-      //                         id='query'
-      //                         hintText='Type here your search terms'
-      //                         style={{width: 250,marginLeft:5}}
-      //                         value = {this.state.advancedSearch.query}
-      //                         onChange={(event,value) => {this.handleQueryElement("query",value)}}
-      //                         onKeyPress={(event,value,e) => { if (event.key === 'Enter'){this.handleAdvancedSearchButton()}}}
-      //                       /></span>
 
-      let orderingBar = <Card style={{paddingTop:5,paddingLeft:5,paddingRight:5,textAlign:'center'}}>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "ascending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Volume/page (Asc)'  style={sortbuttonStyle}/>
-                        </Link>
-                        <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advancedSearch)} style={sortLinkStyle}>
-                          <RaisedButton label='Volume/page (Desc)'  style={sortbuttonStyle}/>
-                        </Link>
-                        {/* <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
-                          <RaisedButton label='Copies (A-Z)'  style={sortbuttonStyle}/>
-                        </Link> */}
-                        {/* <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
-                          <RaisedButton label='Enterers (A-Z)'  style={sortbuttonStyle}/>
-                        </Link>
-                        <Link to={'/search/'+this.state.advancedSearch.query+'/'+this.state.currentPage+'/'+this.state.pageLimit+'/date/descending?'+this.prepareURLVariables()} style={sortLinkStyle}>
-                          <RaisedButton label='All names (A-Z)'  style={sortbuttonStyle}/>
-                        </Link> */}
-                      </Card>
 
 
       return (
@@ -462,21 +393,14 @@ class Search extends Component {
 
           <Card style={{marginTop:10, marginBottom: this.state.advancedSearch.enabled ? 10 : 0,paddingLeft:10}}>
 
-            {/* <RaisedButton label='Advanced options'
-                          style={{float:"right",marginTop:10,marginRight:5,height:30}}
-                          onClick={ () => { this.toggleAdvancedSearch() }
-                          }/> */}
 
-            {/* {
-              standardSearch
-            } */}
             {
               this.state.advancedSearch.enabled ? advancedSearch : <span></span>
             }
 
           </Card>
 
-          {/* {this.state.pagesAvailable ? orderingBar : <span></span>} */}
+
 
           {pageResults}
 

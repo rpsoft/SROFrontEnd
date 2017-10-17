@@ -34,8 +34,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 // Date picker
-import 'react-date-picker/index.css'
-import { DateField, DatePicker } from 'react-date-picker'
+// import 'react-date-picker/index.css'
+// import { DateField, DatePicker } from 'react-date-picker'
 
 import urlUtils from './urlUtils'
 
@@ -93,7 +93,7 @@ class SearchControls extends Component {
 
       var  url = urlUtils.formatUrl("search"
                                         ,this.state.currentPage ? this.state.currentPage : 1
-                                        ,this.state.pageLimit ? this.state.pageLimit : 20
+                                        ,this.state.pageLimit ? this.state.pageLimit : 10
                                         ,this.state.sorting
                                         ,advSearch);
 

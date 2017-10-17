@@ -67,7 +67,6 @@
     "react": "^15.6.2",
     "react-bootstrap": "^0.31.3",
     "react-css-modules": "^4.7.1",
-    "react-date-picker": "^5.3.28",
     "react-dom": "^15.6.2",
     "react-image-lightbox": "^3.5.0",
     "react-measure": "^1.4.7",

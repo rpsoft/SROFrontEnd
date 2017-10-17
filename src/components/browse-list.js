@@ -106,41 +106,44 @@ class BrowseList extends Component {
 
     }
 
+    handlePageLimitChange = (v,i,j,m) => {
+
+      this.setState({pageLimit : j})
+
+      var url = urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,j,this.state.sorting, this.state.advSearchParameters)
+
+      console.log(url)
+      this.props.goToUrl(url)
+    }
 
     componentWillReceiveProps(next){
 
-        var filters = next.location.query.filters ? next.location.query.filters.split(",") : [];
+      var filters = next.location.query.filters ? next.location.query.filters.split(",") : [];
+      var advSearch = next.advSearchParameters
 
+      if ( !advSearch ){
+        advSearch = {}
+      }
+      advSearch.filters = filters;
 
-        var advSearch = next.advSearchParameters
+      var newState = {
+        allContent : next.allContent,
+        pagesAvailable : next.pagesAvailable,
+        currentPage : next.currentPage,
+        pageLimit: next.pageLimit,
+        linkRoot: next.linkRoot,
+        sorting: next.sorting,
+        advSearchParameters : advSearch,
+        toggleFilter : next.toggleFilter,
+        loading : next.loading,
+      }
 
-        if ( !advSearch ){
-          advSearch = {}
-        }
+      for ( var f in filters){
+        newState["filter_"+filters[f]] = true
+      }
 
-        advSearch.filters = filters;
-
-
-        var newState = {
-          allContent : next.allContent,
-          pagesAvailable : next.pagesAvailable,
-          currentPage : next.currentPage,
-          pageLimit: next.pageLimit,
-          linkRoot: next.linkRoot,
-          sorting: next.sorting,
-          advSearchParameters : advSearch,
-          toggleFilter : next.toggleFilter,
-          loading : next.loading,
-        }
-
-        // if ( newState.advSearchParameters )
-
-        for ( var f in filters){
-          newState["filter_"+filters[f]] = true
-        }
-        // debugger
       this.setState(newState);
-      // console.log(JSON.stringify(newState))
+
     }
 
      processEntriesFromXML (xmlcontent) {
@@ -226,38 +229,21 @@ class BrowseList extends Component {
       } else {
 
         if (!this.state.allContent) {
-          resultsToShow = <span> No results to show yet </span>
+          resultsToShow = <Card style={{padding:10}}><span> No results to show yet </span></Card>
         } else {
 
           resultsToShow = <span >
-                          <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+                          <Card style={{marginBottom:10}}><Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/></Card>
                           {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
-                          <Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/>
+                          <Card style={{marginBottom:10}}><Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/></Card>
                           </span>
         }
       }
 
-      let sortLinkStyle = {marginRight:10}
-      let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
+    let sortLinkStyle = {marginRight:10}
+    let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
 
-
-
-      // let orderingBar = <Card style={{ paddingTop:5, paddingLeft:5,paddingRight:5,textAlign:'center',marginBottom:5}}>
-      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-      //                     <RaisedButton label='Date (earliest)' style={sortbuttonStyle} />
-      //                   </Link>
-      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "date", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-      //                     <RaisedButton label='Date (latest)' style={sortbuttonStyle} />
-      //                   </Link>
-      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "ascending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-      //                     <RaisedButton label='Volume/page (Asc)'  style={sortbuttonStyle}/>
-      //                   </Link>
-      //                   <Link to={urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit, {sortField: "volume", direction: "descending"}, this.state.advSearchParameters)} style={sortLinkStyle}>
-      //                     <RaisedButton label='Volume/page (Desc)'  style={sortbuttonStyle}/>
-      //                   </Link>
-      //                 </Card>
-
-    let orderingBar = <span style={{position: "absolute", float: "right", right: 0, top: 0}}>
+    let orderingBar = <Card style={{position: "absolute", float: "right", right: 75, top: 0,paddingLeft:10,paddingRight:5,height:50}}>
                           <SelectField
                           // floatingLabelText="Sorting options"
                           value={this.state.sortingFieldControl}
@@ -265,24 +251,36 @@ class BrowseList extends Component {
                           >
                           <MenuItem value={"dateAsc"} primaryText="Date (earliest)" />
                           <MenuItem value={"dateDesc"} primaryText="Date (latest)" />
-                          <MenuItem value={"volAsc"} primaryText="Volume/page (Asc)" />
-                          <MenuItem value={"volDesc"} primaryText="Volume/page (Desc)" />
+                          <MenuItem value={"volAsc"} primaryText="Register page (ascending)" />
+                          <MenuItem value={"volDesc"} primaryText="Register page (descending)" />
 
                           </SelectField>
-                  </span>
+                  </Card>
 
+      let numbering = [10,20,50,100]
+      let pageLimitBar = <Card style={{position: "absolute", float: "right", right: 0, top: 0,paddingLeft:10,paddingRight:5,height:50,width:70}}>
+                            <SelectField
+                            // floatingLabelText="Sorting options"
+                            style={{width:55}}
+                            value={this.state.pageLimit}
+                            onChange={this.handlePageLimitChange}
+                            >
+                            {numbering.map( (v,i) => <MenuItem key={i} value={v} primaryText={v} />)}
+                            </SelectField>
+                    </Card>
 
+      let filterTitleStyles = {fontWeight:"600",fontSize:16}
 
       return (
 
 
         <div style={{height:"100%", width:"100%",position: "relative",display:"flex"}}>
 
-              {orderingBar}
+              {orderingBar} {pageLimitBar}
 
-                <div style={{backgroundColor: "#dcdcdc", padding:15,paddingRight:5, width:"23%"}}>
+                <Card style={{ padding:15,paddingRight:5, width:"23%",borderRight:"",height:"auto",marginBottom:10, paddingLeft: 25}}>
 
-                    <h4>Date:</h4>
+                    <h4 style={filterTitleStyles}>Date:</h4>
                     {["1557-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -291,7 +289,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
                       />) }
 
-                    <h4>Volume:</h4>
+                    <h4 style={filterTitleStyles}>Volume:</h4>
                     {["A","B","C"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -300,7 +298,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
                       />) }
 
-                    <h4>Entry type:</h4>
+                    <h4 style={filterTitleStyles}>Entry type:</h4>
                     {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -309,7 +307,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
                       />) }
 
-                    <h4>Enterer Role:</h4>
+                    <h4 style={filterTitleStyles}>Enterer Role:</h4>
                     {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -318,8 +316,8 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
                       />) }
 
-                </div>
-                <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:30}}>
+                </Card>
+                <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:60}}>
 
                   {resultsToShow}
 

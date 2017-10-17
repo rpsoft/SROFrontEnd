@@ -66,7 +66,7 @@ class Browse extends Component {
       let fetch = new fetchData();
       var props = pps ? pps : this.props
       var currentPage = props.params.page ? props.params.page : 1
-      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 20
+      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 10
       var xmlField = props.params.sortField
       var direction = props.params.direction ? props.params.direction : 'ascending'
 
