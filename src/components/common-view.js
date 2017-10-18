@@ -69,8 +69,15 @@ class CommonView extends Component {
 
     let dividerFormat = {width:"90%",marginLeft:"5%"}
 
-    return <div><Card style={{ ...bodyStyle, minHeight:"91vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
-        <div style={{marginTop:5,marginBottom:10,padding:15,marginLeft:-10,marginRight:-10,marginTop:-10,height:100,fontSize:30, color:"#fff", backgroundImage: `url("/assets/TitlebarOP.png")`,textShadow: "2px 2px #4b474c"}}><span>Stationers' Register Online</span></div>
+    return <div><Card style={{ ...bodyStyle,height:114, backgroundImage: `url("/assets/bannerSRO2.png")`,backgroundSize:"100%",marginBottom:7}}>
+                  <span style={{fontSize:30, color:"#fff"}}>
+
+                  </span>
+                </Card>
+
+        <Card style={{ ...bodyStyle, minHeight:"91vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+
+        {/* <span>Stationers' Register Online</span> */}
         <Card style={{paddingBottom:5,paddingLeft:5, paddingTop:5}}>
           <Link to={'/'} style={buttonStyle}>
             <RaisedButton className="btn btn-default" label="Home" />
