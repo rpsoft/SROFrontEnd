@@ -59,9 +59,16 @@ export default class Entry extends Component {
    }
 
   getDownloadable (){
-    var downloadData = "data:application/octet-stream," + encodeURIComponent(this.state.preTranslation);
-    window.open(downloadData, 'SRO-document.xml');
+    var link = document.createElement('a');
+    link.download = "SRO-Entry-"+this.props.params.entryID+".xml";
+    link.href = 'data:,' + encodeURIComponent(this.state.preTranslation);
+    link.click();
+
+    // var downloadData = "data:application/octet-stream,"
+    // window.open(downloadData, 'SRO-document.xml');
   }
+
+
 
   render() {
 

@@ -35,7 +35,7 @@ import $ from 'jquery';
 
 import Checkbox from 'material-ui/Checkbox';
 
-
+import DownloadIcon from 'material-ui/svg-icons/file/file-download';
 
 class BrowseList extends Component {
 
@@ -195,7 +195,14 @@ class BrowseList extends Component {
       this.props.goToUrl(url);
     }
 
-
+    getDownloadable (){
+      var link = document.createElement('a');
+      link.download = "SRO-Page-"+this.state.currentPage+".xml";
+      link.href = 'data:,' + encodeURIComponent(this.state.allContent);
+      link.click();
+      // var downloadData = "data:application/octet-stream," + encodeURIComponent(this.state.allContent);
+      // window.open(downloadData, 'SRO-document.xml');
+    }
 
     render() {
       let loadingStyle= {
@@ -243,6 +250,9 @@ class BrowseList extends Component {
     let sortLinkStyle = {marginRight:10}
     let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
 
+
+
+
     let orderingBar = <Card style={{position: "absolute", float: "right", right: 75, top: 0,paddingLeft:10,paddingRight:5,height:50}}>
                           <SelectField
                           // floatingLabelText="Sorting options"
@@ -276,6 +286,12 @@ class BrowseList extends Component {
 
         <div style={{height:"100%", width:"100%",position: "relative",display:"flex"}}>
 
+              <RaisedButton
+                icon={<DownloadIcon/>}
+                label="Download Page"
+                style={{position: "absolute", float: "right", right: 350, top: 0,height:50}}
+                onClick={()=> {this.getDownloadable()}}
+                          />
               {orderingBar} {pageLimitBar}
 
                 <Card style={{ padding:15,paddingRight:5, width:"23%",borderRight:"",height:"auto",marginBottom:10, paddingLeft: 25}}>
