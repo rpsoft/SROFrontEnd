@@ -348,6 +348,7 @@ class BrowseList extends Component {
                         icon={<DownloadIcon/>}
                         label="Download Page"
                         style={{width:"100%",marginLeft:-10}}
+                        labelStyle={{fontSize:13}}
                         onClick={()=> {this.getDownloadable()}}
                                   />
                 </Card>

@@ -114,7 +114,7 @@ class SearchControls extends Component {
       let buttonColor = "#e6e6e6"
       let buttonHoverColor = "#b5b5b5"
 
-      let standardSearch = <span><span>Search text:</span>
+      let standardSearch = <span><span>Search:</span>
                             <TextField
                               id='query'
                               hintText=''
@@ -127,12 +127,12 @@ class SearchControls extends Component {
       return (
 
 
-          <span style={{paddingLeft:10, width:500, height: 40, display: "inline-block"}}>
+          <span style={{paddingLeft:10, width:480, height: 40, display: "inline-block"}}>
 
             <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}
                           label='Advanced'
                           // backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
-                          style={{float:"right",marginTop:5}}
+                          style={{float:"right",marginTop:5, position:"relative", right:-20}}
                           // className="popover-content"
                           onClick={ () => { this.handleToggleAdvancedSearch() }
                           }/>
