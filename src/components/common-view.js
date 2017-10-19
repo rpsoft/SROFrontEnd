@@ -86,7 +86,7 @@ class CommonView extends Component {
         <Card style={{ ...bodyStyle, minHeight:"91vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
-        <Card style={{paddingBottom:5,paddingLeft:15}}>
+        <Card style={{paddingBottom:5,paddingLeft:13}}>
           <Link to={'/'} style={buttonStyle}>
             <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="" label="Home" />
           </Link>
