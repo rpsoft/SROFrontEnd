@@ -129,15 +129,15 @@ class SearchControls extends Component {
 
           <span style={{paddingLeft:10, width:480, height: 40, display: "inline-block"}}>
 
+            { standardSearch }
+
             <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}
                           label='Advanced'
                           // backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
-                          style={{float:"right",marginTop:5, position:"relative", right:-20}}
+                          style={{float:"right",marginTop:5, position:"relative"}}
                           // className="popover-content"
                           onClick={ () => { this.handleToggleAdvancedSearch() }
                           }/>
-
-            { standardSearch }
 
           </span>
 
