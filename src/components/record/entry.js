@@ -49,8 +49,9 @@ export default class Entry extends Component {
 
     var preTranslation = data
 
+    //debugger
     data = xmlTranslator(data)
-
+    //debugger
     //
     // var htm = $.parseHTML(data)
     // var doc = htm[0]
@@ -77,12 +78,12 @@ export default class Entry extends Component {
         }
 
 
-        //console.log(this.state.rawContent)
+        console.log(":::: "+this.state.rawContent)
         var doc = $.parseHTML(this.state.rawContent)
         var head = $(".head",doc)[0]
         var paragraphs = $("p",doc)
         var metadata = $(".ab[type=metadata]", doc)[0]
-        var date = $(".ab[type=metadata] > .date", doc)[0]
+        var date = $(".ab[type=metadata] > span[type=Register]", doc)[0]
         var RegisterRef = $(".ab[type=metadata] > span[type=RegisterRef]", doc)[0]
         var ArberRef = $(".ab[type=metadata] > span[type=ArberRef]", doc)[0]
         var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
@@ -90,7 +91,11 @@ export default class Entry extends Component {
         var status = $(".ab[type=metadata] > span[type=status]", doc)[0]
         var price = $(".num[type=totalPence]", doc) ? $(".num[type=totalPence]", doc).attr("value") : ""
 
+        var wardens = $(".ab[type=metadata] > .persName[role=warden]", doc)
+        var masters = $(".ab[type=metadata] > .persName[role=master]", doc)
 
+
+      //  debugger
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         return <div style={{marginTop:10}}>
 
@@ -106,13 +111,15 @@ export default class Entry extends Component {
                     </div>
 
                     <div className="metadata">
-                      <div dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></div>
-                      <div dangerouslySetInnerHTML={{__html: RegisterRef ? RegisterRef.innerHTML : ""}}></div>
-                      <div dangerouslySetInnerHTML={{__html: ArberRef ? ArberRef.innerHTML : ""}}></div>
-                      <div dangerouslySetInnerHTML={{__html: RegisterID ? RegisterID.innerHTML : ""}}></div>
-                      <div dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></div>
-                      <div dangerouslySetInnerHTML={{__html: status ? status.innerHTML : ""}}></div>
-                      <div dangerouslySetInnerHTML={{__html: price ? price : ""}}></div>
+                      <div><span className="metadataTitle">Date: </span><span dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></span></div>
+                      <div><span className="metadataTitle">RegisterRef: </span><span dangerouslySetInnerHTML={{__html: RegisterRef ? RegisterRef.innerHTML : ""}}></span></div>
+                      <div><span className="metadataTitle">ArberRef: </span><span dangerouslySetInnerHTML={{__html: ArberRef ? ArberRef.innerHTML : ""}}></span></div>
+                      {/* <div><span className="metadataTitle">RegisterID: </span><span dangerouslySetInnerHTML={{__html: RegisterID ? RegisterID.innerHTML : ""}}></span></div> */}
+                      <div><span className="metadataTitle">Works: </span><span dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></span></div>
+                      <div><span className="metadataTitle">Status: </span><span dangerouslySetInnerHTML={{__html: status ? status.innerHTML : ""}}></span></div>
+                      <div><span className="metadataTitle">Price: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span></div>
+                      <div><span className="metadataTitle">Wardens: </span>{wardens.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
+                      <div><span className="metadataTitle">Master: </span>{masters.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
                     </div>
 
                     <RaisedButton style={{float:"right", position:"relative", bottom: 30}}onClick={() => this.getDownloadable()} label={"Download XML"} />

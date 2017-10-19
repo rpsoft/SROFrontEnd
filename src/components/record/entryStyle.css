@@ -2,9 +2,17 @@
 .entryContainer title { display: inline; }
 .entryContainer p { display: inline; }
 
-.metadata span {
+/*.metadata span {
   display: block;
+}*/
+
+/*.metadata span .forename {
+  display: inline-block;
 }
+
+.metadata span .forename {
+  display: inline-block;
+}*/
 
 .item {
   margin-bottom: 10px;
@@ -14,6 +22,19 @@
   font-style: italic;
 }
 
-.persName { font-style: italic; margin-bottom: 10px;}
+.persName { margin-bottom: 10px;}
 
 .entryID { font-weight: bold; margin-bottom: 10px;}
+
+.metadataTitle {
+  font-weight: bold;
+}
+
+.fee {
+  font-weight: bold;
+}
+
+
+.num {
+   font-weight: bold;
+}

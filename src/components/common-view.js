@@ -10,7 +10,7 @@ import {URL_BASE} from '../links'
 
 import Bootstrap from '../../assets/bootstrap.css';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/FlatButton';
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -69,12 +69,13 @@ class CommonView extends Component {
 
     let logoStyle = {height: 50,marginLeft:5}
     let buttonStyle = {marginRight:10}
-    let bodyStyle = {padding:10, maxWidth:960,minWidth:540,marginLeft:"auto",marginRight:"auto"}
+    let bodyStyle = {padding:10, maxWidth:960,minWidth:960,marginLeft:"auto",marginRight:"auto"}
     let bgStyle = {height: 50,marginLeft:5, backgroundColor: "#002147"}
 
     let dividerFormat = {width:"90%",marginLeft:"5%"}
 
-
+    let buttonColor = "#e6e6e6"
+    let buttonHoverColor = "#b5b5b5"
 
     return <div><Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
                   <span style={{fontSize:30, color:"#fff"}}>
@@ -85,13 +86,13 @@ class CommonView extends Component {
         <Card style={{ ...bodyStyle, minHeight:"91vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
-        <Card style={{paddingBottom:5,paddingLeft:5, paddingTop:5}}>
+        <Card style={{paddingBottom:5,paddingLeft:5}}>
           <Link to={'/'} style={buttonStyle}>
-            <RaisedButton className="btn btn-default" label="Home" />
+            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="" label="Home" />
           </Link>
 
 
-          <RaisedButton className="btn btn-default"
+          <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className=""
           onClick={(event) => {this.handleTouchTap(event,"open") }}
           label={<span>Browse <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
@@ -112,7 +113,7 @@ class CommonView extends Component {
             </Menu>
           </Popover>
 
-          <RaisedButton className="btn btn-default"
+          <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className=""
           onClick={(event) => {this.handleTouchTap(event,"open2")}}
           label={<span>About <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
@@ -142,7 +143,9 @@ class CommonView extends Component {
             </Menu>
           </Popover>
 
-
+          <Link to={'/help'} style={buttonStyle}>
+            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="" label="Help" />
+          </Link>
 
           <SearchControls
             changeQuery = { this.changeQuery }
@@ -166,7 +169,7 @@ class CommonView extends Component {
          <img src="http://www.create.ac.uk/wp-content/uploads/logos/create_primary_logo_160.jpg" style={logoStyle} />
        </a>location
        <a href="http://www.bibsoc.org.uk/" target="_blank">
-         <img src="http://www.bibsoc.org.uk/sites/bibsoc.adaptivetechnologies.com/themes/bibsoc/logo.png" style={bgStyle} />
+         <img src="/assets/BibSocsupportlogo.jpg" style={bgStyle} />
        </a>
        <a href="https://stationers.org/" target="_blank">
          <img src="https://stationers.org/images/module-images/small-crest.png" style={logoStyle} /></a>

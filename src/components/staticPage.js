@@ -32,6 +32,9 @@ export default class StaticPage extends Component {
       case "/about":
        pageToRequest = "about"
       break;
+      case "/help":
+       pageToRequest = "about"
+      break;
       default:
         pageToRequest = "home"
     }

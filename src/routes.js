@@ -63,6 +63,10 @@ var routes = (history) => (
           <IndexRoute component={StaticPage} />
         </Route>
 
+        <Route path="help" component={BrowserContainer}>
+          <IndexRoute component={StaticPage} />
+        </Route>
+
         <Route path="entry" component={BrowserContainer}>
           <Route path={urlBase + "entry/:entryID"} component={Entry} ></Route>
           {/* <IndexRoute component={Entry} /> */}

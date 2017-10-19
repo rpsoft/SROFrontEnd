@@ -7,7 +7,7 @@ import fetchData from '../network/fetch-data';
 import { push } from 'react-router-redux'
 
 // Material UI imports
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
@@ -111,6 +111,9 @@ class SearchControls extends Component {
 
     render() {
 
+      let buttonColor = "#e6e6e6"
+      let buttonHoverColor = "#b5b5b5"
+
       let standardSearch = <span><span>Search text:</span>
                             <TextField
                               id='query'
@@ -126,10 +129,11 @@ class SearchControls extends Component {
 
           <span style={{paddingLeft:10, width:500, height: 40, display: "inline-block"}}>
 
-            <RaisedButton label='Advanced'
-                          backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
-                          style={{float:"right",paddingTop:5}}
-                          className="popover-content"
+            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}
+                          label='Advanced'
+                          // backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
+                          style={{float:"right",marginTop:5}}
+                          // className="popover-content"
                           onClick={ () => { this.handleToggleAdvancedSearch() }
                           }/>
 

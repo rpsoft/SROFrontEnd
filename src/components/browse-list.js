@@ -196,10 +196,13 @@ class BrowseList extends Component {
     }
 
     getDownloadable (){
-      var link = document.createElement('a');
-      link.download = "SRO-Page-"+this.state.currentPage+".xml";
-      link.href = 'data:,' + encodeURIComponent(this.state.allContent);
-      link.click();
+      if ( this.state.allContent ){
+        var link = document.createElement('a');
+        link.download = "SRO-Page-"+this.state.currentPage+".xml";
+        link.href = 'data:,' + encodeURIComponent(this.state.allContent);
+        //debugger
+        link.click();
+      }
       // var downloadData = "data:application/octet-stream," + encodeURIComponent(this.state.allContent);
       // window.open(downloadData, 'SRO-document.xml');
     }
@@ -281,23 +284,32 @@ class BrowseList extends Component {
 
       let filterTitleStyles = {fontWeight:"600",fontSize:16}
 
+      let filterYears = ["1557-1559"]//["1557-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"]
+
+      for ( var i = 1565; i <= 1620; i = i+5){
+         filterYears.push((i-5) + "-" + i);
+      }
+
+
       return (
 
 
         <div style={{height:"100%", width:"100%",position: "relative",display:"flex"}}>
 
+              {/* <span style={{position: "absolute", float: "right", left: 0, bottom: -47 ,height:50, width:210}}>
               <RaisedButton
                 icon={<DownloadIcon/>}
                 label="Download Page"
-                style={{position: "absolute", float: "right", right: 350, top: 0,height:50}}
+                style={{width:"100%",height:"100%",zIndex:100000}}
                 onClick={()=> {this.getDownloadable()}}
                           />
+                          </span> */}
               {orderingBar} {pageLimitBar}
 
                 <Card style={{ padding:15,paddingRight:5, width:"23%",borderRight:"",height:"auto",marginBottom:10, paddingLeft: 25}}>
 
                     <h4 style={filterTitleStyles}>Date:</h4>
-                    {["1557-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"].map((item,i) => <Checkbox label={item}
+                    {filterYears.map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
                               checked={this.state["filter_date_"+item]}
@@ -331,7 +343,13 @@ class BrowseList extends Component {
                               value={this.state["filter_entererRole_"+item]}
                               onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
                       />) }
-
+                      <hr style={{marginLeft:-10,marginRight:10}}/>
+                      <RaisedButton
+                        icon={<DownloadIcon/>}
+                        label="Download Page"
+                        style={{width:"100%",marginLeft:-10}}
+                        onClick={()=> {this.getDownloadable()}}
+                                  />
                 </Card>
                 <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:60}}>
 
