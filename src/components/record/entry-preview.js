@@ -9,6 +9,8 @@ import style from './entryPreviewStyle.css'
 
 import xmlTranslator from '../../tools/xmlTranslator'
 
+import $ from 'jquery'
+
 function traverseAllNodes (xmlNode) {
     var res = '';
 
@@ -78,16 +80,24 @@ export default class EntryPreview extends Component {
         date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notBefore")
         date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notAfter")
 
+        let translatedPage = xmlTranslator(data.innerHTML)
+        //debugger
+        var doc = $.parseHTML(translatedPage)
+        var status = $(".ab[type=metadata] > span[type=status]", doc)[0].getAttribute("subtype")
+        var isCancelled = (status.toLowerCase().indexOf("cancelled") > -1 ? true : false)
+
+
         // debugger
         return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none"}}>
                   <Card style={{marginBottom:10,padding:10}}>
                     <span>
-                      <span>{data.getElementsByTagName("docid")[0].innerText}</span>
+                      <span style={{color: isCancelled ? "red" : "black"}}>{data.getElementsByTagName("docid")[0].innerText}</span>
+                      {isCancelled ? <div style={{color: "red",fontWeight:"bold"}}> Cancelled </div> : ""}
                       <span className={"viewFull"}>View Full</span>
                       <span style={{marginLeft:5,marginRight:5,fontSize:10}}>({date})</span><br/>
                       <span className={"previewEnterer"} >{enterer}</span>
                       {
-                      summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: xmlTranslator(n.innerHTML)}} ></span> : "")
+                      summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: n.innerHTML}} ></span> : "")
                       }
                     </span>
                   </Card>

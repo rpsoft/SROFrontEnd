@@ -88,7 +88,7 @@ export default class Entry extends Component {
         var ArberRef = $(".ab[type=metadata] > span[type=ArberRef]", doc)[0]
         var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
         var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
-        var status = $(".ab[type=metadata] > span[type=status]", doc)[0]
+        var status = $(".ab[type=metadata] > span[type=status]", doc)[0].getAttribute("subtype")
         var price = $(".num[type=totalPence]", doc) ? $(".num[type=totalPence]", doc).attr("value") : ""
 
         var wardens = $(".ab[type=metadata] > .persName[role=warden]", doc)
@@ -97,11 +97,14 @@ export default class Entry extends Component {
 
       //  debugger
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
+        var isCancelled = status.toLowerCase().indexOf("cancelled") > -1 ? true : false
+
         return <div style={{marginTop:10}}>
 
                 <Card className="entryContainer" style={{marginTop:10,padding:15}}>
-                    <div className="entryID">Entry: {this.props.params.entryID}</div>
-
+                    <span style={{float:"right"}} ><span dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></span></span>
+                    <div className="entryID" style={{color: isCancelled ? "red" : "black"}} >Entry: {this.props.params.entryID}</div>
+                    {isCancelled ? <div style={{color: "red",fontWeight:"bold"}}> Cancelled </div> : ""}
                     <div className="persName" dangerouslySetInnerHTML={{__html: head ? head.innerHTML : ""  }}></div>
 
                     <div>
@@ -111,13 +114,13 @@ export default class Entry extends Component {
                     </div>
 
                     <div className="metadata">
-                      <div><span className="metadataTitle">Date: </span><span dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></span></div>
-                      <div><span className="metadataTitle">RegisterRef: </span><span dangerouslySetInnerHTML={{__html: RegisterRef ? RegisterRef.innerHTML : ""}}></span></div>
-                      <div><span className="metadataTitle">ArberRef: </span><span dangerouslySetInnerHTML={{__html: ArberRef ? ArberRef.innerHTML : ""}}></span></div>
+
+                      <div><span className="metadataTitle">Register: </span><span dangerouslySetInnerHTML={{__html: RegisterRef ? RegisterRef.innerHTML : ""}}></span></div>
+                      <div><span className="metadataTitle">Arber: </span><span dangerouslySetInnerHTML={{__html: ArberRef ? ArberRef.innerHTML : ""}}></span></div>
                       {/* <div><span className="metadataTitle">RegisterID: </span><span dangerouslySetInnerHTML={{__html: RegisterID ? RegisterID.innerHTML : ""}}></span></div> */}
-                      <div><span className="metadataTitle">Works: </span><span dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></span></div>
-                      <div><span className="metadataTitle">Status: </span><span dangerouslySetInnerHTML={{__html: status ? status.innerHTML : ""}}></span></div>
-                      <div><span className="metadataTitle">Price: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span></div>
+                      {/* <div><span className="metadataTitle">Works: </span><span dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></span></div> */}
+                      <div><span className="metadataTitle">Status: </span><span dangerouslySetInnerHTML={{__html: status ? status : ""}}></span></div>
+                      <div><span className="metadataTitle">Fee: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span></div>
                       <div><span className="metadataTitle">Wardens: </span>{wardens.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
                       <div><span className="metadataTitle">Master: </span>{masters.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
                     </div>

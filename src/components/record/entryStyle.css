@@ -38,3 +38,7 @@
 .num {
    font-weight: bold;
 }
+
+.del {
+   text-decoration: line-through;
+}
