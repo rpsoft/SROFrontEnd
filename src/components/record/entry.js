@@ -77,7 +77,7 @@ export default class Entry extends Component {
         }
 
 
-        console.log(this.state.rawContent)
+        //console.log(this.state.rawContent)
         var doc = $.parseHTML(this.state.rawContent)
         var head = $(".head",doc)[0]
         var paragraphs = $("p",doc)

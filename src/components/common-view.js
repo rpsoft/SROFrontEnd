@@ -30,6 +30,7 @@ class CommonView extends Component {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
+      banner: "/assets/bannerSRO3.png",
     };
   }
 
@@ -60,6 +61,10 @@ class CommonView extends Component {
    this.setState({query : query})
  }
 
+ changeBanner = () => {
+    var selectedBanner = this.state.banner.indexOf("bannerSRO3.png") > -1 ? "/assets/bannerSRO4.png" : "/assets/bannerSRO3.png"
+    this.setState({banner : selectedBanner})
+ }
   render() {
 
     let logoStyle = {height: 50,marginLeft:5}
@@ -69,7 +74,9 @@ class CommonView extends Component {
 
     let dividerFormat = {width:"90%",marginLeft:"5%"}
 
-    return <div><Card style={{ ...bodyStyle,height:114, backgroundImage: `url("/assets/bannerSRO2.png")`,backgroundSize:"100%",marginBottom:7}}>
+
+
+    return <div><Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
                   <span style={{fontSize:30, color:"#fff"}}>
 
                   </span>
