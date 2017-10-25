@@ -137,7 +137,7 @@ class BrowseNames extends Component {
 
           <Card style={{width:"100%"}}>
 
-                <Card><span style={{fontSize:20,display:"flex",paddingLeft:20,paddingBottom:5}}>{allLetters.map( (v,i) => <span key={i} style={{flexGrow:1}}><Link to={"/browser/names/"+v}>{v}</Link>  </span>)}</span></Card>
+                <Card><span style={{fontSize:20,display:"flex",paddingLeft:20,paddingBottom:5}}>{allLetters.map( (v,i) => <span key={i} style={{flexGrow:1}}><Link to={"/browser/names/"+v}>{v.toUpperCase()}</Link>  </span>)}</span></Card>
 
 
                 { results }

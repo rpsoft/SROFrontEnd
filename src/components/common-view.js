@@ -77,13 +77,15 @@ class CommonView extends Component {
     let buttonColor = "#e6e6e6"
     let buttonHoverColor = "#b5b5b5"
 
-    return <div><Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
+    return <div>
+
+      <Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
                   <span style={{fontSize:30, color:"#fff"}}>
 
                   </span>
                 </Card>
 
-        <Card style={{ ...bodyStyle, minHeight:"91vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+        <Card style={{ ...bodyStyle, minHeight:"80vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
         <Card style={{paddingBottom:5,paddingLeft:13}}>
@@ -108,8 +110,8 @@ class CommonView extends Component {
               <MenuItem value={1} primaryText="All" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
               {/* <MenuItem value={2} primaryText="Copies" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/> */}
               <MenuItem value={3} primaryText="Names" onClick={ (e) => {this.props.goToUrl("/browser/names"); this.handleRequestClose()}}/>
-              {/* <MenuItem value={4} primaryText="By Date" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/>
-              <MenuItem value={5} primaryText="By Volume" onClick={ (e) => {this.props.goToUrl("/browser/1"); this.handleRequestClose()}}/> */}
+              <MenuItem value={4} primaryText="By Date" onClick={ (e) => {this.props.goToUrl("/browser/date"); this.handleRequestClose()}}/>
+              <MenuItem value={5} primaryText="By Volume" onClick={ (e) => {this.props.goToUrl("/browser/volume"); this.handleRequestClose()}}/>
             </Menu>
           </Popover>
 
@@ -161,7 +163,7 @@ class CommonView extends Component {
         <div style={{width:"100%",textAlign:"center",marginTop:10,marginBottom:10,opacity:0.8}}><img src={"/assets/letterTrans.png"} style={{width:80}}></img></div>
      </Card>
 
-       <Card style={{ ...bodyStyle, marginTop:10, marginBottom:10, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+       <Card style={{ ...bodyStyle, marginTop:10, marginBottom:0, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
        <a href="http://www.bathspa.ac.uk" target="_blank">
          <img src="https://thehub.bathspa.ac.uk/MediaFolder/Marketing/branding/logos/bsu-logo.png" style={logoStyle} />
        </a>

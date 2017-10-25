@@ -14,7 +14,13 @@ function replacer(match, p1, p2, p3, offset, string) {
     return match
   }
 
-  return p1+'span class="'+p2+'"'+p3;
+  if( p1.indexOf("</") < 0 ){
+      return p1+'span class="'+p2+'"'+p3;
+  } else {
+      return p1+'span'+p3;
+  }
+
+
 }
 
 

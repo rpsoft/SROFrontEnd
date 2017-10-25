@@ -78,8 +78,11 @@ export default class Entry extends Component {
         }
 
 
-        console.log(":::: "+this.state.rawContent)
+//        console.log(":::: "+this.state.rawContent)
         var doc = $.parseHTML(this.state.rawContent)
+        $("[rend=struck-through]",doc).addClass( "struckThrough" );
+ //console.log(":::: "+this.state.rawContent)
+   //debugger
         var head = $(".head",doc)[0]
         var paragraphs = $("p",doc)
         var metadata = $(".ab[type=metadata]", doc)[0]
@@ -109,7 +112,7 @@ export default class Entry extends Component {
 
                     <div>
                         {
-                          paragraphs.map( (i,para) => { return <div className="item" key={i} dangerouslySetInnerHTML={{__html: para.innerHTML }}></div> } )
+                          paragraphs.map( (i,para) => { return <div className="item" key={i} dangerouslySetInnerHTML={{__html: para.outerHTML }}></div> } )
                         }
                     </div>
 
@@ -125,7 +128,7 @@ export default class Entry extends Component {
                       <div><span className="metadataTitle">Master: </span>{masters.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
                     </div>
 
-                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}}onClick={() => this.getDownloadable()} label={"Download XML"} />
+                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadable()} label={"Download XML"} />
                 </Card>
 
 

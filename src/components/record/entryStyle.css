@@ -42,3 +42,7 @@
 .del {
    text-decoration: line-through;
 }
+
+.struckThrough {
+  text-decoration: line-through;
+}
