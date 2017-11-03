@@ -78,14 +78,20 @@ class Search extends Component {
 
 
     async componentWillReceiveProps(next) {
+
+          var advSearch = this.state.advancedSearch
+          advSearch.query = next.query.value
+
           this.loadPageFromProps(next)
     }
 
     async componentWillMount() {
+    //  debugger
         this.loadPageFromProps(this.props)
      }
 
     async loadPageFromProps(props){
+
       await this.handleAdvancedSearch(props)
     }
 
@@ -149,20 +155,22 @@ class Search extends Component {
       var direction = props.params.direction ? props.params.direction : 'ascending'
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
 
-      var query = props.query ? props.query.value : ""
-
+      //var query = props.query ? props.query.value : ""
+      var preventUpdate = pps.query ? pps.query.preventUpdate : false
 
       var advSearch = this.state.advancedSearch
-      advSearch.query = query;
+      //advSearch.query = query;
 
-      advSearch.enabled =   props.advancedSearchEnabled
+      advSearch.enabled = props.advancedSearchEnabled
 
       if ( props.query && props.query.value.length > 0 && props.query.preventUpdate ){
         this.setState({advancedSearch: advSearch})
+        //debugger
         return {};
       }
 
-      this.setState({loading : true, query: query, advancedSearch: advSearch, allContent : null})
+
+      this.setState({loading : true, query: advSearch.query, advancedSearch: advSearch, allContent : null})
 
       var anyActive = false;
 
@@ -256,7 +264,7 @@ class Search extends Component {
 
     render() {
       // debugger
-      var args = JSON.stringify(this.state.advancedSearch)
+      //var args = JSON.stringify(this.state.advancedSearch)
 
       var pageResults = <BrowseList allContent={this.state.allContent}
                                     pagesAvailable={this.state.pagesAvailable}

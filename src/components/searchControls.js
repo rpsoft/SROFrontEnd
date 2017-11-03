@@ -89,7 +89,7 @@ class SearchControls extends Component {
 
       if ( props.location.pathname.indexOf("/search/") < 0 ){
 
-      var advSearch = {query: this.state.query.value}
+      var advSearch = {query: this.state.query}
 
       var  url = urlUtils.formatUrl("search"
                                         ,this.state.currentPage ? this.state.currentPage : 1
@@ -97,14 +97,14 @@ class SearchControls extends Component {
                                         ,this.state.sorting
                                         ,advSearch);
 
-
+    // debugger
       props.goToUrl(url);
       }
     }
 
     handleToggleAdvancedSearch () {
       // this.setState({enabled: this.state.enabled ? false : true})
-      this.props.toggleAdvancedSearch()
+      this.props.toggleAdvancedSearch(this.state.query)
       this.switchToSearch (this.props)
     }
 
@@ -121,7 +121,16 @@ class SearchControls extends Component {
                               style={{width: 200,marginLeft:5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
-                              onKeyPress={(event,value,e) => { if (event.key === 'Enter'){ this.handleQueryElement("query",this.state.query,false); this.switchToSearch (this.props); }}}
+                              onKeyPress={(event,value,e) => {
+                                if (event.key === 'Enter'){
+                                  if ( this.state.query.trim().indexOf("SRO") == 0 ){
+                                    var number = this.state.query.trim()
+                                  } else {
+                                    this.handleQueryElement("query",this.state.query,false);
+                                    this.switchToSearch (this.props);
+                                  }
+                                }
+                              }}
                             /></span>
 
       return (

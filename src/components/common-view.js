@@ -53,8 +53,10 @@ class CommonView extends Component {
     });
   };
 
- toggleAdvancedSearch = () => {
-   this.setState({advancedSearchEnabled : this.state.advancedSearchEnabled ? false : true })
+ toggleAdvancedSearch = (query) => {
+   //debugger
+
+   this.setState({advancedSearchEnabled : this.state.advancedSearchEnabled ? false : true, query: query })
  };
 
  changeQuery = (query) => {
