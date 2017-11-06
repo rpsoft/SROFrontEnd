@@ -162,7 +162,6 @@ class CommonView extends Component {
 
         {React.cloneElement(this.props.children, { advancedSearchEnabled : this.state.advancedSearchEnabled, query : this.state.query })}
 
-        <div style={{width:"100%",textAlign:"center",marginTop:10,marginBottom:10,opacity:0.8}}><img src={"/assets/letterTrans.png"} style={{width:80}}></img></div>
      </Card>
 
        <Card style={{ ...bodyStyle, marginTop:10, marginBottom:0, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
