@@ -64,8 +64,8 @@ class CommonView extends Component {
  }
 
  changeBanner = () => {
-    var selectedBanner = this.state.banner.indexOf("bannerSRO3.png") > -1 ? "/assets/bannerSRO4.png" : "/assets/bannerSRO3.png"
-    this.setState({banner : selectedBanner})
+    // var selectedBanner = this.state.banner.indexOf("bannerSRO3.png") > -1 ? "/assets/bannerSRO4.png" : "/assets/bannerSRO3.png"
+    // this.setState({banner : selectedBanner})
  }
   render() {
 
@@ -87,7 +87,7 @@ class CommonView extends Component {
                   </span>
                 </Card>
 
-        <Card style={{ ...bodyStyle, minHeight:"80vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+        <Card style={{ ...bodyStyle, minHeight:"79vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
         <Card style={{paddingBottom:5,paddingLeft:13}}>
@@ -162,7 +162,7 @@ class CommonView extends Component {
 
         {React.cloneElement(this.props.children, { advancedSearchEnabled : this.state.advancedSearchEnabled, query : this.state.query })}
 
-        <div style={{width:"100%",textAlign:"center",marginTop:10,marginBottom:10,opacity:0.8}}><img src={"/assets/letterTrans.png"} style={{width:80}}></img></div>
+        {/* <div style={{width:"100%",textAlign:"center",marginTop:10,marginBottom:10,opacity:0.8}}><img src={"/assets/letterTrans.png"} style={{width:80}}></img></div> */}
      </Card>
 
        <Card style={{ ...bodyStyle, marginTop:10, marginBottom:0, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>

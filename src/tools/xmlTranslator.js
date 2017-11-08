@@ -56,9 +56,9 @@ export default function xml2HTMLTranslator(xmlData){
       var inItGoes = innerTagTokens.join(" ")
       docArray.push(inItGoes);
 
-      if ( inItGoes.indexOf("ntred vnto him to") > -1 ){
-        debugger
-      }
+      // if ( inItGoes.indexOf("ntred vnto him to") > -1 ){
+      //   debugger
+      // }
 
       startDel = -1;
       endDel = -1;
@@ -70,7 +70,7 @@ export default function xml2HTMLTranslator(xmlData){
 
   }
   //debugger
-  return docArray.join(" ");
+  return docArray.join("");
 }
 //
 //console.log(xml2HTMLTranslator(xmlData)+" LALALA")

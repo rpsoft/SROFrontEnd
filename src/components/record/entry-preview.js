@@ -76,24 +76,28 @@ export default class EntryPreview extends Component {
 
 
         let maxPreviewElements = 3
-        var date = data.getElementsByTagName("date")[1].getAttribute("when")
-        date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notBefore")
-        date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notAfter")
+
+
+        // var date = data.getElementsByTagName("date")[1].getAttribute("when")
+        // date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notBefore")
+        // date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notAfter")
 
         let translatedPage = xmlTranslator(data.innerHTML)
-        //debugger
+
         var doc = $.parseHTML(translatedPage)
+        // debugger
+        var date = $(".ab[type=metadata] > span[type=Register]", doc)[0].innerHTML
+
         var status = $(".ab[type=metadata] > span[type=status]", doc)[0].getAttribute("subtype")
         var isCancelled = (status.toLowerCase().indexOf("cancelled") > -1 ? true : false)
 
 
         // debugger
-        return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none"}}>
-                  <Card style={{marginBottom:10,padding:10}}>
+        return <Card style={{marginBottom:10,padding:10}}>
                     <span>
                       <span style={{color: isCancelled ? "red" : "black"}}>{data.getElementsByTagName("docid")[0].innerText}</span>
                       {isCancelled ? <div style={{color: "red",fontWeight:"bold"}}> Cancelled </div> : ""}
-                      <span className={"viewFull"}>View Full</span>
+                      <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none",color:"black"}}><span className={"viewFull"}>View Full</span>  </Link>
                       <span style={{marginLeft:5,marginRight:5,fontSize:10}}>({date})</span><br/>
                       <span className={"previewEnterer"} >{enterer}</span>
                       {
@@ -101,6 +105,6 @@ export default class EntryPreview extends Component {
                       }
                     </span>
                   </Card>
-              </Link>
+
   }
 }

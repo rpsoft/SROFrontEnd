@@ -14,15 +14,19 @@
   display: inline-block;
 }*/
 
-.item {
+/*.item {
   margin-bottom: 10px;
+}*/
+
+.metadata {
+  margin-top: 10px;
 }
 
 .seg {
   font-style: italic;
 }
 
-.persName { margin-bottom: 10px;}
+/*.persName { margin-bottom: 10px;}*/
 
 .entryID { font-weight: bold; margin-bottom: 10px;}
 
@@ -31,7 +35,7 @@
 }
 
 .fee {
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 
 
@@ -45,4 +49,22 @@
 
 .struckThrough {
   text-decoration: line-through;
+}
+.removeMargin{
+  /*margin-right: -3px;*/
+  /*margin-left: -3px;*/
+}
+
+/*.forename {
+  margin-right: 3px;
+}*/
+.surname {
+  margin-left: 3px;
+
+}
+
+
+
+.seg{
+  margin-left: 3px;
 }

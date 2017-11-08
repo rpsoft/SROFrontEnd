@@ -78,9 +78,56 @@ export default class Entry extends Component {
         }
 
 
-//        console.log(":::: "+this.state.rawContent)
-        var doc = $.parseHTML(this.state.rawContent)
+        console.log(":::: "+this.state.rawContent)
+        var doc = $.parseHTML(this.state.rawContent.replace(/\n/g, " ").replace(/\#/g,""))
+
+        // add the struckThrough style and add square brackets to rend="struckThrough"
         $("[rend=struck-through]",doc).addClass( "struckThrough" );
+        $("[rend=struck-through]",doc).each(function() {
+            var text = $(this).text();
+            $(this).text("[CANCELLED "+text.trim()+"]");
+        });
+
+        // add square brackets and CANCELLED string to <del>
+        $("span.del",doc).each(function() {
+            var text = $(this).text();
+            $(this).text("[CANCELLED "+text.trim()+"]");
+        });
+
+        // add square brackets to <supplied>. or <span class="supplied"> if you prefer.
+        $("span.supplied",doc).each(function() {
+            var text = $(this).text() ;
+
+
+
+            $(this).text("["+text.trim()+"]");
+
+            // var prev = $("span .supplied",doc).prev()
+            // //prev
+            // var next = $("span .supplied",doc).next()
+            //$(this).parent().css("white-space", "nowrap")
+            // next.text(next.text().trim())
+        });
+
+        // This one hides the <sic> inside a <choice> block if <corr> is present.
+        $("span.sic",doc).each(function() {
+            var text = $(this).text();
+            $(this).text("["+text.trim()+"]");
+            var next = $(this).next()
+            if ( next.hasClass("corr") ){
+              $(this).css("display","none")
+            }
+        });
+
+        $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
+
+        $("span.note[resp=arber]",doc).each(function() {
+            var text = $(this).text() ;
+            $(this).text("["+text.trim()+"]");
+        });
+
+        $("span.persName[role~=enterer]",doc).css( "font-weight", "bold" )
+
  //console.log(":::: "+this.state.rawContent)
    //debugger
         var head = $(".head",doc)[0]
@@ -102,20 +149,23 @@ export default class Entry extends Component {
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         var isCancelled = status.toLowerCase().indexOf("cancelled") > -1 ? true : false
 
+        var mastersHTML = masters.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
+        var wardensHTML = wardens.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
+
         return <div style={{marginTop:10}}>
 
                 <Card className="entryContainer" style={{marginTop:10,padding:15}}>
-                    <span style={{float:"right"}} ><span dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></span></span>
+                    <span style={{float:"right",fontWeight:"bold"}} ><span dangerouslySetInnerHTML={{__html: date ? date.innerHTML : ""}}></span></span>
                     <div className="entryID" style={{color: isCancelled ? "red" : "black"}} >Entry: {this.props.params.entryID}</div>
-                    {isCancelled ? <div style={{color: "red",fontWeight:"bold"}}> Cancelled </div> : ""}
-                    <div className="persName" dangerouslySetInnerHTML={{__html: head ? head.innerHTML : ""  }}></div>
+                    {isCancelled ? <div style={{color: "red",fontWeight:"bold"}}> [ Cancelled </div> : ""}
+                    <span className="persName" style={{color: isCancelled ? "red" : "black"}} dangerouslySetInnerHTML={{__html: head ? head.innerHTML : ""  }}></span>
 
-                    <div>
+                    <span style={{color: isCancelled ? "red" : "black"}}>
                         {
                           paragraphs.map( (i,para) => { return <div className="item" key={i} dangerouslySetInnerHTML={{__html: para.outerHTML }}></div> } )
                         }
-                    </div>
-
+                    </span>
+                    {isCancelled ? <span style={{color: "red",fontWeight:"bold"}}> ] </span> : ""}
                     <div className="metadata">
 
                       <div><span className="metadataTitle">Register: </span><span dangerouslySetInnerHTML={{__html: RegisterRef ? RegisterRef.innerHTML : ""}}></span></div>
@@ -123,9 +173,9 @@ export default class Entry extends Component {
                       {/* <div><span className="metadataTitle">RegisterID: </span><span dangerouslySetInnerHTML={{__html: RegisterID ? RegisterID.innerHTML : ""}}></span></div> */}
                       {/* <div><span className="metadataTitle">Works: </span><span dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></span></div> */}
                       <div><span className="metadataTitle">Status: </span><span dangerouslySetInnerHTML={{__html: status ? status : ""}}></span></div>
-                      <div><span className="metadataTitle">Fee: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span></div>
-                      <div><span className="metadataTitle">Wardens: </span>{wardens.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
-                      <div><span className="metadataTitle">Master: </span>{masters.map( (i,v) => <span key={i} dangerouslySetInnerHTML={{__html: v ? v.innerHTML : ""}}></span> )}</div>
+                      <div><span className="metadataTitle">Fee: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span><span style={{marginLeft:5}}>pence</span></div>
+                      <div><span className="metadataTitle">Master: </span>{mastersHTML}</div>
+                      <div><span className="metadataTitle">Wardens: </span>{wardensHTML}</div>
                     </div>
 
                     <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadable()} label={"Download XML"} />

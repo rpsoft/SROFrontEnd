@@ -233,6 +233,7 @@ class BrowseList extends Component {
 
       var resultsToShow ;
 
+      var haveResults = false;
 
       if ( this.state.loading ){
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
@@ -241,9 +242,9 @@ class BrowseList extends Component {
         if (!this.state.allContent || this.state.allContent.indexOf("<exception><path>/db</path><message>") > -1 ) {
 
           resultsToShow = <Card style={{padding:10}}><span> No results to show yet </span></Card>
-          
-        } else {
 
+        } else {
+          haveResults = true;
           resultsToShow = <span >
                           <Card style={{marginBottom:10}}><Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/></Card>
                           {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
@@ -345,19 +346,22 @@ class BrowseList extends Component {
                               value={this.state["filter_entererRole_"+item]}
                               onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
                       />) }
-                      <hr style={{marginLeft:-10,marginRight:10}}/>
-                      <RaisedButton
-                        icon={<DownloadIcon/>}
-                        label="Download Page"
-                        style={{width:"100%",marginLeft:-10}}
-                        labelStyle={{fontSize:13}}
-                        onClick={()=> {this.getDownloadable()}}
-                                  />
+                      {/* <hr style={{marginLeft:-10,marginRight:10}}/> */}
+
                 </Card>
                 <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:60}}>
 
                   {resultsToShow}
 
+                  {
+                    (haveResults) ? <RaisedButton
+                    icon={<DownloadIcon/>}
+                    label="Download Page"
+                    style={{width:"100%"}}
+                    labelStyle={{fontSize:13}}
+                    onClick={()=> {this.getDownloadable()}}
+                  /> : <span></span>
+                  }
                 </div>
 
 
