@@ -191,6 +191,7 @@ class CommonView extends Component {
           </div>
         </Card>
       </Card>
+      <div style={{height:"15vh"}}></div>
     </div>
   }
 }
