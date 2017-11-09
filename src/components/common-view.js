@@ -87,7 +87,7 @@ class CommonView extends Component {
                   </span>
                 </Card>
 
-        <Card style={{ ...bodyStyle, minHeight:420,backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+        <Card style={{ ...bodyStyle, minHeight:"52vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
         <Card style={{paddingBottom:5,paddingLeft:13}}>
@@ -191,7 +191,7 @@ class CommonView extends Component {
           </div>
         </Card>
       </Card>
-      <div style={{height:"15vh"}}></div>
+      <div style={{height:"25vh"}}></div>
     </div>
   }
 }
