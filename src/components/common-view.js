@@ -183,7 +183,7 @@ class CommonView extends Component {
          <a href="http://www.ox.ac.uk" target="_blank">
            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/University_of_Oxford.svg/1280px-University_of_Oxford.svg.png" style={logoStyle} />
          </a>
-         <div style={{backgroundColor:"#00B5DA", height:50, width: 180, display:"inline-block",paddingTop:3,paddingBottom:5,marginLeft:5}}><a href="http://www.ox.ac.uk" target="_blank" >
+         <div style={{backgroundColor:"#00B5DA", height:50, width: 180, display:"inline-block",paddingTop:3,paddingBottom:5,marginLeft:5}}><a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" target="_blank" >
            <img src="https://creativecommons.org/images/deed/cc_icon_white_x2.png" style={{...logoStyle,height:45}} />
            <img src="https://creativecommons.org/images/deed/attribution_icon_white_x2.png" style={{...logoStyle,height:40}} />
            <img src="https://creativecommons.org/images/deed/sa_white_x2.png" style={{...logoStyle,height:45}} />
