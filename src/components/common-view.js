@@ -81,7 +81,7 @@ class CommonView extends Component {
 
     return <div>
 
-      <Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
+      <Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',marginTop:5,backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
                   <span style={{fontSize:30, color:"#fff"}}>
 
                   </span>
@@ -164,7 +164,7 @@ class CommonView extends Component {
 
      </Card>
 
-      <Card style={{ ...bodyStyle, marginTop:10, marginBottom:0, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+      <Card style={{ ...bodyStyle, marginTop:10, marginBottom:5, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
         <Card style={{paddingTop:8,paddingBottom:8}}>
          <a href="http://www.bathspa.ac.uk" target="_blank">
            <img src="https://thehub.bathspa.ac.uk/MediaFolder/Marketing/branding/logos/bsu-logo.png" style={logoStyle} />
