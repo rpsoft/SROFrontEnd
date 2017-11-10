@@ -81,13 +81,13 @@ class CommonView extends Component {
 
     return <div>
 
-      <Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
+      <Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',marginTop:5,backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
                   <span style={{fontSize:30, color:"#fff"}}>
 
                   </span>
                 </Card>
 
-        <Card style={{ ...bodyStyle, minHeight:"79vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+        <Card style={{ ...bodyStyle, minHeight:"52vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
         <Card style={{paddingBottom:5,paddingLeft:13}}>
@@ -164,7 +164,7 @@ class CommonView extends Component {
 
      </Card>
 
-      <Card style={{ ...bodyStyle, marginTop:10, marginBottom:0, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+      <Card style={{ ...bodyStyle, marginTop:10, marginBottom:5, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
         <Card style={{paddingTop:8,paddingBottom:8}}>
          <a href="http://www.bathspa.ac.uk" target="_blank">
            <img src="https://thehub.bathspa.ac.uk/MediaFolder/Marketing/branding/logos/bsu-logo.png" style={logoStyle} />
@@ -183,7 +183,7 @@ class CommonView extends Component {
          <a href="http://www.ox.ac.uk" target="_blank">
            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/University_of_Oxford.svg/1280px-University_of_Oxford.svg.png" style={logoStyle} />
          </a>
-         <div style={{backgroundColor:"#00B5DA", height:50, width: 180, display:"inline-block",paddingTop:3,paddingBottom:5,marginLeft:5}}><a href="http://www.ox.ac.uk" target="_blank" >
+         <div style={{backgroundColor:"#00B5DA", height:50, width: 180, display:"inline-block",paddingTop:3,paddingBottom:5,marginLeft:5}}><a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" target="_blank" >
            <img src="https://creativecommons.org/images/deed/cc_icon_white_x2.png" style={{...logoStyle,height:45}} />
            <img src="https://creativecommons.org/images/deed/attribution_icon_white_x2.png" style={{...logoStyle,height:40}} />
            <img src="https://creativecommons.org/images/deed/sa_white_x2.png" style={{...logoStyle,height:45}} />
@@ -191,6 +191,7 @@ class CommonView extends Component {
           </div>
         </Card>
       </Card>
+      <div style={{height:"25vh"}}></div>
     </div>
   }
 }
