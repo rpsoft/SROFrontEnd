@@ -54,14 +54,30 @@ export default class fetchData {
       }
 
       if ( keys[a] == "minDate" && args[keys[a]] ){
-        if ( args[keys[a]].year && args[keys[a]].month && args[keys[a]].day)
-        preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+        if ( args[keys[a]].year ){
+          args[keys[a]].month = parseInt(args[keys[a]].month ? args[keys[a]].month : "1")
+          args[keys[a]].day = parseInt(args[keys[a]].day ? args[keys[a]].day : "1")
+
+          args[keys[a]].month = args[keys[a]].month < 10 ? "0"+args[keys[a]].month : args[keys[a]].month+""
+          args[keys[a]].day = args[keys[a]].day < 10 ? "0"+args[keys[a]].day : args[keys[a]].day+""
+
+          preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+        }
+
         continue;
       }
 
       if ( keys[a] == "maxDate" && args[keys[a]] ){
-        if ( args[keys[a]].year && args[keys[a]].month && args[keys[a]].day)
-        preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+        if ( args[keys[a]].year ) {
+          args[keys[a]].month = parseInt(args[keys[a]].month ? args[keys[a]].month : "12")
+          args[keys[a]].day = parseInt(args[keys[a]].day ? args[keys[a]].day : "31")
+
+          args[keys[a]].month = args[keys[a]].month < 10 ? "0"+args[keys[a]].month : args[keys[a]].month+""
+          args[keys[a]].day = args[keys[a]].day < 10 ? "0"+args[keys[a]].day : args[keys[a]].day+""
+          
+          preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+        }
+
         continue;
       }
 

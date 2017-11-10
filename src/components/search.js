@@ -108,6 +108,13 @@ class Search extends Component {
 
       var dateKey = name.split("_")[0]
       var dateElement = name.split("_")[1]
+      //debugger
+
+      if ( dateElement == "year" && value.length > 4){
+          return
+      } else if ( dateElement != "year" && value.length > 2 ) {
+         return
+      }
 
       if ( !adSearch[dateKey] ){
         switch (dateKey) {
@@ -120,9 +127,16 @@ class Search extends Component {
       }
 
       //debugger
+      // value = parseInt(value)
+      //debugger
 
-      adSearch[dateKey][dateElement] = value < 10 ? ( Number.isInteger(Number(value)) && (Number(value) > 0) ? "0"+value : "" ) : ""+value
-
+      // value = parseInt(value)
+      // if ( Number.isInteger(value) ) {
+      //   value = value < 10 ? "0"+value : value+""
+      // }
+      adSearch[dateKey][dateElement] = value
+      //adSearch[dateKey][dateElement] = value < 10 ? ( Number.isInteger(Number(value)) && (Number(value) > 0) ? "0"+value : "" ) : ""+value
+    //  debugger
       console.log(adSearch[dateKey])
 
       state.advancedSearch = adSearch
@@ -163,7 +177,7 @@ class Search extends Component {
 
       advSearch.enabled = props.advancedSearchEnabled
 
-      if ( props.query && props.query.value.length > 0 && props.query.preventUpdate ){
+      if ( props.query && props.query.value && props.query.value.length > 0 && props.query.preventUpdate ){
         this.setState({advancedSearch: advSearch})
         //debugger
         return {};

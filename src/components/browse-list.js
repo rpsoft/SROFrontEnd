@@ -52,7 +52,7 @@ class BrowseList extends Component {
       }
 
       advSearch.filters = filters;
-
+      //debugger
       var newState = {
         allContent : props.allContent,
         pagesAvailable : props.pagesAvailable,
@@ -62,7 +62,7 @@ class BrowseList extends Component {
         sorting: props.sorting,
         advSearchParameters : advSearch,
         loading : props.loading,
-        sortingFieldControl : "volAsc", // default increasing ID or volument ascending order.
+        sortingFieldControl : props.linkRoot == "search" ? "relevance" : "dateAsc", // default increasing ID or volument ascending order.
       }
 
       for ( var f in filters){
@@ -93,6 +93,9 @@ class BrowseList extends Component {
         case "volDesc":
           sorting ={sortField: "volume", direction: "descending"}
           break;
+        case "relevance":
+            sorting ={sortField: "relevance", direction: "descending"}
+            break;
         default:
 
       }
@@ -265,6 +268,7 @@ class BrowseList extends Component {
                           value={this.state.sortingFieldControl}
                           onChange={this.handleSortingChange}
                           >
+                          <MenuItem value={"relevance"} primaryText="Best Match" />
                           <MenuItem value={"dateAsc"} primaryText="Date (earliest)" />
                           <MenuItem value={"dateDesc"} primaryText="Date (latest)" />
                           <MenuItem value={"volAsc"} primaryText="Register page (ascending)" />

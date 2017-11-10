@@ -11,6 +11,7 @@ import style from './entryStyle.css'
 import $ from 'jquery'
 
 import xmlTranslator from '../../tools/xmlTranslator'
+import docStyler from '../../tools/docStyler.js'
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -81,55 +82,8 @@ export default class Entry extends Component {
         console.log(":::: "+this.state.rawContent)
         var doc = $.parseHTML(this.state.rawContent.replace(/\n/g, " ").replace(/\#/g,""))
 
-        // add the struckThrough style and add square brackets to rend="struckThrough"
-        $("[rend=struck-through]",doc).addClass( "struckThrough" );
-        $("[rend=struck-through]",doc).each(function() {
-            var text = $(this).text();
-            $(this).text("[CANCELLED "+text.trim()+"]");
-        });
+        docStyler(doc);
 
-        // add square brackets and CANCELLED string to <del>
-        $("span.del",doc).each(function() {
-            var text = $(this).text();
-            $(this).text("[CANCELLED "+text.trim()+"]");
-        });
-
-        // add square brackets to <supplied>. or <span class="supplied"> if you prefer.
-        $("span.supplied",doc).each(function() {
-            var text = $(this).text() ;
-
-
-
-            $(this).text("["+text.trim()+"]");
-
-            // var prev = $("span .supplied",doc).prev()
-            // //prev
-            // var next = $("span .supplied",doc).next()
-            //$(this).parent().css("white-space", "nowrap")
-            // next.text(next.text().trim())
-        });
-
-        // This one hides the <sic> inside a <choice> block if <corr> is present.
-        $("span.sic",doc).each(function() {
-            var text = $(this).text();
-            $(this).text("["+text.trim()+"]");
-            var next = $(this).next()
-            if ( next.hasClass("corr") ){
-              $(this).css("display","none")
-            }
-        });
-
-        $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
-
-        $("span.note[resp=arber]",doc).each(function() {
-            var text = $(this).text() ;
-            $(this).text("["+text.trim()+"]");
-        });
-
-        $("span.persName[role~=enterer]",doc).css( "font-weight", "bold" )
-
- //console.log(":::: "+this.state.rawContent)
-   //debugger
         var head = $(".head",doc)[0]
         var paragraphs = $("p",doc)
         var metadata = $(".ab[type=metadata]", doc)[0]

@@ -8,6 +8,7 @@ import { Link } from 'react-router'
 import style from './entryPreviewStyle.css'
 
 import xmlTranslator from '../../tools/xmlTranslator'
+import docStyler from '../../tools/docStyler.js'
 
 import $ from 'jquery'
 
@@ -30,31 +31,31 @@ export default class EntryPreview extends Component {
   render() {
         let data = this.props.entryData
 
+      //  debugger
+
         let summaries = [];
 
         if ( data.getElementsByTagName("sum").length > 0 && data.getElementsByTagName("sum")[0].getElementsByTagName("p").length > 0){
 
           var sumElement = data.getElementsByTagName("sum")[0].getElementsByTagName("p");
-
-          // if (sumElement.length > 0 ){
-            for ( var i = 0 ; i < sumElement.length; i++){
-              summaries.push(sumElement[i])
-            }
-          // } else {
-          //     debugger
-          // }
+          for ( var i = 0 ; i < sumElement.length; i++){
+            summaries.push(sumElement[i])
+          }
 
         } else {
 
           for ( var i = 0 ; i < data.getElementsByTagName("doc")[0].getElementsByTagName("p").length; i++){
 
             var node = data.getElementsByTagName("doc")[0].getElementsByTagName("p")[i]
-            node.innerText.trim().length > 0 ? summaries.push(node) : null
+
+            var nodeHTML = $.parseHTML(
+              xmlTranslator(node.outerHTML)
+              .replace(/\n/g, " ").replace(/\#/g,"")
+              .replace(/&lt;/g, "<").replace(/&gt;/g, ">"))[0]
+            docStyler(nodeHTML)
+            nodeHTML.innerText.trim().length > 0 ? summaries.push(nodeHTML) : null
           }
         }
-
-        //findEnterer
-
 
         var pers = data.getElementsByTagName("doc")[0].getElementsByTagName("persname")
         var enterer;
@@ -72,19 +73,14 @@ export default class EntryPreview extends Component {
         } catch ( e ){
           enterer = " "
         }
-      //  debugger;
-
 
         let maxPreviewElements = 3
-
-
-        // var date = data.getElementsByTagName("date")[1].getAttribute("when")
-        // date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notBefore")
-        // date = date ? date : data.getElementsByTagName("date")[1].getAttribute("notAfter")
-
         let translatedPage = xmlTranslator(data.innerHTML)
 
         var doc = $.parseHTML(translatedPage)
+
+        docStyler(doc)
+
         // debugger
         var date = $(".ab[type=metadata] > span[type=Register]", doc)[0].innerHTML
 

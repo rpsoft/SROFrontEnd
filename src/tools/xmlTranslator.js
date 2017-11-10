@@ -24,6 +24,7 @@ function replacer(match, p1, p2, p3, offset, string) {
 
 export default function xml2HTMLTranslator(xmlData){
 
+  // console.log(xmlData)
   var startDel = -1;
   var endDel = -1;
   var buffer = "";
