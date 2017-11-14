@@ -118,7 +118,7 @@ class SearchControls extends Component {
                             <TextField
                               id='query'
                               hintText=''
-                              style={{width: 200,marginLeft:5}}
+                              style={{width: 200,marginLeft:5, marginTop:-5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
                               onKeyPress={(event,value,e) => {
@@ -136,16 +136,18 @@ class SearchControls extends Component {
       return (
 
 
-          <span style={{paddingLeft:10, width:480, height: 40, display: "inline-block"}}>
+          <span style={{paddingLeft:10, width:480, height: 36, display: "inline-block"}}>
 
             { standardSearch }
 
             <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}
                           label='Advanced'
                           // backgroundColor= {this.state.enabled ? "rgb(220, 220, 220)" : "white"}
-                          style={{float:"right",marginTop:5, position:"relative"}}
-                          // className="popover-content"
+                          style={{float:"right", position:"relative", marginTop: 5}}
+                          className="mui-btn mui-btn--small mui-btn--primary"
                           onClick={ () => { this.handleToggleAdvancedSearch() }
+
+
                           }/>
 
           </span>
