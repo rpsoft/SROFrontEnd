@@ -92,13 +92,13 @@ class CommonView extends Component {
         {/* <span>Stationers' Register Online</span> */}
         <Card style={{paddingBottom:5,paddingLeft:13}}>
           <Link to={'/'} style={buttonStyle}>
-            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="" label="Home" />
+            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="mui-btn mui-btn--small mui-btn--primary" label="Home" />
           </Link>
 
 
-          <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className=""
+          <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="mui-btn mui-btn--small mui-btn--primary"
           onClick={(event) => {this.handleTouchTap(event,"open") }}
-          label={<span>Browse <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
+          label={<span style={{display:"inline-flex",top:0, position:"relative",paddingLeft: 0}}>Browse <DownArrow style={{display:"inline-flex",top:3, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
           />
           <Popover className="popover-content"
@@ -117,9 +117,9 @@ class CommonView extends Component {
             </Menu>
           </Popover>
 
-          <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className=""
+          <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="mui-btn mui-btn--small mui-btn--primary"
           onClick={(event) => {this.handleTouchTap(event,"open2")}}
-          label={<span>About <DownArrow style={{display:"inline-flex",top:6, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
+          label={<span style={{display:"inline-flex",top:0, position:"relative",paddingLeft: 0}}>About <DownArrow style={{display:"inline-flex",top:3, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
           style={{marginRight:10}}
           />
 
@@ -148,7 +148,7 @@ class CommonView extends Component {
           </Popover>
 
           <Link to={'/help'} style={buttonStyle}>
-            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="" label="Help" />
+            <RaisedButton hoverColor={buttonHoverColor}  backgroundColor={buttonColor}  className="mui-btn mui-btn--small mui-btn--primary" label="Help" />
           </Link>
 
           <SearchControls
