@@ -30,7 +30,7 @@ class CommonView extends Component {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
-      banner: "/assets/bannerSRO3.png",
+      banner: "/assets/bannerGoudy.png",
     };
   }
 
