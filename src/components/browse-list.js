@@ -11,6 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import ReactTooltip from 'react-tooltip'
 
 //URL relative references kept in one place.
 import { URL_CATEGORIES_LIST, URL_BASE_MULTIMEDIA_IMAGES} from '../links';
@@ -289,7 +290,7 @@ class BrowseList extends Component {
                             </SelectField>
                     </Card>
 
-      let filterTitleStyles = {fontWeight:"600",fontSize:16}
+      let filterTitleStyles = {fontWeight:"600",fontSize:16, display:"inline", float:"left"}
 
       let filterYears = ["1557-1559"]//["1557-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"]
 
@@ -315,7 +316,7 @@ class BrowseList extends Component {
 
                 <Card style={{ padding:15,paddingRight:5, width:"23%",borderRight:"",height:"auto",marginBottom:10, paddingLeft: 25}}>
 
-                    <h4 style={filterTitleStyles}>Date:</h4>
+                    <h4 style={filterTitleStyles}>Date:</h4><h4 data-tip="Select Date Range" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>&#10067;</h4><ReactTooltip />
                     {filterYears.map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -324,7 +325,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Volume:</h4>
+                    <h4 style={filterTitleStyles}>Volume:</h4><h4 data-tip="Select Volume" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>&#10067;</h4><ReactTooltip />
                     {["A","B","C"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -333,7 +334,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Entry type:</h4>
+                    <h4 style={filterTitleStyles}>Entry type:</h4><h4 data-tip="Select Entry Type" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>&#10067;</h4><ReactTooltip />
                     {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -342,7 +343,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Enterer Role:</h4>
+                    <h4 style={filterTitleStyles}>Enterer Role:</h4><h4 data-tip="Select Enterer Role" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>&#10067;</h4><ReactTooltip />
                     {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
