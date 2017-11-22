@@ -245,7 +245,7 @@ class BrowseList extends Component {
       //  debugger
         if (!this.state.allContent || this.state.allContent.indexOf("<exception><path>/db</path><message>") > -1 ) {
 
-          resultsToShow = <Card style={{padding:10}}><span> No results to show yet </span></Card>
+          resultsToShow = <Card style={{padding:10, height:65}}><span> No results to show yet </span></Card>
 
         } else {
           haveResults = true;
@@ -263,7 +263,7 @@ class BrowseList extends Component {
 
 
 
-    let orderingBar = <Card style={{position: "absolute", float: "right", right: 75, top: 0,paddingLeft:10,paddingRight:5,height:50}}>
+    let orderingBar = <Card style={{position: "relative", float: "right", top: 10,paddingLeft:10, paddingRight: 5, marginRight:5,height:45}}>
                           <SelectField
                           // floatingLabelText="Sorting options"
                           value={this.state.sortingFieldControl}
@@ -279,7 +279,7 @@ class BrowseList extends Component {
                   </Card>
 
       let numbering = [10,20,50,100]
-      let pageLimitBar = <Card style={{position: "absolute", float: "right", right: 0, top: 0,paddingLeft:10,paddingRight:5,height:50,width:70}}>
+      let pageLimitBar = <Card style={{position: "relative", float: "right", top: 10,paddingLeft:10,marginRight:15,height:45,width:70}}>
                             <SelectField
                             // floatingLabelText="Sorting options"
                             style={{width:55}}
@@ -312,7 +312,7 @@ class BrowseList extends Component {
                 onClick={()=> {this.getDownloadable()}}
                           />
                           </span> */}
-              {orderingBar} {pageLimitBar}
+
 
                 <Card style={{ padding:15,paddingRight:5, width:"23%",borderRight:"",height:"auto",marginBottom:10, paddingLeft: 25}}>
 
@@ -354,9 +354,9 @@ class BrowseList extends Component {
                       {/* <hr style={{marginLeft:-10,marginRight:10}}/> */}
 
                 </Card>
-                <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:60}}>
+                <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:0}}>
 
-                  {resultsToShow}
+                  {pageLimitBar} {orderingBar} {resultsToShow}
 
                   {
                     (haveResults) ? <RaisedButton
