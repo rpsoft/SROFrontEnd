@@ -114,7 +114,7 @@ class SearchControls extends Component {
       let buttonColor = "#e6e6e6"
       let buttonHoverColor = "#b5b5b5"
 
-      let standardSearch = <span><span>Search:</span>
+      let standardSearch = <span><span style={{marginLeft:95}}>Search:</span>
                             <TextField
                               id='query'
                               hintText=''
@@ -136,7 +136,7 @@ class SearchControls extends Component {
       return (
 
 
-          <span style={{paddingLeft:10, width:480, height: 36, display: "inline-block"}}>
+          <span style={{marginLeft:5, paddingLeft:10, width:480, height: 36, display: "inline-block"}}>
 
             { standardSearch }
 
