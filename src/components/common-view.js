@@ -22,16 +22,65 @@ import { push } from 'react-router-redux'
 
 import SearchControls from './searchControls';
 
+import searchTools from './searchTools';
+
 class CommonView extends Component {
 
-  constructor() {
+  constructor(props) {
     super()
+
     this.state = {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
       banner: "/assets/bannerSRO3.png",
+      loading : false,
+
+      // Search & Browsing parameters here.
+      sorting:{
+          sortField: props.params.sortField,
+          direction: props.params.direction || "ascending"
+        },
+
+      allContent : null,//data,
+      pagesAvailable : 0, //parseInt(pagesAvailable),
+      currentPage : parseInt(props.params.page) || 1, //parseInt(currentPage),
+      pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
+
+      // Search Parameters here.
+      advancedSearch: searchTools.getSOptsFromProps(props),
+      enabled: false,
     };
+
+    this.runSearch("uno!")
+  }
+
+  async componentWillReceiveProps(next) {
+    var props = next
+
+    var newState = {
+      // Search & Browsing parameters here.
+      sorting:{
+          sortField: props.params.sortField,
+          direction: props.params.direction || "ascending"
+        },
+
+      allContent : null,//data,
+      pagesAvailable : 0, //parseInt(pagesAvailable),
+      currentPage : parseInt(props.params.page) || 1, //parseInt(currentPage),
+      pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
+
+      // Search Parameters here.
+      advancedSearch: searchTools.getSOptsFromProps(props),
+      enabled: this.state.enabled,
+      putita:"yeah"
+    }
+//    var e = await
+    // this.setState(newState, ()=> {console.log(JSON.stringify(this.state)); debugger} );
+    this.setState(newState, async ()=> {await this.runSearch()} );
+    // await this.runSearch()
+    // console.log("PAGE: "+this.state.currentPage + "  --  "+parseInt(props.params.page) || 1)
+
   }
 
   handleTouchTap = (event,target) => {
@@ -53,21 +102,54 @@ class CommonView extends Component {
     });
   };
 
- toggleAdvancedSearch = (query) => {
-   //debugger
+ toggleAdvancedSearch = () => {
 
-   this.setState({advancedSearchEnabled : this.state.advancedSearchEnabled ? false : true, query: query })
+   var advSearch = this.state.advancedSearch
+       advSearch.enabled = advSearch.enabled ? false : true
+
+   this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
+
+   console.log(JSON.stringify(advSearch))
  };
 
+ // changeAdvSearchOptions = (advSearch) => {
+ //
+ // }
+
+ runSearch = async (yasss) => {
+    // this.setState({loading : true})
+    var e = this.state
+    var a = yasss
+  //  debugger
+
+    var newData = await searchTools.executeSearch(this.state.advancedSearch,
+                              this.state.currentPage,
+                              this.state.pageLimit,
+                              this.state.sortField,
+                              this.state.direction,
+                              this.state.advancedSearch.filters)
+
+
+  //   debugger
+    this.setState({allContent : newData.allContent,
+                  pagesAvailable : parseInt(newData.pagesAvailable),
+                  // currentPage : parseInt(newData.currentPage),
+                  loading : false})
+ }
+
  changeQuery = (query) => {
-   this.setState({query : query})
+   var adSearch = this.state.advancedSearch
+       adSearch.query = query
+
+   this.setState({advancedSearch : adSearch, query: query })
  }
 
  changeBanner = () => {
     // var selectedBanner = this.state.banner.indexOf("bannerSRO3.png") > -1 ? "/assets/bannerSRO4.png" : "/assets/bannerSRO3.png"
     // this.setState({banner : selectedBanner})
  }
-  render() {
+
+ render() {
 
     let logoStyle = {height: 50,marginLeft:5}
     let buttonStyle = {marginRight:10}
@@ -154,13 +236,21 @@ class CommonView extends Component {
           <SearchControls
             changeQuery = { this.changeQuery }
             toggleAdvancedSearch = { this.toggleAdvancedSearch }
-            routeParams={{query:""}}
             location={this.props.location}
+            runSearch= {this.runSearch}
           />
 
         </Card>
 
-        {React.cloneElement(this.props.children, { advancedSearchEnabled : this.state.advancedSearchEnabled, query : this.state.query })}
+        {
+          React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
+                                          enabled: this.state.advancedSearch.enabled,
+                                          query: this.state.query,
+                                          data: this.state.allContent,
+                                          loading : this.state.loading,
+                                          pagesAvailable : this.state.pagesAvailable})
+        }
+        {/* {this.props.children} */}
 
      </Card>
 

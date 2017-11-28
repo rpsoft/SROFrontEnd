@@ -33,50 +33,35 @@ import { browserHistory } from 'react-router';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-// Date picker
-// import 'react-date-picker/index.css'
-// import { DateField, DatePicker } from 'react-date-picker'
-
 import urlUtils from './urlUtils'
 
 class SearchControls extends Component {
 
     constructor(props) {
       super()
-      //debugger
       if ( props.location.query && props.location.query.query && props.location.query.query.length > 0){
-        //debugger
         this.state = { query : props.location.query.query , enabled: false}
-
       } else {
         this.state = { query : "", enabled: false}
       }
     }
 
 
-    // async componentWillReceiveProps(next) {
-    //
-    // }
-    //
-    componentWillMount() {
-      var props = this.props
-      if ( props.location.query && props.location.query.query && props.location.query.query.length > 0){
-          props.changeQuery({value: props.location.query.query, preventUpdate: false} )
-      }
-     }
-    //
-    // async loadPageFromProps(props){
-    //
-    // }
+    async componentWillReceiveProps(next) {
+        this.setState({ query: next.location.query.query || ""})
+    }
+
+    // componentWillMount() {
+    //   var props = this.props
+    //   if ( props.location.query && props.location.query.query && props.location.query.query.length > 0){
+    //       //props.changeQuery({value: props.location.query.query} )
+    //   }
+    //  }
 
     handleQueryElement = (name,value,preventUpdate) => {
-
       this.setState({query: value})
-
-      if ( this.props.location.pathname.indexOf("/search/") > -1 ){
-        this.props.changeQuery({value: value, preventUpdate: preventUpdate})
-      }
-    //  console.log(JSON.stringify(this.state.advancedSearch))
+    //  debugger
+      this.props.changeQuery(value)
     }
 
     prepareURLVariables = () => {
@@ -85,27 +70,34 @@ class SearchControls extends Component {
       return fetch.objectToGetVariables(adVar)
     }
 
-    switchToSearch (props) {
-
-      if ( props.location.pathname.indexOf("/search/") < 0 ){
-
-      var advSearch = {query: this.state.query}
-
-      var  url = urlUtils.formatUrl("search"
-                                        ,this.state.currentPage ? this.state.currentPage : 1
-                                        ,this.state.pageLimit ? this.state.pageLimit : 10
-                                        ,this.state.sorting
-                                        ,advSearch);
-
-    // debugger
-      props.goToUrl(url);
+    switchToSearch (props,enabled) {
+      // debugger
+      var newUrlQuery = props.location.query
+      if ( this.state.query ){
+        newUrlQuery.query = this.state.query
+      } else {
+        if ( newUrlQuery.query ){
+          delete newUrlQuery.query
+        }
       }
+
+      //newUrlQuery.adv = enabled
+
+      var parameters = []
+
+      for (var k in newUrlQuery ){
+        parameters.push(k+"="+newUrlQuery[k])
+      }
+
+      var pathname = props.location.pathname.indexOf("search") < 0 ? "/search" : props.location.pathname
+
+      var properURL = pathname + (parameters.length > 0 ? "?"+parameters.join("&") : "")
+      //console.log("SCONT: "+properURL)
+      props.goToUrl(properURL);
     }
 
     handleToggleAdvancedSearch () {
-      // this.setState({enabled: this.state.enabled ? false : true})
-      this.props.toggleAdvancedSearch(this.state.query)
-      this.switchToSearch (this.props)
+      this.props.toggleAdvancedSearch()
     }
 
 
@@ -123,14 +115,11 @@ class SearchControls extends Component {
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
                               onKeyPress={(event,value,e) => {
                                 if (event.key === 'Enter'){
-                                  if ( this.state.query.trim().indexOf("SRO") == 0 ){
-                                    var number = this.state.query.trim()
-                                  } else {
-                                    this.handleQueryElement("query",this.state.query,false);
-                                    this.switchToSearch (this.props);
-                                  }
+                                    this.handleQueryElement("query",this.state.query,false);this.props.runSearch();
+                                    this.switchToSearch (this.props,this.state.enabled);
                                 }
                               }}
+
                             /></span>
 
       return (

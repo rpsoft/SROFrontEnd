@@ -104,7 +104,7 @@ class BrowseList extends Component {
 
       var url = urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit,sorting, this.state.advSearchParameters)
 
-      console.log(url)
+      console.log("BROWSSE: "+url)
       this.props.goToUrl(url)
 
     }
@@ -140,7 +140,7 @@ class BrowseList extends Component {
         toggleFilter : next.toggleFilter,
         loading : next.loading,
       }
-
+      // debugger
       for ( var f in filters){
         newState["filter_"+filters[f]] = true
       }
@@ -268,7 +268,7 @@ class BrowseList extends Component {
                           value={this.state.sortingFieldControl}
                           onChange={this.handleSortingChange}
                           >
-                          <MenuItem value={"relevance"} primaryText="Best Match" />
+                          {this.state.linkRoot == "search" ? <MenuItem value={"relevance"} primaryText="Best Match" /> : ""}
                           <MenuItem value={"dateAsc"} primaryText="Date (earliest)" />
                           <MenuItem value={"dateDesc"} primaryText="Date (latest)" />
                           <MenuItem value={"volAsc"} primaryText="Register page (ascending)" />
