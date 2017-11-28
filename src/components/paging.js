@@ -8,16 +8,14 @@ export default class Paging extends Component {
 
   constructor(props) {
     super()
-
     this.state = {
-      pages:props.pages,
-      entriesPerPage:props.entriesPerPage,
-      currentPage:props.currentPage,
+      pages: props.pages,
+      entriesPerPage: props.entriesPerPage,
+      currentPage: props.currentPage,
       linkRoot: props.linkRoot,
       sorting: props.sorting,
       advSearchParameters: props.advSearchParameters
     }
-
   }
 
   componentWillReceiveProps(next) {
@@ -32,18 +30,10 @@ export default class Paging extends Component {
 
   }
 
-  // prepareURLVariables = () => {
-  //   var adVar = this.state.advSearchParameters
-  //   let fetch = new fetchData();
-  //   return "?"+fetch.objectToGetVariables(adVar)
-  // }
-
   render() {
 
     var numberOfPagesEitherSide = 5;
 
-    //var sorting = this.state.sorting ? "/"+this.state.sorting.sortField+"/"+this.state.sorting.direction : null;
-    // debugger
     return <span style={{marginBottom:10,padding:5,textAlign:"center"}}>
 
                 <div>

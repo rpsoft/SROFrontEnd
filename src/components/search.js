@@ -24,7 +24,7 @@ import XmlReader from 'xml-reader'
 import xmlQuery from 'xml-query'
 
 import BrowseList from './browse-list'
-import Paging from './paging'
+// import Paging from './paging'
 
 // This is the library for all the cool progress indicator components
 import Halogen from 'halogen';
@@ -33,24 +33,14 @@ import { browserHistory } from 'react-router';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-// Date picker
-// import 'react-date-picker/index.css'
-// import { DateField, DatePicker } from 'react-date-picker'
-
 import urlUtils from './urlUtils'
+import searchTools from './searchTools'
 
 class Search extends Component {
 
     constructor(props) {
       super()
-      var advSearch = {enabled : props.advancedSearchEnabled, query : props.query ? props.query.value : ""}
-
-      if (Object.keys(props.location.query) ){
-
-        for ( var k in props.location.query ){
-          advSearch[k] = props.location.query[k]
-        }
-      }
+      var advSearch = props.advancedSearch
 
       var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"] //"copies",
 
@@ -58,8 +48,9 @@ class Search extends Component {
         advSearch[allFields[i]] = advSearch[allFields[i]] ? advSearch[allFields[i]] : ""
       }
 
-      advSearch.query = advSearch.query ? advSearch.query : props.routeParams.query;
-      advSearch.enabled = advSearch.enabled ? true : false;
+      advSearch.query = advSearch.query ? advSearch.query : props.advancedSearch.query;
+       // debugger
+      //advSearch.enabled = props.location.query && props.location.query.adv ? props.location.query.adv == "true" : false
 
       var newState = {
         searchType:'normal',
@@ -69,35 +60,29 @@ class Search extends Component {
       }
 
       newState.query = advSearch.query;
-      newState.sorting = {sorting:{sortField: props.routeParams.sortField, direction: props.routeParams.direction ? props.routeParams.direction : "date"}}
-      newState.currentPage = parseInt(props.routeParams.page) ? parseInt(props.routeParams.page) : 1
-      newState.pageLimit = parseInt(props.routeParams.pageLimit) ? parseInt(props.routeParams.pageLimit) : 10  // Entries per page limit.
-
+      newState.sorting = {sorting:{sortField: props.params.sortField, direction: props.params.direction ? props.params.direction : "date"}}
+      newState.currentPage = parseInt(props.params.page) ? parseInt(props.params.page) : 1
+      newState.pageLimit = parseInt(props.params.pageLimit) ? parseInt(props.params.pageLimit) : 10  // Entries per page limit.
+      // debugger
       this.state = newState
     }
 
 
-    async componentWillReceiveProps(next) {
-
-          var advSearch = this.state.advancedSearch
-          advSearch.query = next.query.value
-
-          this.loadPageFromProps(next)
+    componentWillReceiveProps(next) {
+        // console.log("enabled: "+next.enabled)
+        // debugger
+        var currentPage = parseInt(next.params.page) ? parseInt(next.params.page) : 1
+        this.setState({advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage})
     }
 
     async componentWillMount() {
-    //  debugger
-        this.loadPageFromProps(this.props)
-     }
-
-    async loadPageFromProps(props){
-
-      await this.handleAdvancedSearch(props)
+      console.log("enabled: "+this.props.enabled)
+      this.setState({advancedSearch : this.props.advancedSearch})
     }
+
 
     handleQueryElement = (name,value) => {
       var adSearch = this.state.advancedSearch
-    //  adSearch.enabled = true
       adSearch[name] = value
       this.setState({advancedSearch: adSearch})
     }
@@ -126,112 +111,25 @@ class Search extends Component {
         }
       }
 
-      //debugger
-      // value = parseInt(value)
-      //debugger
 
-      // value = parseInt(value)
-      // if ( Number.isInteger(value) ) {
-      //   value = value < 10 ? "0"+value : value+""
-      // }
       adSearch[dateKey][dateElement] = value
-      //adSearch[dateKey][dateElement] = value < 10 ? ( Number.isInteger(Number(value)) && (Number(value) > 0) ? "0"+value : "" ) : ""+value
-    //  debugger
-      console.log(adSearch[dateKey])
 
       state.advancedSearch = adSearch
-
       state[name] = value  // This is the value of the textfield to keep track of the input.
 
-      // "minDate": {"year":"1400","month":"10","day":"20"},"maxDate":{"year":"1900","month":"05","day":"20"},"minFees":"","maxFees":"","entry":"","filters":[]}
-
       this.setState(state)
-      console.log(JSON.stringify(this.state.advancedSearch))
-    }
-
-    // toggleAdvancedSearch = () => {
-    //   var adSearch = this.state.advancedSearch
-    //   if ( adSearch.enabled ){
-    //     adSearch.enabled = false
-    //   } else {
-    //     adSearch.enabled = true;
-    //   }
-    //   this.setState({advancedSearch: adSearch})
-    //
-    // }
-
-    async handleAdvancedSearch (pps,filters) {
-      let fetch = new fetchData();
-      var props = pps ? pps : this.props
-      var currentPage = props.params.page ? props.params.page : 1
-      var pageLimit = props.params.pageLimit ? props.params.pageLimit : 10
-      var xmlField = props.params.sortField ? props.params.sortField : 'date'
-      var direction = props.params.direction ? props.params.direction : 'ascending'
-      var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
-
-      //var query = props.query ? props.query.value : ""
-      var preventUpdate = pps.query ? pps.query.preventUpdate : false
-
-      var advSearch = this.state.advancedSearch
-      //advSearch.query = query;
-
-      advSearch.enabled = props.advancedSearchEnabled
-
-      if ( props.query && props.query.value && props.query.value.length > 0 && props.query.preventUpdate ){
-        this.setState({advancedSearch: advSearch})
-        //debugger
-        return {};
-      }
-
-
-      this.setState({loading : true, query: advSearch.query, advancedSearch: advSearch, allContent : null})
-
-      var anyActive = false;
-
-      for( var k in advSearch ){
-        if ( k == "enabled" || k == "filters"){
-          continue
-        }
-
-        if ( advSearch[k] && JSON.stringify(advSearch[k]).length > 0){
-          anyActive = true;
-          break;
-        }
-      }
-
-      anyActive = anyActive || (filters && filters.length > 0)
-
-      if(!anyActive){
-        this.setState({loading : false})
-        return;
-      }
-
-      console.log(JSON.stringify(advSearch))
-
-      var readyData = this.state.advancedSearch
-
-      var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
-      var ast = XmlReader.parseSync(data);
-      var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
-
-      this.setState({ loading : false,
-                      sorting:{sortField: props.params.sortField,
-                      direction: direction},
-                      allContent : data,
-                      pagesAvailable : parseInt(pagesAvailable),
-                      currentPage : parseInt(currentPage),
-                      pageLimit: parseInt(pageLimit),
-                      advancedSearch: advSearch,
-                      linkRoot: 'search', })
 
     }
+
+    async handleAdvancedSearch (pps) {
+
+    }
+
+
+
 
     handleChangeSearchType = (value, i, type ) => {
       this.setState({searchType:type})
-    }
-
-    onDateChange = (dateString, { dateMoment, timestamp }) => {
-      console.log(dateString)
     }
 
     prepareURLVariables = () => {
@@ -241,9 +139,8 @@ class Search extends Component {
     }
 
     toggleFilters = (filters) => {
-      // this.setState({filters: filters})
-      //console.log("filters:: "+filters)
-      this.handleAdvancedSearch(null,filters)
+      console.log(JSON.stringify(filters))
+      this.handleAdvancedSearch(null)
     }
 
     clearAdvancedSearch () {
@@ -253,33 +150,43 @@ class Search extends Component {
       for (var i in allFields){
         advSearch[allFields[i]] = ""
       }
+
       advSearch.query = ""
       advSearch.enabled = true
 
-      this.setState({advancedSearch : advSearch,
-                      maxDate_day : "",
-                      maxDate_month : "",
-                      maxDate_year : "",
-                      minDate_day : "",
-                      minDate_month : "",
-                      minDate_year : ""
-                    })
+      // this.setState({advancedSearch : advSearch,
+      //                 maxDate_day : "",
+      //                 maxDate_month : "",
+      //                 maxDate_year : "",
+      //                 minDate_day : "",
+      //                 minDate_month : "",
+      //                 minDate_year : "",
+      //                 minFees : null,
+      //                 maxFees : null
+      //               })
+
+      this.props.goToUrl(this.props.location.pathname)
     }
 
     handleAdvancedSearchButton () {
-      this.setState({loading: true, allContent: null})
-      var url = urlUtils.formatUrl(this.state.linkRoot
-                                      ,this.state.currentPage ? this.state.currentPage : 1
-                                      ,this.state.pageLimit ? this.state.pageLimit : 20
-                                      ,this.state.sorting
-                                      ,this.state.advancedSearch)
+      // this.setState({loading: true, allContent: null})
+
+      // debugger
+      // var url = urlUtils.formatUrl(this.state.linkRoot
+      //                                 ,this.state.currentPage ? this.state.currentPage : 1
+      //                                 ,this.state.pageLimit ? this.state.pageLimit : 20
+      //                                 ,this.state.sorting
+      //                                 ,this.state.advancedSearch)
+      // this.props.goToUrl(url);
+
+
+      var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
+      console.log(url)
       this.props.goToUrl(url);
     }
 
     render() {
       // debugger
-      //var args = JSON.stringify(this.state.advancedSearch)
-
       var pageResults = <BrowseList allContent={this.state.allContent}
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}
@@ -289,10 +196,7 @@ class Search extends Component {
                                     advSearchParameters={this.state.advancedSearch}
                                     toggleFilter={(filter) => { this.toggleFilters(filter) }}
                                     location={this.props.location}
-                                    loading= {this.state.loading } />
-      // } else {
-      //   console.log("BLAAHH")
-      // }
+                                    loading= {this.props.loading} />
 
       let sortLinkStyle = {marginRight:10}
       let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
@@ -408,13 +312,12 @@ class Search extends Component {
         <div style={{height:10}}></div>
       </span>
 
-
+      // console.log("ADV SEARCH: "+ this.state.advancedSearch.enabled)
 
       return (
         <div style={{ padding:0, height:'100%'}}>
 
           <Card style={{marginTop:10, marginBottom: this.state.advancedSearch.enabled ? 10 : 0,paddingLeft:10}}>
-
 
             {
               this.state.advancedSearch.enabled ? advancedSearch : <span></span>
@@ -422,7 +325,7 @@ class Search extends Component {
 
           </Card>
 
-
+          <div>{JSON.stringify(this.state.advancedSearch) || ""}</div>
 
           {pageResults}
 
