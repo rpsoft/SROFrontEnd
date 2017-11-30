@@ -89,21 +89,18 @@ export default class EntryPreview extends Component {
 
 
         // debugger
-        return <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none",color:"black"}}><Card style={{marginBottom:10,padding:10}}>
+        return <Card style={{marginBottom:10,padding:10}}>
                     <span>
                       <span style={{color: isCancelled ? "red" : "black"}}>{data.getElementsByTagName("docid")[0].innerText}</span>
                       {isCancelled ? <div style={{color: "red",fontWeight:"bold"}}> Cancelled </div> : ""}
-
+                      <Link to={'/entry/'+data.getElementsByTagName("docid")[0].innerText} style={{textDecoration:"none",color:"black"}}><span className={"viewFull"}>View Full</span>  </Link>
                       <span style={{marginLeft:5,marginRight:5,fontSize:10}}>({date})</span><br/>
                       <span className={"previewEnterer"} >{enterer}</span>
                       {
                       summaries.map( (n,i) => i < maxPreviewElements ? <span key={i} className={"previewEntry"} dangerouslySetInnerHTML={{__html: n.innerHTML}} ></span> : "")
                       }
-
                     </span>
                   </Card>
-                </Link>
-
 
   }
 }
