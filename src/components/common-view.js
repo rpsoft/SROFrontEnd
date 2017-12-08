@@ -29,30 +29,38 @@ class CommonView extends Component {
   constructor(props) {
     super()
 
+    var advSearch = searchTools.getSOptsFromProps(props)
+      advSearch.enabled = false
+
     this.state = {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
-      enabled: false,
-      advancedSearch: searchTools.getSOptsFromProps(props),
+      banner: "/assets/bannerGoudy.png",
+      loading : false,
+
+      // Search & Browsing parameters here.
+      sorting:{
+          sortField: props.params.sortField,
+          direction: props.params.direction || "ascending"
+        },
+
+      allContent : null,//data,
+      pagesAvailable : 0, //parseInt(pagesAvailable),
+      currentPage : parseInt(props.params.page) || 1, //parseInt(currentPage),
+      pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
+
       // Search Parameters here.
 
-      pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
-      currentPage : parseInt(props.params.page) || 1, //parseInt(currentPage),
-      pagesAvailable : 0, //parseInt(pagesAvailable),
-      allContent : null,//data,
-
-        },
-          direction: props.params.direction || "ascending"
-          sortField: props.params.sortField,
-      sorting:{
-      // Search & Browsing parameters here.
-
-      loading : false,
-      banner: "/assets/bannerGoudy.png",
+      advancedSearch: advSearch,
+      enabled: false,
     };
+        // debugger
+
+    console.log("ENABLED!! : "+this.state.enabled+"  ---  "+this.state.advancedSearch.enabled)
 
     this.runSearch("uno!")
+  //  console.log("DOING THE MOUNT")
   }
 
   async componentWillReceiveProps(next) {
@@ -73,14 +81,14 @@ class CommonView extends Component {
       // Search Parameters here.
       advancedSearch: searchTools.getSOptsFromProps(props),
       enabled: this.state.enabled,
-      putita:"yeah"
     }
 //    var e = await
     // this.setState(newState, ()=> {console.log(JSON.stringify(this.state)); debugger} );
     this.setState(newState, async ()=> {await this.runSearch()} );
     // await this.runSearch()
+    //debugger
     // console.log("PAGE: "+this.state.currentPage + "  --  "+parseInt(props.params.page) || 1)
-
+//  console.log("DOING THE RECEIVE PROPS")
   }
 
   handleTouchTap = (event,target) => {
@@ -117,7 +125,7 @@ class CommonView extends Component {
  // }
 
  runSearch = async (yasss) => {
-    // this.setState({loading : true})
+    this.setState({loading : true})
     var e = this.state
     var a = yasss
   //  debugger
@@ -125,17 +133,27 @@ class CommonView extends Component {
     var newData = await searchTools.executeSearch(this.state.advancedSearch,
                               this.state.currentPage,
                               this.state.pageLimit,
-                              this.state.sortField,
-                              this.state.direction,
+                              this.state.sorting.sortField,
+                              this.state.sorting.direction,
                               this.state.advancedSearch.filters)
 
 
-  //   debugger
+   //debugger
     this.setState({allContent : newData.allContent,
                   pagesAvailable : parseInt(newData.pagesAvailable),
                   // currentPage : parseInt(newData.currentPage),
                   loading : false})
  }
+
+ searchURL = () => {
+
+         var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
+         console.log("HERE "+url)
+         this.props.goToUrl(url);
+
+ }
+
+
 
  changeQuery = (query) => {
    var adSearch = this.state.advancedSearch
@@ -160,6 +178,27 @@ class CommonView extends Component {
 
     let buttonColor = "#e6e6e6"
     let buttonHoverColor = "#b5b5b5"
+
+    let child = React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
+                                    enabled: this.state.enabled,
+                                    query: this.state.query,
+                                    data: this.state.allContent,
+                                    loading : this.state.loading,
+                                    pagesAvailable : this.state.pagesAvailable,
+                                    runSearch : this.runSearch })
+
+
+
+    if ( this.props.location.pathname.indexOf("browse") ){
+      child = React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
+                                      enabled: this.state.enabled,
+
+                                      data: this.state.allContent,
+                                      loading : this.state.loading,
+                                      pagesAvailable : this.state.pagesAvailable,
+                                      runSearch : this.runSearch })
+
+    }
 
     return <div>
 
@@ -238,20 +277,15 @@ class CommonView extends Component {
 
           <SearchControls
             changeQuery = { this.changeQuery }
-            toggleAdvancedSearch = { this.toggleAdvancedSearch }
+            toggleAdvancedSearch = {this.toggleAdvancedSearch }
             location={this.props.location}
-            runSearch= {this.runSearch}
+            runSearch= {this.searchURL}
           />
 
         </Card>
 
         {
-          React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
-                                          enabled: this.state.advancedSearch.enabled,
-                                          query: this.state.query,
-                                          data: this.state.allContent,
-                                          loading : this.state.loading,
-                                          pagesAvailable : this.state.pagesAvailable})
+          child
         }
         {/* {this.props.children} */}
 

@@ -50,7 +50,9 @@ class Search extends Component {
 
       advSearch.query = advSearch.query ? advSearch.query : props.advancedSearch.query;
        // debugger
-      //advSearch.enabled = props.location.query && props.location.query.adv ? props.location.query.adv == "true" : false
+      advSearch.enabled = props.enabled
+
+      // console.log("SEARCH enabled: "+advSearch.enabled)
 
       var newState = {
         searchType:'normal',
@@ -63,8 +65,26 @@ class Search extends Component {
       newState.sorting = {sorting:{sortField: props.params.sortField, direction: props.params.direction ? props.params.direction : "date"}}
       newState.currentPage = parseInt(props.params.page) ? parseInt(props.params.page) : 1
       newState.pageLimit = parseInt(props.params.pageLimit) ? parseInt(props.params.pageLimit) : 10  // Entries per page limit.
+
+
+      if ( newState.advancedSearch.maxDate ){
+        newState.maxDate_day = newState.advancedSearch.maxDate.day
+        newState.maxDate_month = newState.advancedSearch.maxDate.month
+        newState.maxDate_year = newState.advancedSearch.maxDate.year
+      }
+
+      if ( newState.advancedSearch.minDate ){
+        newState.minDate_day = newState.advancedSearch.minDate.day
+        newState.minDate_month = newState.advancedSearch.minDate.month
+        newState.minDate_year = newState.advancedSearch.minDate.year
+      }
+
+
       // debugger
       this.state = newState
+
+
+    //  debugger
     }
 
 
@@ -72,11 +92,12 @@ class Search extends Component {
         // console.log("enabled: "+next.enabled)
         // debugger
         var currentPage = parseInt(next.params.page) ? parseInt(next.params.page) : 1
-        this.setState({advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage})
+        this.setState({enabled : next.enabled, advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage, pageLimit : next.params.pageLimit})
+        //  debugger
     }
 
     async componentWillMount() {
-      console.log("enabled: "+this.props.enabled)
+      // console.log("enabled: "+this.props.enabled)
       this.setState({advancedSearch : this.props.advancedSearch})
     }
 
@@ -110,7 +131,6 @@ class Search extends Component {
             adSearch[dateKey] = {year:"1900",month:"12",day:"31"}
         }
       }
-
 
       adSearch[dateKey][dateElement] = value
 
@@ -182,6 +202,7 @@ class Search extends Component {
 
       var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
       console.log(url)
+      // debugger
       this.props.goToUrl(url);
     }
 
@@ -317,10 +338,10 @@ class Search extends Component {
       return (
         <div style={{ padding:0, height:'100%'}}>
 
-          <Card style={{marginTop:10, marginBottom: this.state.advancedSearch.enabled ? 10 : 0,paddingLeft:10}}>
+          <Card style={{marginTop:10, marginBottom: this.state.enabled ? 10 : 0,paddingLeft:10}}>
 
             {
-              this.state.advancedSearch.enabled ? advancedSearch : <span></span>
+              this.state.enabled ? advancedSearch : <span></span>
             }
 
           </Card>

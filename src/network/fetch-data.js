@@ -91,7 +91,7 @@ export default class fetchData {
                                             + ( direction ? "&direction="+direction : "" )
                                             + ((filters && filters.length > 0 ) ? "&filters="+JSON.stringify(filters) : "")
     console.log("ASKED FOR:"+ preparedQuery)
-
+  //  debugger
     return await this.getGeneric( preparedQuery  )
   }
 

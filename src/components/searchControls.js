@@ -16,15 +16,7 @@ import { URL_CATEGORIES_LIST, URL_BASE_MULTIMEDIA_IMAGES} from '../links';
 
 //Static storage class.
 import QueryStore from './QueryStore';
-
-import EntryPreview from './record/entry-preview'
-
-// Allows processing and using XML input.
-import XmlReader from 'xml-reader'
-import xmlQuery from 'xml-query'
-
 import BrowseList from './browse-list'
-import Paging from './paging'
 
 // This is the library for all the cool progress indicator components
 import Halogen from 'halogen';
@@ -40,9 +32,9 @@ class SearchControls extends Component {
     constructor(props) {
       super()
       if ( props.location.query && props.location.query.query && props.location.query.query.length > 0){
-        this.state = { query : props.location.query.query , enabled: false}
+        this.state = { query : props.location.query.query}
       } else {
-        this.state = { query : "", enabled: false}
+        this.state = { query : ""}
       }
     }
 
@@ -70,31 +62,31 @@ class SearchControls extends Component {
       return fetch.objectToGetVariables(adVar)
     }
 
-    switchToSearch (props,enabled) {
-      // debugger
-      var newUrlQuery = props.location.query
-      if ( this.state.query ){
-        newUrlQuery.query = this.state.query
-      } else {
-        if ( newUrlQuery.query ){
-          delete newUrlQuery.query
-        }
-      }
-
-      //newUrlQuery.adv = enabled
-
-      var parameters = []
-
-      for (var k in newUrlQuery ){
-        parameters.push(k+"="+newUrlQuery[k])
-      }
-
-      var pathname = props.location.pathname.indexOf("search") < 0 ? "/search" : props.location.pathname
-
-      var properURL = pathname + (parameters.length > 0 ? "?"+parameters.join("&") : "")
-      //console.log("SCONT: "+properURL)
-      props.goToUrl(properURL);
-    }
+    // switchToSearch (props,enabled) {
+    //   // debugger
+    //   var newUrlQuery = props.location.query
+    //   if ( this.state.query ){
+    //     newUrlQuery.query = this.state.query
+    //   } else {
+    //     if ( newUrlQuery.query ){
+    //       delete newUrlQuery.query
+    //     }
+    //   }
+    //
+    //   //newUrlQuery.adv = enabled
+    //
+    //   var parameters = []
+    //
+    //   for (var k in newUrlQuery ){
+    //     parameters.push(k+"="+newUrlQuery[k])
+    //   }
+    //
+    //   var pathname = props.location.pathname.indexOf("search") < 0 ? "/search" : props.location.pathname
+    //
+    //   var properURL = pathname + (parameters.length > 0 ? "?"+parameters.join("&") : "")
+    //   //console.log("SCONT: "+properURL)
+    //   props.goToUrl(properURL);
+    // }
 
     handleToggleAdvancedSearch () {
       this.props.toggleAdvancedSearch()
@@ -115,8 +107,10 @@ class SearchControls extends Component {
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
                               onKeyPress={(event,value,e) => {
                                 if (event.key === 'Enter'){
-                                    this.handleQueryElement("query",this.state.query,false);this.props.runSearch();
-                                    this.switchToSearch (this.props,this.state.enabled);
+                                    this.handleQueryElement("query",this.state.query,false);
+                                    this.props.runSearch();
+                                    //this.switchToSearch (this.props,this.state.enabled);
+                                  //  handleToggleAdvancedSearch ();
                                 }
                               }}
 
