@@ -47,6 +47,9 @@ var searchTools = (function() {
         advSearch.query = query
         //advSearch.enabled = props.location.query && props.location.query.adv ? props.location.query.adv == "true" : false
 
+    for( var k in props.location.query ){
+        advSearch[k] = props.location.query[k]
+    }
 
     // Date to date-components bit.
     for( var k in advSearch ){
@@ -62,6 +65,8 @@ var searchTools = (function() {
       }
     }
 
+
+
     console.log(JSON.stringify(advSearch))
 
     return advSearch
@@ -71,7 +76,7 @@ var searchTools = (function() {
     var newUrlQuery = props.location.query
 
     for (var k in advSearch){
-      if ( advSearch[k] ){
+    //  if ( advSearch[k] ){
         switch (k) {
           case "enabled":
             continue
@@ -86,24 +91,26 @@ var searchTools = (function() {
             newUrlQuery[k] = formatDate(advSearch[k],k)
             break
           default:
+          //debugger
             newUrlQuery[k] = advSearch[k]
         }
-      }
+    //  }
     }
-
+  //  debugger
     for (var k in newUrlQuery){
       if (newUrlQuery[k].length <= 0){
         delete newUrlQuery[k]
       }
     }
-
+  //  debugger
     var parameters = []
     for (var k in newUrlQuery ){
       parameters.push(k+"="+newUrlQuery[k])
     }
 
-    var properURL = props.location.pathname + (parameters.length > 0 ? "?"+parameters.join("&") : "")
-
+    var properURL = (props.location.pathname.indexOf("search") < 0 ? "/search/1/10" : props.location.pathname )
+                  + (parameters.length > 0 ? "?"+parameters.join("&") : "")
+  //  debugger
     return properURL
 
   }

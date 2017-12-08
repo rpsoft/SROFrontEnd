@@ -74,11 +74,6 @@ class BrowseList extends Component {
     }
 
     handleSortingChange = (event, index, value) => {
-
-      {/* <MenuItem value={{sortField: "date", direction: "ascending"}} primaryText="Date (earliest)" />
-      <MenuItem value={{sortField: "date", direction: "descending"}} primaryText="Date (latest)" />
-      <MenuItem value={{sortField: "volume", direction: "ascending"}} primaryText="Volume/page (Asc)" />
-      <MenuItem value={{sortField: "volume", direction: "descending"}} primaryText="Volume/page (Desc)" /> */}
       var sorting
       switch (value) {
         case "dateAsc":
@@ -120,7 +115,7 @@ class BrowseList extends Component {
     }
 
     componentWillReceiveProps(next){
-
+       //debugger
       var filters = next.location.query.filters ? next.location.query.filters.split(",") : [];
       var advSearch = next.advSearchParameters
 
@@ -128,7 +123,7 @@ class BrowseList extends Component {
         advSearch = {}
       }
       advSearch.filters = filters;
-
+      // debugger
       var newState = {
         allContent : next.allContent,
         pagesAvailable : next.pagesAvailable,
@@ -282,12 +277,14 @@ class BrowseList extends Component {
                             <SelectField
                             // floatingLabelText="Sorting options"
                             style={{width:55}}
-                            value={this.state.pageLimit}
+                            value={parseInt(this.state.pageLimit)}
                             onChange={this.handlePageLimitChange}
                             >
                             {numbering.map( (v,i) => <MenuItem key={i} value={v} primaryText={v} />)}
                             </SelectField>
                     </Card>
+
+      // debugger
 
       let filterTitleStyles = {fontWeight:"600",fontSize:16}
 
