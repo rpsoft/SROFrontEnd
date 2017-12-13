@@ -32,12 +32,14 @@ class CommonView extends Component {
     var advSearch = searchTools.getSOptsFromProps(props)
       advSearch.enabled = false
 
+      // debugger
+
     this.state = {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
       banner: "/assets/bannerSRO3.png",
-      loading : false,
+      loading : Object.keys(props.location.query).length > 0 ? true : false,
 
       // Search & Browsing parameters here.
       sorting:{
@@ -55,12 +57,10 @@ class CommonView extends Component {
       advancedSearch: advSearch,
       enabled: false,
     };
-        // debugger
 
-    console.log("ENABLED!! : "+this.state.enabled+"  ---  "+this.state.advancedSearch.enabled)
-
-    this.runSearch("uno!")
-  //  console.log("DOING THE MOUNT")
+    if ( Object.keys(props.location.query).length > 0 ) {
+      this.runSearch()
+    }
   }
 
   async componentWillReceiveProps(next) {
@@ -82,13 +82,8 @@ class CommonView extends Component {
       advancedSearch: searchTools.getSOptsFromProps(props),
       enabled: this.state.enabled,
     }
-//    var e = await
-    // this.setState(newState, ()=> {console.log(JSON.stringify(this.state)); debugger} );
+
     this.setState(newState, async ()=> {await this.runSearch()} );
-    // await this.runSearch()
-    //debugger
-    // console.log("PAGE: "+this.state.currentPage + "  --  "+parseInt(props.params.page) || 1)
-//  console.log("DOING THE RECEIVE PROPS")
   }
 
   handleTouchTap = (event,target) => {
@@ -120,15 +115,8 @@ class CommonView extends Component {
    console.log(JSON.stringify(advSearch))
  };
 
- // changeAdvSearchOptions = (advSearch) => {
- //
- // }
-
- runSearch = async (yasss) => {
+ runSearch = async () => {
     this.setState({loading : true})
-    var e = this.state
-    var a = yasss
-  //  debugger
 
     var newData = await searchTools.executeSearch(this.state.advancedSearch,
                               this.state.currentPage,
@@ -137,8 +125,6 @@ class CommonView extends Component {
                               this.state.sorting.direction,
                               this.state.advancedSearch.filters)
 
-
-   //debugger
     this.setState({allContent : newData.allContent,
                   pagesAvailable : parseInt(newData.pagesAvailable),
                   // currentPage : parseInt(newData.currentPage),

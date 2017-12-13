@@ -51,8 +51,37 @@ class BrowseList extends Component {
         advSearch = {}
       }
 
+      if(filters.length > 0)
       advSearch.filters = filters;
-      //debugger
+
+      var sortDefaultString = ""
+
+      switch (props.sorting.sortField) {
+        case "date":
+          sortDefaultString += "date"
+          break;
+        case "volume":
+          sortDefaultString += "vol"
+          break;
+        case "relevance":
+          sortDefaultString += "relevance"
+          break;
+        default:
+
+      }
+
+      if ( props.sorting.direction && sortDefaultString.length > 0 && sortDefaultString.indexOf("relevance") < 0){
+        if ( props.sorting.direction == "descending") {
+          sortDefaultString += "Desc"
+        } else {
+          sortDefaultString += "Asc"
+        }
+      }
+
+      if ( props.linkRoot != "search" && sortDefaultString.indexOf("relevance") > -1 ){
+          sortDefaultString = "dateAsc" // default value for Browse option. Cannot be relevance.
+      }
+
       var newState = {
         allContent : props.allContent,
         pagesAvailable : props.pagesAvailable,
@@ -62,7 +91,7 @@ class BrowseList extends Component {
         sorting: props.sorting,
         advSearchParameters : advSearch,
         loading : props.loading,
-        sortingFieldControl : props.linkRoot == "search" ? "relevance" : "dateAsc", // default increasing ID or volument ascending order.
+        sortingFieldControl : sortDefaultString
       }
 
       for ( var f in filters){
@@ -97,6 +126,7 @@ class BrowseList extends Component {
 
       this.setState({sorting : sorting, sortingFieldControl : value})
 
+
       var url = urlUtils.formatUrl(this.state.linkRoot,this.state.currentPage,this.state.pageLimit,sorting, this.state.advSearchParameters)
 
       console.log("BROWSSE: "+url)
@@ -122,6 +152,8 @@ class BrowseList extends Component {
       if ( !advSearch ){
         advSearch = {}
       }
+
+      if ( filters.length > 0 )
       advSearch.filters = filters;
       // debugger
       var newState = {
@@ -164,7 +196,7 @@ class BrowseList extends Component {
      }
 
     handleFilterClick(item){
-
+// sortingFieldControl
       var dat = this.state
       dat[item] = dat[item] ? false : true
 
@@ -187,9 +219,10 @@ class BrowseList extends Component {
 
       advParams.filters = enabledFilters
 
+    //  debugger
       var url = urlUtils.formatUrl(this.state.linkRoot,1,this.state.pageLimit,this.state.sorting,advParams);
-      console.log(url);
-
+      // console.log(url);
+  //    debugger
       this.props.goToUrl(url);
     }
 
@@ -253,8 +286,6 @@ class BrowseList extends Component {
 
     let sortLinkStyle = {marginRight:10}
     let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
-
-
 
 
     let orderingBar = <Card style={{position: "absolute", float: "right", right: 75, top: 0,paddingLeft:10,paddingRight:5,height:50}}>

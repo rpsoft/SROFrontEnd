@@ -49,10 +49,7 @@ class Search extends Component {
       }
 
       advSearch.query = advSearch.query ? advSearch.query : props.advancedSearch.query;
-       // debugger
       advSearch.enabled = props.enabled
-
-      // console.log("SEARCH enabled: "+advSearch.enabled)
 
       var newState = {
         searchType:'normal',
@@ -62,7 +59,11 @@ class Search extends Component {
       }
 
       newState.query = advSearch.query;
-      newState.sorting = {sorting:{sortField: props.params.sortField, direction: props.params.direction ? props.params.direction : "date"}}
+      newState.sorting = {
+                          sortField: props.params.sortField ? props.params.sortField : "date",
+                          direction: props.params.direction ? props.params.direction : "ascending"
+                         }
+
       newState.currentPage = parseInt(props.params.page) ? parseInt(props.params.page) : 1
       newState.pageLimit = parseInt(props.params.pageLimit) ? parseInt(props.params.pageLimit) : 10  // Entries per page limit.
 
@@ -139,6 +140,8 @@ class Search extends Component {
 
       this.setState(state)
 
+  //    debugger
+
     }
 
     async handleAdvancedSearch (pps) {
@@ -202,7 +205,7 @@ class Search extends Component {
 
       var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
       console.log(url)
-      // debugger
+    //   debugger
       this.props.goToUrl(url);
     }
 

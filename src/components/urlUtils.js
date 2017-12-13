@@ -5,15 +5,21 @@ var urlUtils = (function() {
     if ( !args){
       return ""
     }
+
     var keys = Object.keys(args);
     var preparedQuery = ""
+
     for (var a in keys ){
       if ( keys[a] == "enabled" ){
         continue;
       }
 
-      if ( args[keys[a]] && args[keys[a]] != undefined && args[keys[a]].length > 0)
-      preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]]
+      if ( args[keys[a]] && args[keys[a]] != undefined && args[keys[a]].length > 0) {
+        preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]]
+      } else if ( (keys[a] == "maxDate" || keys[a] == "minDate") && args[keys[a]].year ) {
+        preparedQuery = preparedQuery+ "&"+keys[a]+"="+args[keys[a]].year+"-"+args[keys[a]].month+"-"+args[keys[a]].day
+      }
+
     }
     preparedQuery = preparedQuery.replace("&","")
     return preparedQuery
@@ -23,7 +29,7 @@ var urlUtils = (function() {
   var prepareURLVariables = function(adVar)  {
     var getUrlPart = objectToGetVariables(adVar);
     // var adv = this.props.location.query.adv
-    // debugger
+     //debugger
     return getUrlPart ? "?"+getUrlPart : ""
   }
 
@@ -35,7 +41,7 @@ var urlUtils = (function() {
               + (sorting ? "/"+(sorting.sortField ? sorting.sortField : "date")
               +"/"+(sorting.direction ? sorting.direction : "ascending") : "")
               +prepareURLVariables(params)
-    //debugger
+  //  debugger
     return url;
   };
 
