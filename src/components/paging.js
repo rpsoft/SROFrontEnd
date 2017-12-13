@@ -16,9 +16,11 @@ export default class Paging extends Component {
       sorting: props.sorting,
       advSearchParameters: props.advSearchParameters
     }
+
   }
 
   componentWillReceiveProps(next) {
+
     this.setState({
       pages:next.pages,
       entriesPerPage:next.entriesPerPage,
