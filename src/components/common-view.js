@@ -82,7 +82,7 @@ class CommonView extends Component {
       advancedSearch: searchTools.getSOptsFromProps(props),
       enabled: this.state.enabled,
     }
-
+  //  debugger
     this.setState(newState, async ()=> {await this.runSearch()} );
   }
 
@@ -107,17 +107,37 @@ class CommonView extends Component {
 
  toggleAdvancedSearch = () => {
 
+   var isInSearch = this.props.location.pathname.indexOf("search") > -1
+
    var advSearch = this.state.advancedSearch
        advSearch.enabled = advSearch.enabled ? false : true
 
-   this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
+       advSearch.enabled = !isInSearch ? true : advSearch.enabled
+       //debugger
+  // if ( this.props.location.pathname.indexOf("browse") > -1 ){
+  //   advSearch.enabled = true;
+  //   this.setState({advancedSearch : advSearch, enabled: advSearch.enabled }, this.props.goToUrl("/search") )
+  // } else {
+  //    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
+  // }
 
-   console.log(JSON.stringify(advSearch))
+
+
+
+
+  if ( this.props.location.pathname.indexOf("search") == -1 ){
+    advSearch.enabled = true;this.props.goToUrl("/search")
+    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled } , () => { this.props.goToUrl("/search") } )
+
+  } else  {
+    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
+  }
+
+   // console.log("HERE:"+ JSON.stringify(advSearch)+" this.state.: "+this.state.enabled)
  };
 
  runSearch = async () => {
     this.setState({loading : true})
-
     var newData = await searchTools.executeSearch(this.state.advancedSearch,
                               this.state.currentPage,
                               this.state.pageLimit,
@@ -125,10 +145,15 @@ class CommonView extends Component {
                               this.state.sorting.direction,
                               this.state.advancedSearch.filters)
 
-    this.setState({allContent : newData.allContent,
+    if ( !this.state.advancedSearch || (Object.keys(this.state.advancedSearch).length == 1 && Object.keys(this.state.advancedSearch)[0] == "query" && !this.state.advancedSearch.query)){
+      this.setState({allContent : null,
                   pagesAvailable : parseInt(newData.pagesAvailable),
-                  // currentPage : parseInt(newData.currentPage),
                   loading : false})
+    } else {
+      this.setState({allContent : newData.allContent,
+                  pagesAvailable : parseInt(newData.pagesAvailable),
+                  loading : false})
+    }
  }
 
  searchURL = () => {
@@ -164,6 +189,7 @@ class CommonView extends Component {
 
     let buttonColor = "#e6e6e6"
     let buttonHoverColor = "#b5b5b5"
+
 
     let child = React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
                                     enabled: this.state.enabled,
