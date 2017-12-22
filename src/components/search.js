@@ -51,6 +51,8 @@ class Search extends Component {
       advSearch.query = advSearch.query ? advSearch.query : props.advancedSearch.query;
       advSearch.enabled = props.enabled
 
+      // debugger
+
       var newState = {
         searchType:'normal',
         linkRoot: 'search',
@@ -90,11 +92,28 @@ class Search extends Component {
 
 
     componentWillReceiveProps(next) {
-        // console.log("enabled: "+next.enabled)
-        // debugger
+
+        var nextState = this.state
+
+        if ( Object.keys(next.advancedSearch).length == 1 && Object.keys(next.advancedSearch)[0] == "query" && !next.advancedSearch.query ){
+          var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"]
+          for ( var a in allFields){
+              var k = allFields[a]
+              if ( k.indexOf("Date") > -1 ){
+                  nextState[k+"_year"] = ""
+                  nextState[k+"_month"] = ""
+                  nextState[k+"_day"] = ""
+              } else {
+                  nextState[k] = ""
+              }
+
+          }
+
+        }
+
+        this.setState(nextState)
         var currentPage = parseInt(next.params.page) ? parseInt(next.params.page) : 1
         this.setState({enabled : next.enabled, advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage, pageLimit : next.params.pageLimit})
-        //  debugger
     }
 
     async componentWillMount() {
@@ -349,7 +368,7 @@ class Search extends Component {
 
           </Card>
 
-          <div>{JSON.stringify(this.state.advancedSearch) || ""}</div>
+          {/* <div>{JSON.stringify(this.state.advancedSearch) || ""}</div> */}
 
           {pageResults}
 
