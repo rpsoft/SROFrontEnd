@@ -81,12 +81,15 @@ class CommonView extends Component {
 
     return <div>
 
+    <a href="/">
+
       <Card style={{ ...bodyStyle,height:114, backgroundImage: 'url("'+this.state.banner+'")',marginTop:5,backgroundSize:"100%",marginBottom:7}} onClick={ ()=> this.changeBanner()}>
                   <span style={{fontSize:30, color:"#fff"}}>
 
                   </span>
                 </Card>
-
+    </a>
+    
         <Card style={{ ...bodyStyle, minHeight:"52vh",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
 
         {/* <span>Stationers' Register Online</span> */}
