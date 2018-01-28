@@ -92,11 +92,12 @@ class Search extends Component {
 
 
     componentWillReceiveProps(next) {
-
+    //  debugger
         var nextState = this.state
 
+        var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"]
         if ( Object.keys(next.advancedSearch).length == 1 && Object.keys(next.advancedSearch)[0] == "query" && !next.advancedSearch.query ){
-          var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"]
+
           for ( var a in allFields){
               var k = allFields[a]
               if ( k.indexOf("Date") > -1 ){
@@ -111,9 +112,25 @@ class Search extends Component {
 
         }
 
-        this.setState(nextState)
+    //    debugger
+
         var currentPage = parseInt(next.params.page) ? parseInt(next.params.page) : 1
-        this.setState({enabled : next.enabled, advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage, pageLimit : next.params.pageLimit})
+        var prepareAdSearchVars = {}
+
+        for ( var a in allFields){
+          var k = allFields[a]
+          prepareAdSearchVars[k] = next.advancedSearch[k] ? next.advancedSearch[k] : ""
+        }
+
+        nextState.enabled = next.enabled
+        nextState.advancedSearch = prepareAdSearchVars
+        nextState.allContent = next.data
+        nextState.pagesAvailable = next.pagesAvailable
+        nextState.currentPage = currentPage
+        nextState.pageLimit = next.params.pageLimit
+
+        this.setState(nextState)
+        //this.setState({enabled : next.enabled, advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage, pageLimit : next.params.pageLimit})
     }
 
     async componentWillMount() {
@@ -195,7 +212,7 @@ class Search extends Component {
 
       advSearch.query = ""
       advSearch.enabled = true
-
+      // debugger
       // this.setState({advancedSearch : advSearch,
       //                 maxDate_day : "",
       //                 maxDate_month : "",

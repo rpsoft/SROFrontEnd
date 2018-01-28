@@ -26,6 +26,7 @@ var searchTools = (function() {
   var executeSearch = async function(advSearch, currentPage, pageLimit, sortField, direction, filters){
     // debugger
     let fetch = new fetchData();
+    //debugger
     var data = await fetch.getEntriesAdvancedSearch(advSearch, currentPage, pageLimit, sortField, direction, filters);
     var ast = XmlReader.parseSync(data);
     var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
