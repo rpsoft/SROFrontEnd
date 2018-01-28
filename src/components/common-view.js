@@ -38,7 +38,6 @@ class CommonView extends Component {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
-      banner: "/assets/bannerGoudy.png",
       loading : Object.keys(props.location.query).length > 0 ? true : false,
 
       // Search & Browsing parameters here.
@@ -56,6 +55,7 @@ class CommonView extends Component {
 
       advancedSearch: advSearch,
       enabled: false,
+      banner: "/assets/bannerGoudy.png",
     };
 
     if ( Object.keys(props.location.query).length > 0 ) {
