@@ -22,16 +22,68 @@ import { push } from 'react-router-redux'
 
 import SearchControls from './searchControls';
 
+import searchTools from './searchTools';
+
 class CommonView extends Component {
 
-  constructor() {
+  constructor(props) {
     super()
+
+    var advSearch = searchTools.getSOptsFromProps(props)
+      advSearch.enabled = false
+
+      // debugger
+
     this.state = {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
       open: false,
       open2: false,
+      loading : Object.keys(props.location.query).length > 0 ? true : false,
+
+      // Search & Browsing parameters here.
+      sorting:{
+          sortField: props.params.sortField,
+          direction: props.params.direction || "ascending"
+        },
+
+      allContent : null,//data,
+      pagesAvailable : 0, //parseInt(pagesAvailable),
+      currentPage : parseInt(props.params.page) || 1, //parseInt(currentPage),
+      pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
+
+      // Search Parameters here.
+
+      advancedSearch: advSearch,
+      enabled: false,
       banner: "/assets/bannerGoudy.png",
     };
+
+    if ( Object.keys(props.location.query).length > 0 ) {
+      this.runSearch()
+    }
+  }
+
+  async componentWillReceiveProps(next) {
+    var props = next
+
+    var newState = {
+      // Search & Browsing parameters here.
+      sorting:{
+          sortField: props.params.sortField,
+          direction: props.params.direction || "ascending"
+        },
+
+      allContent : null,//data,
+      pagesAvailable : 0, //parseInt(pagesAvailable),
+      currentPage : parseInt(props.params.page) || 1, //parseInt(currentPage),
+      pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
+
+      // Search Parameters here.
+      advancedSearch: searchTools.getSOptsFromProps(props),
+      enabled: this.state.enabled,
+    }
+  //  debugger
+    this.setState(newState, async ()=> {await this.runSearch()} );
   }
 
   handleTouchTap = (event,target) => {
@@ -53,21 +105,80 @@ class CommonView extends Component {
     });
   };
 
- toggleAdvancedSearch = (query) => {
-   //debugger
+ toggleAdvancedSearch = () => {
 
-   this.setState({advancedSearchEnabled : this.state.advancedSearchEnabled ? false : true, query: query })
+   var isInSearch = this.props.location.pathname.indexOf("search") > -1
+
+   var advSearch = this.state.advancedSearch
+       advSearch.enabled = advSearch.enabled ? false : true
+
+       advSearch.enabled = !isInSearch ? true : advSearch.enabled
+       //debugger
+  // if ( this.props.location.pathname.indexOf("browse") > -1 ){
+  //   advSearch.enabled = true;
+  //   this.setState({advancedSearch : advSearch, enabled: advSearch.enabled }, this.props.goToUrl("/search") )
+  // } else {
+  //    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
+  // }
+
+
+
+
+
+  if ( this.props.location.pathname.indexOf("search") == -1 ){
+    advSearch.enabled = true;this.props.goToUrl("/search")
+    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled } , () => { this.props.goToUrl("/search") } )
+
+  } else  {
+    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
+  }
+
+   // console.log("HERE:"+ JSON.stringify(advSearch)+" this.state.: "+this.state.enabled)
  };
 
+ runSearch = async () => {
+    this.setState({loading : true})
+    var newData = await searchTools.executeSearch(this.state.advancedSearch,
+                              this.state.currentPage,
+                              this.state.pageLimit,
+                              this.state.sorting.sortField,
+                              this.state.sorting.direction,
+                              this.state.advancedSearch.filters)
+
+    if ( !this.state.advancedSearch || (Object.keys(this.state.advancedSearch).length == 1 && Object.keys(this.state.advancedSearch)[0] == "query" && !this.state.advancedSearch.query)){
+      this.setState({allContent : null,
+                  pagesAvailable : parseInt(newData.pagesAvailable),
+                  loading : false})
+    } else {
+      this.setState({allContent : newData.allContent,
+                  pagesAvailable : parseInt(newData.pagesAvailable),
+                  loading : false})
+    }
+ }
+
+ searchURL = () => {
+
+         var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
+         console.log("HERE "+url)
+         this.props.goToUrl(url);
+
+ }
+
+
+
  changeQuery = (query) => {
-   this.setState({query : query})
+   var adSearch = this.state.advancedSearch
+       adSearch.query = query
+
+   this.setState({advancedSearch : adSearch, query: query })
  }
 
  changeBanner = () => {
     // var selectedBanner = this.state.banner.indexOf("bannerSRO3.png") > -1 ? "/assets/bannerSRO4.png" : "/assets/bannerSRO3.png"
     // this.setState({banner : selectedBanner})
  }
-  render() {
+
+ render() {
 
     let logoStyle = {height: 50,marginLeft:5}
     let buttonStyle = {marginRight:10}
@@ -78,6 +189,28 @@ class CommonView extends Component {
 
     let buttonColor = "#e6e6e6"
     let buttonHoverColor = "#b5b5b5"
+
+
+    let child = React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
+                                    enabled: this.state.enabled,
+                                    query: this.state.query,
+                                    data: this.state.allContent,
+                                    loading : this.state.loading,
+                                    pagesAvailable : this.state.pagesAvailable,
+                                    runSearch : this.runSearch })
+
+
+
+    if ( this.props.location.pathname.indexOf("browse") ){
+      child = React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
+                                      enabled: this.state.enabled,
+
+                                      data: this.state.allContent,
+                                      loading : this.state.loading,
+                                      pagesAvailable : this.state.pagesAvailable,
+                                      runSearch : this.runSearch })
+
+    }
 
     return <div>
 
@@ -156,14 +289,17 @@ class CommonView extends Component {
 
           <SearchControls
             changeQuery = { this.changeQuery }
-            toggleAdvancedSearch = { this.toggleAdvancedSearch }
-            routeParams={{query:""}}
+            toggleAdvancedSearch = {this.toggleAdvancedSearch }
             location={this.props.location}
+            runSearch= {this.searchURL}
           />
 
         </Card>
 
-        {React.cloneElement(this.props.children, { advancedSearchEnabled : this.state.advancedSearchEnabled, query : this.state.query })}
+        {
+          child
+        }
+        {/* {this.props.children} */}
 
      </Card>
 
