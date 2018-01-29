@@ -26,7 +26,7 @@ var searchTools = (function() {
   var executeSearch = async function(advSearch, currentPage, pageLimit, sortField, direction, filt){
     // debugger
     let fetch = new fetchData();
-    
+
     var filters = filt
 
     if ( typeof(filters) === "string" ){
