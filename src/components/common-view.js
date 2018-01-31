@@ -55,7 +55,7 @@ class CommonView extends Component {
 
       advancedSearch: advSearch,
       enabled: false,
-      banner: "/assets/bannerGoudy.png",
+      banner: "/assets/BannerGoudy.png",
     };
 
     if ( Object.keys(props.location.query).length > 0 ) {
