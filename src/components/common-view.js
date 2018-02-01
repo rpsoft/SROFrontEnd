@@ -268,18 +268,17 @@ class CommonView extends Component {
           >
             <Menu>
               <MenuItem value={1} primaryText="About" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
-              <MenuItem value={2} primaryText="- The Stationers' Register" onClick={ (e) => {this.props.goToUrl("/about?g=stationersRegister"); this.handleRequestClose()}}/>
-              <MenuItem value={3} primaryText="- The Stationers' Company" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
-              <MenuItem value={4} primaryText="- History of Copyright" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
-              <MenuItem value={5} primaryText="- Bibliography" onClick={ (e) => {this.props.goToUrl("/about?g=bibliography"); this.handleRequestClose(); }} />
+              <MenuItem value={2} primaryText="- The Stationers' Company" onClick={ (e) => {this.props.goToUrl("/about"); this.handleRequestClose()}}/>
+              <MenuItem value={3} primaryText="- The Stationers' Register" onClick={ (e) => {this.props.goToUrl("/about?g=stationersRegister"); this.handleRequestClose()}}/>
+              <MenuItem value={4} primaryText="- Bibliography" onClick={ (e) => {this.props.goToUrl("/about?g=bibliography"); this.handleRequestClose(); }} />
               <Divider style={dividerFormat}/>
               {/* <Divider style={dividerFormat} /><Divider style={dividerFormat} /> */}
-              <MenuItem value={6} primaryText="Project" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
-              <MenuItem value={7} primaryText="- History" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
-              <MenuItem value={8} primaryText="- Editorial" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
-              <MenuItem value={9} primaryText="- Technical" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
+              <MenuItem value={5} primaryText="Project" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
+              <MenuItem value={6} primaryText="- Project History" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
+              <MenuItem value={7} primaryText="- Editorial" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
+              <MenuItem value={8} primaryText="- Technical" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
+              <MenuItem value={9} primaryText="- Licence" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
               <MenuItem value={10} primaryText="- Credits" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
-              <MenuItem value={11} primaryText="- Permissions" onClick={ (e) => {this.props.goToUrl("/project"); this.handleRequestClose()}}/>
             </Menu>
           </Popover>
 
