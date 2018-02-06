@@ -26,7 +26,7 @@ var searchTools = (function() {
   var executeSearch = async function(advSearch, currentPage, pageLimit, sortField, direction, filt){
     // debugger
     let fetch = new fetchData();
-    
+
     var filters = filt
 
     if ( typeof(filters) === "string" ){
@@ -52,6 +52,7 @@ var searchTools = (function() {
 
     var advSearch = prevAdvSearch
         advSearch.query = query
+        advSearch.filters = filters
         //advSearch.enabled = props.location.query && props.location.query.adv ? props.location.query.adv == "true" : false
 
 
@@ -74,9 +75,9 @@ var searchTools = (function() {
     return advSearch
   }
 
-  var formatUrlAndGoto = function (advSearch, props){
+  var formatUrlAndGoto = function (advSearch, props, dest){
     var newUrlQuery = props.location.query
-
+    //debugger
     for (var k in advSearch){
       if ( advSearch[k] ){
         switch (k) {
@@ -109,8 +110,8 @@ var searchTools = (function() {
       parameters.push(k+"="+newUrlQuery[k])
     }
 
-    var properURL = props.location.pathname + (parameters.length > 0 ? "?"+parameters.join("&") : "")
-
+    var properURL = (dest ? "/"+dest : props.location.pathname) + (parameters.length > 0 ? "?"+parameters.join("&") : "")
+  //  debugger
     return properURL
 
   }

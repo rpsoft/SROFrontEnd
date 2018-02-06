@@ -91,7 +91,6 @@ class Browse extends Component {
 
       this.setState({loading : true})
 
-      debugger
       var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
 
       var ast = XmlReader.parseSync(data);

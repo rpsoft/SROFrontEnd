@@ -58,7 +58,9 @@ class CommonView extends Component {
       banner: "/assets/bannerGoudy.png",
     };
 
+
     if ( Object.keys(props.location.query).length > 0 ) {
+
       this.runSearch()
     }
   }
@@ -158,7 +160,7 @@ class CommonView extends Component {
 
  searchURL = () => {
 
-         var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
+         var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props , "search");
          console.log("HERE "+url)
          this.props.goToUrl(url);
 

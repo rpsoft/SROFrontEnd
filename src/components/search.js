@@ -239,7 +239,8 @@ class Search extends Component {
       // this.props.goToUrl(url);
 
 
-      var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props);
+      var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props, "search");
+
       console.log(url)
     //   debugger
       this.props.goToUrl(url);
