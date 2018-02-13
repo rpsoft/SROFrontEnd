@@ -33,7 +33,8 @@ var searchTools = (function() {
       filters = filters ? filters.split(",") : []
     }
 
-    var data = await fetch.getEntriesAdvancedSearch(advSearch, currentPage, pageLimit, sortField, direction, filters);
+  //  debugger
+    var data = await fetch.getEntriesAdvancedSearch("search",advSearch, currentPage, pageLimit, sortField, direction, filters);
     var ast = XmlReader.parseSync(data);
     var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();
 
@@ -46,38 +47,60 @@ var searchTools = (function() {
 
 // Get search options from props.
   var getSOptsFromProps = function (props, prevAdvSearch = {}) {
-
-    var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
-    var query = props.location.query && props.location.query.query ? props.location.query.query : ""
+  //  debugger
 
     var advSearch = prevAdvSearch
-        advSearch.query = query
-        advSearch.filters = filters
-        //advSearch.enabled = props.location.query && props.location.query.adv ? props.location.query.adv == "true" : false
 
-
-    // Date to date-components bit.
-    for( var k in advSearch ){
+    for( var k in props.location.query ){
       if ( k.indexOf("Date") > 1 ){
-          if( typeof(advSearch[k]) == "string" ){
+          if( typeof(props.location.query[k]) == "string" ){
               var date = {}
-              var dateElements = advSearch[k].split("-")
+              var dateElements = props.location.query[k].split("-")
               date.year = dateElements[0]
               date.month = dateElements[1]
               date.day = dateElements[2]
               advSearch[k] = date
           }
+      } else {
+        advSearch[k] = props.location.query[k]
       }
     }
 
-    console.log(JSON.stringify(advSearch))
 
+    //Overrides for filters and query
+    var filters = props.location.query.filters ? props.location.query.filters.split(",") : []
+    var query = props.location.query && props.location.query.query ? props.location.query.query : ""
+        advSearch.query = query
+        advSearch.filters = filters
+
+        //advSearch.enabled = props.location.query && props.location.query.adv ? props.location.query.adv == "true" : false
+
+
+    // Date to date-components bit.
+    // for( var k in advSearch ){
+    //   if ( k.indexOf("Date") > 1 ){
+    //       if( typeof(advSearch[k]) == "string" ){
+    //           var date = {}
+    //           var dateElements = advSearch[k].split("-")
+    //           date.year = dateElements[0]
+    //           date.month = dateElements[1]
+    //           date.day = dateElements[2]
+    //           advSearch[k] = date
+    //       }
+    //   }
+    // }
+
+
+
+    console.log(JSON.stringify(advSearch))
+  //  debugger
     return advSearch
   }
 
-  var formatUrlAndGoto = function (advSearch, props, dest){
-    var newUrlQuery = props.location.query
-    //debugger
+  var formatUrlAndGoto = function (advSearch, props, dest, fromSearchBox){
+    var newUrlQuery = {}
+    // var newUrlQuery = fromSearchBox ? advSearch props.location.query
+    // debugger
     for (var k in advSearch){
       if ( advSearch[k] ){
         switch (k) {
@@ -111,7 +134,7 @@ var searchTools = (function() {
     }
 
     var properURL = (dest ? "/"+dest : props.location.pathname) + (parameters.length > 0 ? "?"+parameters.join("&") : "")
-  //  debugger
+    console.log("searchToolsURL="+properURL)
     return properURL
 
   }

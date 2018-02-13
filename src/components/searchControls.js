@@ -40,6 +40,7 @@ class SearchControls extends Component {
 
 
     async componentWillReceiveProps(next) {
+        //debugger
         this.setState({ query: next.location.query.query || ""})
     }
 
@@ -109,6 +110,7 @@ class SearchControls extends Component {
                                 if (event.key === 'Enter'){
                                     this.handleQueryElement("query",this.state.query,false);
                                     this.props.runSearch();
+                                    console.log("searchControls: "+this.state.query)
                                     //this.switchToSearch (this.props,this.state.enabled);
                                   //  handleToggleAdvancedSearch ();
                                 }
