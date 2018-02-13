@@ -91,7 +91,7 @@ class Browse extends Component {
 
       this.setState({loading : true})
 
-      var data = await fetch.getEntriesAdvancedSearch(readyData, currentPage, pageLimit, xmlField, direction, filters);
+      var data = await fetch.getEntriesAdvancedSearch("browser",readyData, currentPage, pageLimit, xmlField, direction, filters);
 
       var ast = XmlReader.parseSync(data);
       var pagesAvailable = xmlQuery(ast).find('paging').find('last').text();

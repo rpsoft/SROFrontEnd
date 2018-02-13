@@ -41,7 +41,7 @@ class Search extends Component {
     constructor(props) {
       super()
       var advSearch = props.advancedSearch
-
+    //  debugger
       var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"] //"copies",
 
       for (var i in allFields){
@@ -50,8 +50,6 @@ class Search extends Component {
 
       advSearch.query = advSearch.query ? advSearch.query : props.advancedSearch.query;
       advSearch.enabled = props.enabled
-
-      // debugger
 
       var newState = {
         searchType:'normal',
@@ -69,7 +67,6 @@ class Search extends Component {
       newState.currentPage = parseInt(props.params.page) ? parseInt(props.params.page) : 1
       newState.pageLimit = parseInt(props.params.pageLimit) ? parseInt(props.params.pageLimit) : 10  // Entries per page limit.
 
-
       if ( newState.advancedSearch.maxDate ){
         newState.maxDate_day = newState.advancedSearch.maxDate.day
         newState.maxDate_month = newState.advancedSearch.maxDate.month
@@ -82,17 +79,11 @@ class Search extends Component {
         newState.minDate_year = newState.advancedSearch.minDate.year
       }
 
-
-      // debugger
       this.state = newState
-
-
-    //  debugger
     }
 
 
     componentWillReceiveProps(next) {
-    //  debugger
         var nextState = this.state
 
         var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"]
@@ -109,12 +100,8 @@ class Search extends Component {
               }
 
           }
-
         }
 
-    //    debugger
-
-        var currentPage = parseInt(next.params.page) ? parseInt(next.params.page) : 1
         var prepareAdSearchVars = {}
 
         for ( var a in allFields){
@@ -126,15 +113,19 @@ class Search extends Component {
         nextState.advancedSearch = prepareAdSearchVars
         nextState.allContent = next.data
         nextState.pagesAvailable = next.pagesAvailable
-        nextState.currentPage = currentPage
-        nextState.pageLimit = next.params.pageLimit
+        nextState.currentPage = parseInt(next.params.page) ? parseInt(next.params.page) : 1
+        nextState.pageLimit = parseInt(next.params.pageLimitt) ? parseInt(next.params.pageLimit) : 10  // Entries per page limit.
+
+        nextState.sorting = {
+                            sortField: next.params.sortField ? next.params.sortField : "date",
+                            direction: next.params.direction ? next.params.direction : "ascending"
+                           }
+
 
         this.setState(nextState)
-        //this.setState({enabled : next.enabled, advancedSearch : next.advancedSearch, allContent : next.data, pagesAvailable: next.pagesAvailable, currentPage : currentPage, pageLimit : next.params.pageLimit})
     }
 
     async componentWillMount() {
-      // console.log("enabled: "+this.props.enabled)
       this.setState({advancedSearch : this.props.advancedSearch})
     }
 
@@ -175,27 +166,21 @@ class Search extends Component {
       state[name] = value  // This is the value of the textfield to keep track of the input.
 
       this.setState(state)
-
-  //    debugger
-
     }
 
     async handleAdvancedSearch (pps) {
 
     }
 
-
-
-
     handleChangeSearchType = (value, i, type ) => {
       this.setState({searchType:type})
     }
 
-    prepareURLVariables = () => {
-      var adVar = this.state.advancedSearch
-      let fetch = new fetchData();
-      return fetch.objectToGetVariables(adVar)
-    }
+    // prepareURLVariables = () => {
+    //   var adVar = this.state.advancedSearch
+    //   let fetch = new fetchData();
+    //   return fetch.objectToGetVariables(adVar)
+    // }
 
     toggleFilters = (filters) => {
       console.log(JSON.stringify(filters))
@@ -212,42 +197,25 @@ class Search extends Component {
 
       advSearch.query = ""
       advSearch.enabled = true
-      // debugger
-      // this.setState({advancedSearch : advSearch,
-      //                 maxDate_day : "",
-      //                 maxDate_month : "",
-      //                 maxDate_year : "",
-      //                 minDate_day : "",
-      //                 minDate_month : "",
-      //                 minDate_year : "",
-      //                 minFees : null,
-      //                 maxFees : null
-      //               })
+
+      var st = this.state
+
+      var dateElemnts = ["maxDate_day","maxDate_month","maxDate_year","minDate_day","minDate_month","minDate_year"]
+      dateElemnts.map( (a) => {st[a] = ""})
+      st.advancedSearch = advSearch
+      this.setState(st)
 
       this.props.goToUrl(this.props.location.pathname)
     }
 
     handleAdvancedSearchButton () {
-      // this.setState({loading: true, allContent: null})
-
-      // debugger
-      // var url = urlUtils.formatUrl(this.state.linkRoot
-      //                                 ,this.state.currentPage ? this.state.currentPage : 1
-      //                                 ,this.state.pageLimit ? this.state.pageLimit : 20
-      //                                 ,this.state.sorting
-      //                                 ,this.state.advancedSearch)
-      // this.props.goToUrl(url);
-
-
       var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props, "search");
-
       console.log(url)
-    //   debugger
       this.props.goToUrl(url);
     }
 
     render() {
-      // debugger
+       debugger
       var pageResults = <BrowseList allContent={this.state.allContent}
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}

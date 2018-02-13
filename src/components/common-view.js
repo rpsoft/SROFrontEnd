@@ -31,8 +31,8 @@ class CommonView extends Component {
 
     var advSearch = searchTools.getSOptsFromProps(props)
       advSearch.enabled = false
-
-      // debugger
+       //
+       // debugger
 
     this.state = {
       isAMobile: (navigator.userAgent.indexOf('Mobile') > -1)? true : false,
@@ -113,18 +113,7 @@ class CommonView extends Component {
 
    var advSearch = this.state.advancedSearch
        advSearch.enabled = advSearch.enabled ? false : true
-
        advSearch.enabled = !isInSearch ? true : advSearch.enabled
-       //debugger
-  // if ( this.props.location.pathname.indexOf("browse") > -1 ){
-  //   advSearch.enabled = true;
-  //   this.setState({advancedSearch : advSearch, enabled: advSearch.enabled }, this.props.goToUrl("/search") )
-  // } else {
-  //    this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
-  // }
-
-
-
 
 
   if ( this.props.location.pathname.indexOf("search") == -1 ){
@@ -135,7 +124,7 @@ class CommonView extends Component {
     this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
   }
 
-   // console.log("HERE:"+ JSON.stringify(advSearch)+" this.state.: "+this.state.enabled)
+  //  console.log("HERE:"+ JSON.stringify(advSearch)+" this.state.: "+this.state.enabled)
  };
 
  runSearch = async () => {
@@ -159,8 +148,8 @@ class CommonView extends Component {
  }
 
  searchURL = () => {
-
-         var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props , "search");
+      //  debugger
+         var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props , "search", true);
          console.log("HERE "+url)
          this.props.goToUrl(url);
 

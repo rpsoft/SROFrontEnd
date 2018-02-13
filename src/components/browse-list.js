@@ -94,7 +94,7 @@ class BrowseList extends Component {
         loading : props.loading,
         sortingFieldControl : sortDefaultString
       }
-
+      debugger
       for ( var f in filters){
         newState["filter_"+filters[f]] = true
       }
@@ -290,7 +290,7 @@ class BrowseList extends Component {
 
 
 
-
+    debugger
     let orderingBar = <Card style={{position: "relative", float: "right", top: 10,paddingLeft:10, paddingRight: 5, marginRight:5,height:45}}>
                           <SelectField
                           // floatingLabelText="Sorting options"
