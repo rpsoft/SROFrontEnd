@@ -43,7 +43,6 @@ class BrowseList extends Component {
     constructor(props) {
       super()
 
-      //debugger
       var filters = props.location.query.filters ? props.location.query.filters.split(",") : [];
 
       var advSearch = props.advSearchParameters
@@ -94,7 +93,7 @@ class BrowseList extends Component {
         loading : props.loading,
         sortingFieldControl : sortDefaultString
       }
-      debugger
+      // debugger
       for ( var f in filters){
         newState["filter_"+filters[f]] = true
       }
@@ -290,7 +289,7 @@ class BrowseList extends Component {
 
 
 
-    debugger
+    // debugger
     let orderingBar = <Card style={{position: "relative", float: "right", top: 10,paddingLeft:10, paddingRight: 5, marginRight:5,height:45}}>
                           <SelectField
                           // floatingLabelText="Sorting options"

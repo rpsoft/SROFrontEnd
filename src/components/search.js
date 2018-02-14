@@ -86,6 +86,11 @@ class Search extends Component {
     componentWillReceiveProps(next) {
         var nextState = this.state
 
+        // debugger
+        //console.log("SEARCH QUERY : "+next.query)
+
+        nextState.query = next.query
+
         var allFields = ["person","minDate","maxDate","minFees","maxFees","entry","query"]
         if ( Object.keys(next.advancedSearch).length == 1 && Object.keys(next.advancedSearch)[0] == "query" && !next.advancedSearch.query ){
 
@@ -101,6 +106,8 @@ class Search extends Component {
 
           }
         }
+
+        // debugger
 
         var prepareAdSearchVars = {}
 
@@ -121,6 +128,10 @@ class Search extends Component {
                             direction: next.params.direction ? next.params.direction : "ascending"
                            }
 
+                    //       debugger
+        // if ( JSON.stringify(nextState.advancedSearch).indexOf(JSON.stringify(this.state.advancedSearch)) == -1 ){
+        //   this.props.updateAdvancedSearch(nextState.advancedSearch)
+        // }
 
         this.setState(nextState)
     }
@@ -134,6 +145,7 @@ class Search extends Component {
       var adSearch = this.state.advancedSearch
       adSearch[name] = value
       this.setState({advancedSearch: adSearch})
+      this.props.updateAdvancedSearch(adSearch)
     }
 
     handleDateQueryElement = (name,value) => {
@@ -215,7 +227,7 @@ class Search extends Component {
     }
 
     render() {
-       debugger
+
       var pageResults = <BrowseList allContent={this.state.allContent}
                                     pagesAvailable={this.state.pagesAvailable}
                                     pageLimit={this.state.pageLimit}

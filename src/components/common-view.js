@@ -150,19 +150,25 @@ class CommonView extends Component {
  searchURL = () => {
       //  debugger
          var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props , "search", true);
-         console.log("HERE "+url)
+         //console.log("HERE "+url)
          this.props.goToUrl(url);
 
  }
 
 
-
  changeQuery = (query) => {
    var adSearch = this.state.advancedSearch
        adSearch.query = query
-
+   //console.log("Change QUERY: "+query)
    this.setState({advancedSearch : adSearch, query: query })
  }
+
+
+ updateAdvancedSearch = (adSearch) => {
+   this.setState({advancedSearch : adSearch, query: adSearch.query })
+ }
+
+
 
  changeBanner = () => {
     // var selectedBanner = this.state.banner.indexOf("bannerSRO3.png") > -1 ? "/assets/bannerSRO4.png" : "/assets/bannerSRO3.png"
@@ -188,14 +194,14 @@ class CommonView extends Component {
                                     data: this.state.allContent,
                                     loading : this.state.loading,
                                     pagesAvailable : this.state.pagesAvailable,
-                                    runSearch : this.runSearch })
+                                    runSearch : this.runSearch,
+                                    updateAdvancedSearch : this.updateAdvancedSearch})
 
 
-
-    if ( this.props.location.pathname.indexOf("browse") ){
+                                    //debugger
+    if ( this.props.location.pathname.indexOf("browse") > -1 ){
       child = React.cloneElement(this.props.children, { advancedSearch : this.state.advancedSearch,
                                       enabled: this.state.enabled,
-
                                       data: this.state.allContent,
                                       loading : this.state.loading,
                                       pagesAvailable : this.state.pagesAvailable,
