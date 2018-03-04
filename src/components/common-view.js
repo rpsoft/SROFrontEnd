@@ -326,6 +326,12 @@ class CommonView extends Component {
           </div>
         </Card>
       </Card>
+      <Card style={{ ...bodyStyle, marginTop:10, marginBottom:5, textAlign:"center",backgroundImage: 'url("/assets/page.png")', backgroundSize: "100%"}}>
+        <Card style={{paddingTop:8,paddingBottom:1}}>
+          <p>Contact us: editors@stationersregister.online</p>
+        </Card>
+      </Card>
+
       <div style={{height:"25vh"}}></div>
     </div>
   }
