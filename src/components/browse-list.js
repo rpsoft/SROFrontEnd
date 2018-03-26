@@ -370,15 +370,6 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Enterer Role:</h4><h4 data-tip="Select Enterer Role" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
-                    {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
-                              labelPosition="left"
-                              key={i}
-                              checked={this.state["filter_entererRole_"+item]}
-                              value={this.state["filter_entererRole_"+item]}
-                              onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
-                      />) }
-                      {/* <hr style={{marginLeft:-10,marginRight:10}}/> */}
 
                 </Card>
                 <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:0}}>
