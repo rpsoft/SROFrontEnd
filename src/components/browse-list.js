@@ -226,7 +226,7 @@ class BrowseList extends Component {
       this.props.goToUrl(url);
     }
 
-    getDownloadable (){
+    getDownloadableXML (){
       if ( this.state.allContent ){
         var link = document.createElement('a');
         link.download = "SRO-Page-"+this.state.currentPage+".xml";
@@ -382,7 +382,7 @@ class BrowseList extends Component {
                     label="Download Page"
                     style={{width:"100%"}}
                     labelStyle={{fontSize:13}}
-                    onClick={()=> {this.getDownloadable()}}
+                    onClick={()=> {this.getDownloadableXML()}}
                   /> : <span></span>
                   }
                 </div>

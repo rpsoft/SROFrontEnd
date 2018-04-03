@@ -60,16 +60,26 @@ export default class Entry extends Component {
     this.setState({rawContent: data, preTranslation: preTranslation})
    }
 
-  getDownloadable (){
+  getDownloadableTXT (){
     var link = document.createElement('a');
-    link.download = "SRO-Entry-"+this.props.params.entryID+".xml";
-    link.href = 'data:,' + encodeURIComponent(this.state.preTranslation);
+    link.download = "SRO-Entry-"+this.props.params.entryID+".txt";
+    var plainText = this.state.rawContent.replace(/<\/?[^>]+(>|$)/g, "");
+    link.href = 'data:,' + encodeURIComponent(plainText);
     link.click();
-
+    // console.log (this.state);
     // var downloadData = "data:application/octet-stream,"
     // window.open(downloadData, 'SRO-document.xml');
   }
 
+  getDownloadableXML (){
+    var link = document.createElement('a');
+    link.download = "SRO-Entry-"+this.props.params.entryID+".xml";
+    link.href = 'data:,' + encodeURIComponent(this.state.preTranslation);
+    link.click();
+    // console.log (this.state);
+    // var downloadData = "data:application/octet-stream,"
+    // window.open(downloadData, 'SRO-document.xml');
+  }
 
 
   render() {
@@ -132,7 +142,9 @@ export default class Entry extends Component {
                       <div><span className="metadataTitle">Wardens: </span>{wardensHTML}</div>
                     </div>
 
-                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadable()} label={"Download XML"} />
+                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableXML()} label={"Download XML"} />
+                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableTXT()} label={"Download TXT"} />
+
                 </Card>
 
 
