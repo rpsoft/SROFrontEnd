@@ -264,18 +264,24 @@ class BrowseList extends Component {
 
       var resultsToShow ;
 
-      var haveResults = false;
+      var haveResults;
 
       if ( this.state.loading ){
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
       } else {
       //  debugger
+
         if (!this.state.allContent || this.state.allContent.indexOf("<exception><path>/db</path><message>") > -1 ) {
 
           resultsToShow = <Card style={{padding:10, height:65}}><span> No results to show yet </span></Card>
 
         } else {
+          if (this.state.allContent.length === 206) {
+          // Hide 'Download page' option if results empty
+          haveResults = false
+          } else {
           haveResults = true;
+          }
           resultsToShow = <span >
                           <Card style={{marginBottom:10}}><Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/></Card>
                           {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
