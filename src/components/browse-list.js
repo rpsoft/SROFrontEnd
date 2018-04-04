@@ -238,6 +238,17 @@ class BrowseList extends Component {
       // window.open(downloadData, 'SRO-document.xml');
     }
 
+    getDownloadableTXT (){
+      var link = document.createElement('a');
+      link.download = "SRO-Page-"+this.state.currentPage+".txt";
+      var plainText = this.state.allContent.replace(/<\/?[^>]+(>|$)/g, "");
+      link.href = 'data:,' + encodeURIComponent(plainText);
+      link.click();
+      // console.log (this.state);
+      // var downloadData = "data:application/octet-stream,"
+      // window.open(downloadData, 'SRO-document.xml');
+    }
+
     render() {
       let loadingStyle= {
               display: '-webkit-flex',
@@ -385,10 +396,19 @@ class BrowseList extends Component {
                   {
                     (haveResults) ? <RaisedButton
                     icon={<DownloadIcon/>}
-                    label="Download Page"
-                    style={{width:"100%"}}
+                    label="Download XML"
+                    style={{width:"49%"}}
                     labelStyle={{fontSize:13}}
                     onClick={()=> {this.getDownloadableXML()}}
+                  /> : <span></span>
+                  }
+                  {
+                    (haveResults) ? <RaisedButton
+                    icon={<DownloadIcon/>}
+                    label="Download TXT"
+                    style={{width:"49%", float:"right"}}
+                    labelStyle={{fontSize:13}}
+                    onClick={()=> {this.getDownloadableTXT()}}
                   /> : <span></span>
                   }
                 </div>
