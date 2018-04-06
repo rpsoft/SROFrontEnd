@@ -109,15 +109,18 @@ class CommonView extends Component {
 
  toggleAdvancedSearch = () => {
 
+   //debugger
+
    var isInSearch = this.props.location.pathname.indexOf("search") > -1
 
    var advSearch = this.state.advancedSearch
        advSearch.enabled = advSearch.enabled ? false : true
+
        advSearch.enabled = !isInSearch ? true : advSearch.enabled
 
 
-  if ( this.props.location.pathname.indexOf("search") == -1 ){
-    advSearch.enabled = true;this.props.goToUrl("/search")
+  if ( !isInSearch ){
+    advSearch.enabled = true; //this.props.goToUrl("/search")
     this.setState({advancedSearch : advSearch, enabled: advSearch.enabled } , () => { this.props.goToUrl("/search") } )
 
   } else  {

@@ -269,9 +269,10 @@ class BrowseList extends Component {
       if ( this.state.loading ){
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
       } else {
-      //  debugger
-        if (!this.state.allContent || this.state.allContent.indexOf("<exception><path>/db</path><message>") > -1 ) {
-
+        // debugger
+        if (!this.state.allContent
+                || this.state.allContent.indexOf("<exception><path>/db</path><message>") > -1  // This happens when there is an error at the server level, and no results are retrieved
+                || this.state.allContent.indexOf("<returned>0</returned>") > -1 ) { // And this when no results exist for the current search.
           resultsToShow = <Card style={{padding:10, height:65}}><span> No results to show yet </span></Card>
 
         } else {
