@@ -93,7 +93,7 @@ var searchTools = (function() {
 
 
     console.log(JSON.stringify(advSearch))
-  //  debugger
+    //debugger
     return advSearch
   }
 

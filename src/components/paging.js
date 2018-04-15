@@ -35,7 +35,7 @@ export default class Paging extends Component {
   render() {
 
     var numberOfPagesEitherSide = 5;
-
+  //  debugger
     return <span style={{marginBottom:10,padding:5,textAlign:"center"}}>
 
                 <div>

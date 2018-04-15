@@ -117,6 +117,8 @@ class Search extends Component {
         }
 
         nextState.enabled = next.enabled
+        prepareAdSearchVars.enabled = next.enabled
+
         nextState.advancedSearch = prepareAdSearchVars
         nextState.allContent = next.data
         nextState.pagesAvailable = next.pagesAvailable
@@ -132,7 +134,7 @@ class Search extends Component {
         // if ( JSON.stringify(nextState.advancedSearch).indexOf(JSON.stringify(this.state.advancedSearch)) == -1 ){
         //   this.props.updateAdvancedSearch(nextState.advancedSearch)
         // }
-
+        //debugger
         this.setState(nextState)
     }
 
@@ -142,8 +144,10 @@ class Search extends Component {
 
 
     handleQueryElement = (name,value) => {
+      //debugger
       var adSearch = this.state.advancedSearch
       adSearch[name] = value
+      adSearch.enabled = this.state.enabled
       this.setState({advancedSearch: adSearch})
       this.props.updateAdvancedSearch(adSearch)
     }
@@ -221,7 +225,9 @@ class Search extends Component {
     }
 
     handleAdvancedSearchButton () {
-      var url = searchTools.formatUrlAndGoto(this.state.advancedSearch, this.props, "search");
+      var adSearch = this.state.advancedSearch
+          adSearch.enabled = this.state.enabled
+      var url = searchTools.formatUrlAndGoto(adSearch, this.props, "search");
       console.log(url)
       this.props.goToUrl(url);
     }

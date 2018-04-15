@@ -67,7 +67,7 @@ class CommonView extends Component {
 
   async componentWillReceiveProps(next) {
     var props = next
-
+    var updatedAdvSearchOptions = searchTools.getSOptsFromProps(props)
     var newState = {
       // Search & Browsing parameters here.
       sorting:{
@@ -81,7 +81,8 @@ class CommonView extends Component {
       pageLimit: parseInt(props.params.pageLimit) || 10,// parseInt(pageLimit),
 
       // Search Parameters here.
-      advancedSearch: searchTools.getSOptsFromProps(props),
+
+      advancedSearch: updatedAdvSearchOptions,
       enabled: this.state.enabled,
     }
   //  debugger
@@ -113,17 +114,39 @@ class CommonView extends Component {
 
    var isInSearch = this.props.location.pathname.indexOf("search") > -1
 
-   var advSearch = this.state.advancedSearch
-       advSearch.enabled = advSearch.enabled ? false : true
 
+
+
+   var advSearch = this.state.advancedSearch
+
+   var didClose = advSearch.enabled
+
+       advSearch.enabled = advSearch.enabled ? false : true
        advSearch.enabled = !isInSearch ? true : advSearch.enabled
 
+       didClose = didClose && !advSearch.enabled
+
+  if( didClose ){ // then clear Advanced Search
+    //  debugger
+      advSearch = {"query":"",
+                    "filters":[],
+                    "person":"",
+                    "minDate":"",
+                    "maxDate":"",
+                    "minFees":"",
+                    "maxFees":"",
+                    "entry":"",
+                    "enabled":advSearch.enabled}
+  }
 
   if ( !isInSearch ){
     advSearch.enabled = true; //this.props.goToUrl("/search")
     this.setState({advancedSearch : advSearch, enabled: advSearch.enabled } , () => { this.props.goToUrl("/search") } )
 
   } else  {
+    // debugger
+    // advSearch.enabled = false;
+
     this.setState({advancedSearch : advSearch, enabled: advSearch.enabled })
   }
 
@@ -139,6 +162,7 @@ class CommonView extends Component {
                               this.state.sorting.direction,
                               this.state.advancedSearch.filters)
 
+    // debugger
     if ( !this.state.advancedSearch || (Object.keys(this.state.advancedSearch).length == 1 && Object.keys(this.state.advancedSearch)[0] == "query" && !this.state.advancedSearch.query)){
       this.setState({allContent : null,
                   pagesAvailable : parseInt(newData.pagesAvailable),

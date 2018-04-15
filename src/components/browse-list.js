@@ -219,10 +219,8 @@ class BrowseList extends Component {
 
       advParams.filters = enabledFilters
 
-    //  debugger
       var url = urlUtils.formatUrl(this.state.linkRoot,1,this.state.pageLimit,this.state.sorting,advParams);
-      // console.log(url);
-  //    debugger
+
       this.props.goToUrl(url);
     }
 
@@ -277,6 +275,7 @@ class BrowseList extends Component {
 
         } else {
           haveResults = true;
+          // debugger
           resultsToShow = <span >
                           <Card style={{marginBottom:10}}><Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/></Card>
                           {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
@@ -297,7 +296,7 @@ class BrowseList extends Component {
                           value={this.state.sortingFieldControl}
                           onChange={this.handleSortingChange}
                           >
-                          {this.state.linkRoot == "search" ? <MenuItem value={"relevance"} primaryText="Best Match" /> : ""}
+                          {this.state.linkRoot == "search" && (this.state.advSearchParameters && (this.state.advSearchParameters.query.length > 0)) ? <MenuItem value={"relevance"} primaryText="Best Match" /> : ""}
                           <MenuItem value={"dateAsc"} primaryText="Date (earliest)" />
                           <MenuItem value={"dateDesc"} primaryText="Date (latest)" />
                           <MenuItem value={"volAsc"} primaryText="Register page (ascending)" />
