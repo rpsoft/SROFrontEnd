@@ -224,7 +224,7 @@ class BrowseList extends Component {
       this.props.goToUrl(url);
     }
 
-    getDownloadable (){
+    getDownloadableXML (){
       if ( this.state.allContent ){
         var link = document.createElement('a');
         link.download = "SRO-Page-"+this.state.currentPage+".xml";
@@ -233,6 +233,17 @@ class BrowseList extends Component {
         link.click();
       }
       // var downloadData = "data:application/octet-stream," + encodeURIComponent(this.state.allContent);
+      // window.open(downloadData, 'SRO-document.xml');
+    }
+
+    getDownloadableTXT (){
+      var link = document.createElement('a');
+      link.download = "SRO-Page-"+this.state.currentPage+".txt";
+      var plainText = this.state.allContent.replace(/<\/?[^>]+(>|$)/g, "");
+      link.href = 'data:,' + encodeURIComponent(plainText);
+      link.click();
+      // console.log (this.state);
+      // var downloadData = "data:application/octet-stream,"
       // window.open(downloadData, 'SRO-document.xml');
     }
 
@@ -262,7 +273,7 @@ class BrowseList extends Component {
 
       var resultsToShow ;
 
-      var haveResults = false;
+      var haveResults;
 
       if ( this.state.loading ){
         resultsToShow = <div style={{width:100,height:100, marginLeft: "auto", marginRight: "auto" ,paddingTop: 30}}>{loadingIndicator}</div>
@@ -274,8 +285,12 @@ class BrowseList extends Component {
           resultsToShow = <Card style={{padding:10, height:65}}><span> No results to show yet </span></Card>
 
         } else {
+          if (this.state.allContent.length === 206) {
+          // Hide 'Download page' option if results empty
+          haveResults = false
+          } else {
           haveResults = true;
-          // debugger
+          }
           resultsToShow = <span >
                           <Card style={{marginBottom:10}}><Paging pages={this.state.pagesAvailable} entriesPerPage={this.state.pageLimit} currentPage={this.state.currentPage} linkRoot={this.state.linkRoot} sorting={this.state.sorting} advSearchParameters={this.state.advSearchParameters}/></Card>
                           {this.processEntriesFromXML(this.state.allContent).map( (e) => e)}
@@ -343,7 +358,7 @@ class BrowseList extends Component {
 
                 <Card style={{ padding:15,paddingRight:5, width:"23%",borderRight:"",height:"auto",marginBottom:10, paddingLeft: 25}}>
 
-                    <h4 style={filterTitleStyles}>Date:</h4><h4 data-tip="Select Date Range" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>?&#x20dd;</h4><ReactTooltip />
+                    <h4 style={filterTitleStyles}>Date:</h4><h4 data-tip="Select Date Range" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
                     {filterYears.map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -352,7 +367,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Volume:</h4><h4 data-tip="Select Volume" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>?&#x20dd;</h4><ReactTooltip />
+                    <h4 style={filterTitleStyles}>Volume:</h4><h4 data-tip="Select Volume" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
                     {["A","B","C"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -361,7 +376,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Entry type:</h4><h4 data-tip="Select Entry Type" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>?&#x20dd;</h4><ReactTooltip />
+                    <h4 style={filterTitleStyles}>Entry type:</h4><h4 data-tip="Select Entry Type" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
                     {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -370,15 +385,6 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_entryType_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Enterer Role:</h4><h4 data-tip="Select Enterer Role" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}>?&#x20dd;</h4><ReactTooltip />
-                    {["Stationer","Non-Stationer"].map((item,i) => <Checkbox label={item}
-                              labelPosition="left"
-                              key={i}
-                              checked={this.state["filter_entererRole_"+item]}
-                              value={this.state["filter_entererRole_"+item]}
-                              onClick={ () => { this.handleFilterClick("filter_entererRole_"+item) }}
-                      />) }
-                      {/* <hr style={{marginLeft:-10,marginRight:10}}/> */}
 
                 </Card>
                 <div style={{ paddingLeft:10, height:"100%", minHeight:1000, width:"80%",paddingTop:0}}>
@@ -388,10 +394,19 @@ class BrowseList extends Component {
                   {
                     (haveResults) ? <RaisedButton
                     icon={<DownloadIcon/>}
-                    label="Download Page"
-                    style={{width:"100%"}}
+                    label="Download XML"
+                    style={{width:"49%"}}
                     labelStyle={{fontSize:13}}
-                    onClick={()=> {this.getDownloadable()}}
+                    onClick={()=> {this.getDownloadableXML()}}
+                  /> : <span></span>
+                  }
+                  {
+                    (haveResults) ? <RaisedButton
+                    icon={<DownloadIcon/>}
+                    label="Download TXT"
+                    style={{width:"49%", float:"right"}}
+                    labelStyle={{fontSize:13}}
+                    onClick={()=> {this.getDownloadableTXT()}}
                   /> : <span></span>
                   }
                 </div>
