@@ -103,7 +103,7 @@ class SearchControls extends Component {
                             <TextField
                               id='query'
                               hintText=''
-                              style={{width: 200,marginLeft:5, marginTop:-5}}
+                              style={{width: 180,marginLeft:5, marginTop:-5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
                               onKeyPress={(event,value,e) => {
