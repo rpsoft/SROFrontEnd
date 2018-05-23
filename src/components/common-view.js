@@ -184,6 +184,7 @@ class CommonView extends Component {
 
 
  changeQuery = (query) => {
+  // debugger
    var adSearch = this.state.advancedSearch
        adSearch.query = query
    //console.log("Change QUERY: "+query)

@@ -133,7 +133,9 @@ var searchTools = (function() {
       parameters.push(k+"="+newUrlQuery[k])
     }
 
-    var properURL = (dest ? "/"+dest : props.location.pathname) + (parameters.length > 0 ? "?"+parameters.join("&") : "")
+    dest = Object.keys(props.params).length > 0 ? props.location.pathname : "/"+dest
+
+    var properURL = dest + (parameters.length > 0 ? "?"+parameters.join("&") : "")
     console.log("searchToolsURL="+properURL)
     return properURL
 
