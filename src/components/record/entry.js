@@ -102,7 +102,10 @@ export default class Entry extends Component {
         var ArberRef = $(".ab[type=metadata] > span[type=ArberRef]", doc)[0]
         var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
         var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
-        var status = $(".ab[type=metadata] > span[type=status]", doc)[0].getAttribute("subtype")
+        var status = ""
+        for ( var j = 0; j < $(".ab[type=metadata] > span[type=status]", doc).length; j++){
+          status = status+ " "+$(".ab[type=metadata] > span[type=status]", doc)[j].getAttribute("subtype")
+        }
         var price = $(".num[type=totalEntryPence]", doc) ? $(".num[type=totalEntryPence]", doc).attr("value") : ""
 
         var wardens = $(".ab[type=metadata] > .persName[role=warden]", doc)

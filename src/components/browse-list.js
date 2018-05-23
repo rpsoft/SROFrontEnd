@@ -303,15 +303,17 @@ class BrowseList extends Component {
     let sortbuttonStyle = {height:25,marginBottom:5,marginRight:5}
 
 
+    let haveFullTextQuery = this.state.advSearchParameters && this.state.advSearchParameters.query && (this.state.advSearchParameters.query.length > 0)
+    let orderingValue = (this.props.location.pathname.indexOf("scending") < 0) && haveFullTextQuery ? "relevance" : this.state.sortingFieldControl
 
-    // debugger
+
     let orderingBar = <Card style={{position: "relative", float: "right", top: 10,paddingLeft:10, paddingRight: 5, marginRight:5,height:45}}>
                           <SelectField
                           // floatingLabelText="Sorting options"
-                          value={this.state.sortingFieldControl}
+                          value={orderingValue}
                           onChange={this.handleSortingChange}
                           >
-                          {this.state.linkRoot == "search" && (this.state.advSearchParameters && (this.state.advSearchParameters.query.length > 0)) ? <MenuItem value={"relevance"} primaryText="Best Match" /> : ""}
+                          { (this.state.linkRoot == "search") && haveFullTextQuery ? <MenuItem value={"relevance"} primaryText="Best Match" /> : ""}
                           <MenuItem value={"dateAsc"} primaryText="Date (earliest)" />
                           <MenuItem value={"dateDesc"} primaryText="Date (latest)" />
                           <MenuItem value={"volAsc"} primaryText="Register page (ascending)" />
@@ -336,7 +338,7 @@ class BrowseList extends Component {
 
       let filterYears = ["1557-1559"]//["1557-1560","1561-1565","1566-1570","1571-1580","1581-1590","1591-1595","1596-1600","1601-1605","1606-1610","1611-1615","1616-1620"]
 
-      for ( var i = 1565; i <= 1620; i = i+5){
+      for ( var i = 1565; i <= 1640; i = i+5){
          filterYears.push((i-5) + "-" + i);
       }
 
@@ -368,7 +370,7 @@ class BrowseList extends Component {
                       />) }
 
                     <h4 style={filterTitleStyles}>Volume:</h4><h4 data-tip="Select Volume" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
-                    {["A","B","C"].map((item,i) => <Checkbox label={item}
+                    {["A","B","C","D"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
                               checked={this.state["filter_volume_"+item]}
