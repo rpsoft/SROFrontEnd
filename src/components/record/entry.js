@@ -146,7 +146,7 @@ export default class Entry extends Component {
                     </div>
 
                     <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableXML()} label={"Download XML"} />
-                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableTXT()} label={"Download TXT"} />
+                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableTXT()} label={"Download Text"} />
 
                 </Card>
 

@@ -369,7 +369,7 @@ class BrowseList extends Component {
                               onClick={ () => { this.handleFilterClick("filter_date_"+item) }}
                       />) }
 
-                    <h4 style={filterTitleStyles}>Volume:</h4><h4 data-tip="Select Volume" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
+                    <h4 style={filterTitleStyles}>Volume:</h4><h4 data-tip="Original Register volumes, in chronological order" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
                     {["A","B","C","D"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
@@ -377,9 +377,13 @@ class BrowseList extends Component {
                               value={this.state["filter_volume_"+item]}
                               onClick={ () => { this.handleFilterClick("filter_volume_"+item) }}
                       />) }
-
+//
                     <h4 style={filterTitleStyles}>Entry type:</h4><h4 data-tip="Select Entry Type" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
-                    {["Annotated", "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
+                    {[<div><p data-tip="tip" >Annotated</p><ReactTooltip /></div>,
+
+
+
+                     "Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
                               checked={this.state["filter_entryType_"+item]}
@@ -405,7 +409,7 @@ class BrowseList extends Component {
                   {
                     (haveResults) ? <RaisedButton
                     icon={<DownloadIcon/>}
-                    label="Download TXT"
+                    label="Download Text"
                     style={{width:"49%", float:"right"}}
                     labelStyle={{fontSize:13}}
                     onClick={()=> {this.getDownloadableTXT()}}

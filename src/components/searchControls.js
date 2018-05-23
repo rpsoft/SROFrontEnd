@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { templateListSet } from '../actions/actions';
 import fetchData from '../network/fetch-data';
 import { push } from 'react-router-redux'
-
+import ReactTooltip from 'react-tooltip'
 // Material UI imports
 import RaisedButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -98,12 +98,12 @@ class SearchControls extends Component {
 
       let buttonColor = "#e6e6e6"
       let buttonHoverColor = "#b5b5b5"
-
-      let standardSearch = <span><span style={{marginLeft:95}}>Search:</span>
+// <p data-tip="Searches all Register text and notes" ><img height="20" src="/assets/lilQ.png" /></p><ReactTooltip />
+      let standardSearch = <span><span style={{marginLeft:95}} data-tip="Searches all Register text and notes" ><img height="20" src="/assets/lilQ.png" />Search:</span><ReactTooltip />
                             <TextField
                               id='query'
                               hintText=''
-                              style={{width: 200,marginLeft:5, marginTop:-5}}
+                              style={{width: 180,marginLeft:5, marginTop:-5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
                               onKeyPress={(event,value,e) => {
