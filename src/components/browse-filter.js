@@ -103,7 +103,7 @@ class BrowseNames extends Component {
                     </span>
           break;
         case "/browser/volume":
-        results = <span> <h3 style={{marginTop: 5,marginBottom:20}}> Browse By Volume</h3> {["A","B","C"].map((item,i) =>
+        results = <span> <h3 style={{marginTop: 5,marginBottom:20}}> Browse By Volume</h3> {["A","B","C","D"].map((item,i) =>
                     <div style={{fontSize:20, marginTop:10,marginLeft:20}} key={i} >
                       <Link to={"/browser/1/10/date/ascending?filters=volume_"+item}>{"Volume "+item}</Link>
                     </div>) }
