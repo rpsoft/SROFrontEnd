@@ -263,7 +263,7 @@ class Search extends Component {
           /></span>
 
         <span style={advSearchFieldStyle}>
-            Min Date:
+            Earliest:
 
             <TextField
                 hintText={'YYYY'}
@@ -292,7 +292,7 @@ class Search extends Component {
                 id='minDate_day'
               />
 
-            Max Date:
+            Latest:
             <TextField
                 hintText={'YYYY'}
                 style={dateInputStyle}
