@@ -379,7 +379,7 @@ class BrowseList extends Component {
                       />) }
 //
                     <h4 style={filterTitleStyles}>Entry type:</h4><h4 data-tip="Select Entry Type" style={{fontWeight:"600",fontSize:16, float:"right", display:"inline"}}><img height="20" src="/assets/lilQ.png" /></h4><ReactTooltip />
-                    {["Annotated","Cancelled", "Entered", "Incomplete", "NotPrinted", "Other", "Reassigned", "Shared", "Stock", "Unknown"].map((item,i) => <Checkbox label={item}
+                    {["Annotated","Cancelled", "Incomplete", "Shared", "Stock"].map((item,i) => <Checkbox label={item}
                               labelPosition="left"
                               key={i}
                               checked={this.state["filter_entryType_"+item]}
