@@ -282,7 +282,7 @@ class BrowseList extends Component {
         if (!this.state.allContent
                 || this.state.allContent.indexOf("<exception><path>/db</path><message>") > -1  // This happens when there is an error at the server level, and no results are retrieved
                 || this.state.allContent.indexOf("<returned>0</returned>") > -1 ) { // And this when no results exist for the current search.
-          resultsToShow = <Card style={{padding:10, height:65}}><span> No results to show yet </span></Card>
+          resultsToShow = <Card style={{padding:10, height:65}}><span>  </span></Card>
 
         } else {
           if (this.state.allContent.length === 206) {
