@@ -16,10 +16,10 @@ export default function docStyler(doc){
           });
 
           // add square brackets to <supplied>. or <span class="supplied"> if you prefer.
-          $("span.supplied",doc).each(function() {
-              var text = $(this).text() ;
-              $(this).text("["+text.trim()+"]");
-          });
+          // $("span.supplied",doc).each(function() {
+          //     var text = $(this).text() ;
+          //     $(this).text("["+text.trim()+"]");
+          // });
 
           // This one hides the <sic> inside a <choice> block if <corr> is present.
           $("span.sic",doc).each(function() {
