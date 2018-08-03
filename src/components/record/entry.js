@@ -6,14 +6,23 @@ import xmlQuery from 'xml-query'
 
 import fetchData from '../../network/fetch-data';
 
+import {URL_BASE} from '../../links'
+
 import style from './entryStyle.css'
 
 import $ from 'jquery'
 
 import xmlTranslator from '../../tools/xmlTranslator'
 import docStyler from '../../tools/docStyler.js'
+import Popover from 'material-ui/Popover';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import { push } from 'react-router-redux'
+
+import RaisedButton from 'material-ui/FlatButton';
+import DownArrow from 'material-ui/svg-icons/navigation/arrow-drop-down';
 
 function traverseAllNodes (xmlNode) {
     var res = '';
@@ -81,8 +90,30 @@ export default class Entry extends Component {
     // window.open(downloadData, 'SRO-document.xml');
   }
 
+  handleTouchTap = (event,target) => {
+    // This prevents ghost click.
+    event.preventDefault();
+    var newstate = {
+        anchorEl: event.currentTarget,
+      }
+
+    newstate[target] = true
+
+    this.setState(newstate);
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+      open2: false,
+    });
+  };
 
   render() {
+        // styles for dropdown
+        let buttonColor = "#e6e6e6"
+        let buttonHoverColor = "#b5b5b5"
+        let dividerFormat = {width:"90%",marginLeft:"5%"}
 
         if ( !this.state.rawContent) {
           return <div>Loading record</div>
@@ -145,8 +176,26 @@ export default class Entry extends Component {
                       <div><span className="metadataTitle">Wardens: </span>{wardensHTML}</div>
                     </div>
 
-                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableXML()} label={"Download XML"} />
-                    <RaisedButton style={{float:"right", position:"relative", bottom: 30}} onClick={() => this.getDownloadableTXT()} label={"Download Text"} />
+
+                    <RaisedButton hoverColor={buttonHoverColor} backgroundColor={buttonColor}  className="mui-btn mui-btn--small mui-btn--primary"
+                    onClick={(event) => {this.handleTouchTap(event,"open2")}}
+                    label={<span style={{display:"inline-flex",top:0, position:"relative",paddingLeft: 0}}>Download <DownArrow style={{display:"inline-flex",top:3, position:"relative",marginRight:-10, marginLeft: 6, paddingLeft: 4, borderLeft: "#d2d2d2 1px solid"}}/></span>}
+                    style={{float:"right", position:"relative", bottom: 30}}
+                    />
+
+                    <Popover
+                      open={this.state.open2}
+                      anchorEl={this.state.anchorEl}
+                      anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                      onRequestClose={this.handleRequestClose}
+                    >
+                      <Menu>
+                        <MenuItem value={1} primaryText="Download XML" onClick={() => this.getDownloadableXML()} />
+                        <MenuItem value={2} primaryText="Download Text" onClick={() => this.getDownloadableTXT()} />
+                      </Menu>
+                    </Popover>
+
 
                 </Card>
 
