@@ -72,12 +72,10 @@ export default class Entry extends Component {
   getDownloadableTXT (){
     var link = document.createElement('a');
     link.download = "SRO-Entry-"+this.props.params.entryID+".txt";
-    var plainText = this.state.rawContent.replace(/<\/?[^>]+(>|$)/g, "");
-    link.href = 'data:,' + encodeURIComponent(plainText);
+    var plainText = this.state.rawContent.replace(/<\/?[^>]+(>|$)/g, " ");
+    plainText = plainText.replace(/\s{2,}/g,' ');
+    link.href = 'data:,' + plainText;
     link.click();
-    // console.log (this.state);
-    // var downloadData = "data:application/octet-stream,"
-    // window.open(downloadData, 'SRO-document.xml');
   }
 
   getDownloadableXML (){
