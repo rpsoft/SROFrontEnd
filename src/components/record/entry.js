@@ -189,8 +189,8 @@ export default class Entry extends Component {
                       onRequestClose={this.handleRequestClose}
                     >
                       <Menu>
-                        <MenuItem value={1} primaryText="Download XML" onClick={() => this.getDownloadableXML()} />
                         <MenuItem value={2} primaryText="Download Text" onClick={() => this.getDownloadableTXT()} />
+                        <MenuItem value={1} primaryText="Download XML" onClick={() => this.getDownloadableXML()} />
                       </Menu>
                     </Popover>
 
