@@ -102,7 +102,7 @@ class SearchControls extends Component {
       let standardSearch = <span><span style={{marginLeft:95}} data-tip="Searches all Register text and notes" ><img height="20" src="/assets/lilQ.png" />Search:</span><ReactTooltip />
                             <TextField
                               id='query'
-                              hintText=''
+                              hintText='Full Text'
                               style={{width: 180,marginLeft:5, marginTop:-5}}
                               value = {this.state.query}
                               onChange={(event,value) => {this.handleQueryElement("query",value,true)}}
