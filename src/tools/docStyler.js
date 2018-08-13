@@ -12,7 +12,7 @@ export default function docStyler(doc){
           // add square brackets and CANCELLED string to <del>
           $("span.del",doc).each(function() {
               var text = $(this).text();
-              $(this).text("[CANCELLED "+text.trim()+"]");
+              $(this).text("["+text.trim()+"]");
           });
 
           // add square brackets to <supplied>. or <span class="supplied"> if you prefer.
