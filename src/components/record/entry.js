@@ -119,7 +119,7 @@ export default class Entry extends Component {
 
 
         console.log(":::: "+this.state.rawContent)
-        var doc = $.parseHTML(this.state.rawContent.replace(/\n/g, " ").replace(/\#/g,""))
+        var doc = $.parseHTML(this.state.rawContent.replace(/\n/g, " ").replace(/\#/g," "))
 
         docStyler(doc);
 

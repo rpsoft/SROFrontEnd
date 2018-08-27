@@ -59,25 +59,25 @@
   margin-right: 3px;
 }*/
 .surname {
-  margin-left: 3px;
-
-}
-
-.note {
-  margin-left: 3px;
-
-}
-
-.date {
-  margin-left: 3px;
-
-}
-
-.hi {
   margin-left: 2px;
 
 }
 
+.note {
+  /* margin-left: 3px; */
+
+}
+
+.date {
+  /* margin-left: 3px; */
+
+}
+
+.hi {
+  /* margin-left: 2px; */
+
+}
+
 .seg{
-  margin-left: 3px;
+  /* margin-left: 3px; */
 }
