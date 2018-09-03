@@ -74,6 +74,7 @@ export default class Entry extends Component {
     link.download = "SRO-Entry-"+this.props.params.entryID+".txt";
     var plainText = this.state.rawContent.replace(/<\/?[^>]+(>|$)/g, " ");
     plainText = plainText.replace(/\s{2,}/g,' ');
+    plainText = plainText.trim();
     link.href = 'data:,' + plainText;
     link.click();
   }
@@ -118,8 +119,10 @@ export default class Entry extends Component {
         }
 
 
-        console.log(":::: "+this.state.rawContent)
-        var doc = $.parseHTML(this.state.rawContent.replace(/\n/g, " ").replace(/\#/g," "))
+        // console.log(":::: "+this.state.rawContent)
+        var raw = this.state.rawContent.replace(/\s{2,}/g, " ")
+        console.log(":::: "+raw)
+        var doc = $.parseHTML(raw)
 
         docStyler(doc);
 

@@ -31,6 +31,10 @@ export default function docStyler(doc){
               }
           });
 
+          // Add space after <forename>
+
+          $("span.forename",doc).after("&nbsp;");
+
           $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
 
           $("span.note[resp=arber]",doc).each(function() {
