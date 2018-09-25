@@ -37,9 +37,8 @@ export default function docStyler(doc){
 
           $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
 
-          $("span.note[resp=arber]",doc).each(function() {
-              var text = $(this).text() ;
-              $(this).text("["+text.trim()+"]");
+          $("span.note[resp='#arber']",doc).map(function(key, value) {
+              $(this).text("["+$(this).text().trim()+"]");
           });
 
           $("span.persName[role~=enterer]",doc).css( "font-weight", "bold" )
