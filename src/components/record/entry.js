@@ -118,12 +118,7 @@ export default class Entry extends Component {
           return <div>Loading record</div>
         }
 
-
-        // console.log(":::: "+this.state.rawContent)
-        var raw = this.state.rawContent.replace(/\s{2,}/g, " ")
-        console.log(":::: "+raw)
-        var doc = $.parseHTML(raw)
-
+        var doc = $.parseHTML(this.state.rawContent)
         docStyler(doc);
 
         var head = $(".head",doc)[0]

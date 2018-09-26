@@ -33,7 +33,7 @@ export default function docStyler(doc){
 
           // Add space after <forename>
 
-          $("span.forename",doc).after("&nbsp;");
+          $("span.forename",doc).after(" ");
 
           $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
 
