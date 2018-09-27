@@ -37,8 +37,13 @@ export default function docStyler(doc){
 
           $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
 
-          $("span.note[resp='#arber']",doc).map(function(key, value) {
-              $(this).text("["+$(this).text().trim()+"]");
+          $("span.note[resp='#arber']",doc).text(function() {
+            $(this).text("["+$(this).text().trim()+"]");
+            if ($(this).parent().prop('nodeName') == "P") {
+              // do nothing
+            } else {
+            $(this).wrap("<p></p>");
+            }
           });
 
           $("span.persName[role~=enterer]",doc).css( "font-weight", "bold" )
