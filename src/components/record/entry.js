@@ -128,7 +128,7 @@ export default class Entry extends Component {
         var date = $(".ab[type=metadata] > span[type=Register]", doc)[0]
         var RegisterRef = $(".ab[type=metadata] > span[type=RegisterRef]", doc)[0]
         var ArberRef = $(".ab[type=metadata] > span[type=ArberRef]", doc)[0]
-        var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
+        // var RegisterID = $(".ab[type=metadata] > span[type=RegisterID]", doc)[0]
         var works = $(".ab[type=metadata] > span[type=works]", doc)[0]
         var status = ""
         for ( var j = 0; j < $(".ab[type=metadata] > span[type=status]", doc).length; j++){
