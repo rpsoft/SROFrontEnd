@@ -39,7 +39,7 @@ export default function docStyler(doc){
 
           $("span.note[resp='#arber']",doc).text(function() {
             $(this).text("["+$(this).text().trim()+"]");
-            if ($(this).parent().prop('nodeName') == "P") {
+            if ($(this).parent().prop('nodeName') == "P" || $(this).parent().prop('nodeName') == "SPAN") {
               // do nothing
             } else {
             $(this).wrap("<p></p>");
