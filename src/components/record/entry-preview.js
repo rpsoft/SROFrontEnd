@@ -74,7 +74,7 @@ export default class EntryPreview extends Component {
           enterer = " "
         }
 
-        let maxPreviewElements = 3
+        let maxPreviewElements = 1
         let translatedPage = xmlTranslator(data.innerHTML)
 
         var doc = $.parseHTML(translatedPage)
