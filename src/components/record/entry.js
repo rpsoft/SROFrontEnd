@@ -103,26 +103,29 @@ export default class Entry extends Component {
 
     // Master [with 'Master' as prefix]
     var master = $master[0].textContent;
+    master = master.replace(/\s{2,}/g,' ');
     // Wardens [with 'Wardens' as prefix], names separated by commas
     var wardensText = "";
     var wardens = $.each($wardens, function (index,value)
     {
-      wardensText += value.textContent + ", ";
+      wardensText += value.textContent.trim() + ", ";
     });
     wardensText = wardensText.substring(0, wardensText.length -2);
+    wardensText = wardensText.replace(/\s{2,}/g,' ');
 
     // get final text to return
     var finalText =
-      "SROID: " + sroid + "\n\n" +
-      "Full Date: " + fullDate + "\n\n" +
+      "SROID:  " + sroid + "\n\n" +
+      "Full Date:  " + fullDate + "\n\n" +
       "Entry Text: " + entryText + "\n\n" +
-      "Fee: " + totalFee + "\n\n" +
+      "Fee:  " + totalFee + "\n\n" +
       "Register Details: " + registerRef + "\n\n" +
       "Arber Reference: " + arberRef + "\n\n" +
       "Master: " + master + "\n\n" +
-      "Wardens: " + wardensText;
+      "Wardens:  " + wardensText;
 
     link.href = 'data:,' + finalText;
+
     link.click();
   }
 

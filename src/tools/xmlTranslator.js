@@ -71,7 +71,7 @@ export default function xml2HTMLTranslator(xmlData){
 
   }
   //debugger
-  return docArray.join("");
+  return docArray.join(" ");
 }
 //
 //console.log(xml2HTMLTranslator(xmlData)+" LALALA")
