@@ -72,10 +72,57 @@ export default class Entry extends Component {
   getDownloadableTXT (){
     var link = document.createElement('a');
     link.download = "SRO-Entry-"+this.props.params.entryID+".txt";
-    var plainText = this.state.rawContent.replace(/<\/?[^>]+(>|$)/g, " ");
-    plainText = plainText.replace(/\s{2,}/g,' ');
-    plainText = plainText.trim();
-    link.href = 'data:,' + plainText;
+
+    var xml = this.state.rawContent,
+    xmlDoc = $.parseXML( xml ),
+    $xml = $( xmlDoc ),
+    $sroid = $xml.find("div:first"),
+    $entry = $xml.find("p"),
+    $date = $xml.find( "span.date" ).attr("when"),
+    $fee = $xml.find("span.num[type=totalPence]"),
+    $regRef = $xml.find("span.idno[type=RegisterRef]"),
+    $arberRef = $xml.find("span.idno[type=ArberRef]"),
+    $master = $xml.find("span.persName[role=master]"),
+    $wardens = $xml.find("span.persName[role=warden]");
+
+    var baseURI = $entry[0].baseURI
+    var urlParts = baseURI.split("/", -1);
+    // get SROID
+    var sroid = urlParts[urlParts.length-1];
+    // Get full date
+    var fullDate = $date;
+    // Get entry text
+    var entryText = $entry.text().replace(/\s{2,}/g,' ');
+    // Get Fee
+    var totalFee = $fee.attr("value") + " pence";
+    // Get Register details [NB suppress the <idno type=""RegisterID"">
+    var registerRef = $regRef[0].innerHTML;
+    // Get Arber details [With 'Arber' as prefix]
+    var arberRef = $arberRef[0].innerHTML;
+    // Image number [With 'Image' as prefix]
+
+    // Master [with 'Master' as prefix]
+    var master = $master[0].textContent;
+    // Wardens [with 'Wardens' as prefix], names separated by commas
+    var wardensText = "";
+    var wardens = $.each($wardens, function (index,value)
+    {
+      wardensText += value.textContent + ", ";
+    });
+    wardensText = wardensText.substring(0, wardensText.length -2);
+
+    // get final text to return
+    var finalText =
+      "SROID: " + sroid + "\n\n" +
+      "Full Date: " + fullDate + "\n\n" +
+      "Entry Text: " + entryText + "\n\n" +
+      "Fee: " + totalFee + "\n\n" +
+      "Register Details: " + registerRef + "\n\n" +
+      "Arber Reference: " + arberRef + "\n\n" +
+      "Master: " + master + "\n\n" +
+      "Wardens: " + wardensText;
+
+    link.href = 'data:,' + finalText;
     link.click();
   }
 
