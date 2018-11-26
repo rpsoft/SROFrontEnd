@@ -91,6 +91,15 @@ export default class Entry extends Component {
     var sroid = urlParts[urlParts.length-1];
     // Get full date
     var fullDate = $date;
+    // Fix fee spacing
+    $("span.num[type=pence]",$entry).each(function() {
+      var text = $(this).text();
+      $(this).text(text.replace(/\s{2,}/g,''));
+    });
+    $("span.num[type=shillingsAsPence]",$entry).each(function() {
+      var text = $(this).text();
+      $(this).text(text.replace(/\s{2,}/g,''));
+    });
     // Get entry text
     var entryText = $entry.text().replace(/\s{2,}/g,' ');
     // Get Fee
@@ -115,14 +124,14 @@ export default class Entry extends Component {
 
     // get final text to return
     var finalText =
-      "SROID:  " + sroid + "\n\n" +
-      "Full Date:  " + fullDate + "\n\n" +
+      "SROID: " + sroid + "\n\n" +
+      "Full Date: " + fullDate + "\n\n" +
       "Entry Text: " + entryText + "\n\n" +
-      "Fee:  " + totalFee + "\n\n" +
+      "Fee: " + totalFee + "\n\n" +
       "Register Details: " + registerRef + "\n\n" +
       "Arber Reference: " + arberRef + "\n\n" +
       "Master: " + master + "\n\n" +
-      "Wardens:  " + wardensText;
+      "Wardens: " + wardensText;
 
     link.href = 'data:,' + finalText;
 
