@@ -35,7 +35,17 @@ export default function docStyler(doc){
 
           $("span.forename",doc).after(" ");
 
-          $("span.supplied",doc).addClass( "removeMargin" ) //.css("margin-Left:-1px; margin-Right:-1px")
+          $("span.supplied",doc).addClass( "removeMargin" ); //.css("margin-Left:-1px; margin-Right:-1px")
+
+          $("span.num[type=shillingsaspence]",doc).each(function() {
+            var text = $(this).text();
+            $(this).text(text.replace(/\s{2,}/g,''));
+          });
+
+          $("span.num[type=pence]",doc).each(function() {
+            var text = $(this).text();
+            $(this).text(text.replace(/\s{2,}/g,''));
+          });
 
           $("span.note[resp='#arber']",doc).text(function() {
             $(this).text("["+$(this).text().trim()+"]");
