@@ -83,7 +83,8 @@ export default class Entry extends Component {
     $regRef = $xml.find("span.idno[type=RegisterRef]"),
     $arberRef = $xml.find("span.idno[type=ArberRef]"),
     $master = $xml.find("span.persName[role=master]"),
-    $wardens = $xml.find("span.persName[role=warden]");
+    $wardens = $xml.find("span.persName[role=warden]"),
+    $enterer = $xml.find("span.persName[role='stationer enterer']");
 
     var baseURI = $entry[0].baseURI
     var urlParts = baseURI.split("/", -1);
@@ -110,6 +111,9 @@ export default class Entry extends Component {
     var arberRef = $arberRef[0].innerHTML;
     // Image number [With 'Image' as prefix]
 
+    // 'Enterer'
+    var enterer = $enterer[0].textContent.trim();
+    enterer = enterer.replace(/\s{2,}/g,' ');
     // Master [with 'Master' as prefix]
     var master = $master[0].textContent;
     master = master.replace(/\s{2,}/g,' ');
@@ -126,13 +130,13 @@ export default class Entry extends Component {
     var finalText =
       "SROID: " + sroid + "\n\n" +
       "Full Date: " + fullDate + "\n\n" +
+      "Enterer: " + enterer + "\n\n" +
       "Entry Text: " + entryText + "\n\n" +
       "Fee: " + totalFee + "\n\n" +
       "Register Details: " + registerRef + "\n\n" +
       "Arber Reference: " + arberRef + "\n\n" +
       "Master: " + master + "\n\n" +
       "Wardens: " + wardensText;
-
     link.href = 'data:,' + finalText;
 
     link.click();
