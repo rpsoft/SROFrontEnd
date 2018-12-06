@@ -84,7 +84,7 @@ export default class Entry extends Component {
     $arberRef = $xml.find("span.idno[type=ArberRef]"),
     $master = $xml.find("span.persName[role=master]"),
     $wardens = $xml.find("span.persName[role=warden]"),
-    $enterer = $xml.find("span.persName[role='stationer enterer']");
+    $enterers = $xml.find("span.persName[role='stationer enterer']");
 
     var baseURI = $entry[0].baseURI
     var urlParts = baseURI.split("/", -1);
@@ -111,9 +111,14 @@ export default class Entry extends Component {
     var arberRef = $arberRef[0].innerHTML;
     // Image number [With 'Image' as prefix]
 
-    // 'Enterer'
-    var enterer = $enterer[0].textContent.trim();
-    enterer = enterer.replace(/\s{2,}/g,' ');
+    // 'Enterer's
+    var enterersText = "";
+    var enterers = $.each($enterers, function (index, value)
+    {
+      enterersText += value.textContent.trim() + ", ";
+    });
+    enterersText = enterersText.substring(0, enterersText.length -2);
+    enterersText = enterersText.replace(/\s{2,}/g,' ');
     // Master [with 'Master' as prefix]
     var master = $master[0].textContent;
     master = master.replace(/\s{2,}/g,' ');
@@ -130,7 +135,7 @@ export default class Entry extends Component {
     var finalText =
       "SROID: " + sroid + "\n\n" +
       "Full Date: " + fullDate + "\n\n" +
-      "Enterer: " + enterer + "\n\n" +
+      "Enterers: " + enterersText + "\n\n" +
       "Entry Text: " + entryText + "\n\n" +
       "Fee: " + totalFee + "\n\n" +
       "Register Details: " + registerRef + "\n\n" +
