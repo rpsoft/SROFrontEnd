@@ -345,7 +345,7 @@ class CommonView extends Component {
            <img src="https://stationers.org/images/module-images/small-crest.png" style={logoStyle} />
          </a>
          <a href="http://www.ox.ac.uk" target="_blank">
-           <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/University_of_Oxford.svg/1280px-University_of_Oxford.svg.png" style={logoStyle} />
+           <img src="/assets/University_of_Oxford.png" style={logoStyle} />
          </a>
          <a href="https://bibsocamer.org/" target="_blank">
             <img src="/assets/bsamlogo.png" style={logoStyle} />
