@@ -50,10 +50,10 @@
 .struckThrough {
   text-decoration: line-through;
 }
-/* .removeMargin{ */
-  /*margin-right: -3px;*/
-  /*margin-left: -3px;*/
-/* } */
+.removeMargin{
+  margin-right: -4px;
+  margin-left: -4px;
+ }
 
 /*.forename {
   margin-right: 3px;
