@@ -215,6 +215,16 @@ export default class Entry extends Component {
         var mastersHTML = masters.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
         var wardensHTML = wardens.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
 
+        var wardensText = "";
+        var wardens = $.each(wardens, function (index,value)
+        {
+          wardensText += value.textContent.trim() + ", ";
+        });
+        wardensText = wardensText.substring(0, wardensText.length -2);
+        wardensText = wardensText.replace(/\s{2,}/g,' ');
+
+        console.log(wardensText);
+
         return <div style={{marginTop:10}}>
 
                 <Card className="entryContainer" style={{marginTop:10,padding:15}}>
@@ -238,7 +248,7 @@ export default class Entry extends Component {
                       <div><span className="metadataTitle">Status: </span><span dangerouslySetInnerHTML={{__html: status ? status : ""}}></span></div>
                       <div><span className="metadataTitle">Fee: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span><span style={{marginLeft:5}}>pence</span></div>
                       <div><span className="metadataTitle">Master: </span>{mastersHTML}</div>
-                      <div><span className="metadataTitle">Wardens: </span>{wardensHTML}</div>
+                      <div><span className="metadataTitle">Wardens: </span>{wardensText}</div>
                     </div>
 
 
