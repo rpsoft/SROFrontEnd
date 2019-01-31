@@ -223,8 +223,6 @@ export default class Entry extends Component {
         wardensText = wardensText.substring(0, wardensText.length -2);
         wardensText = wardensText.replace(/\s{2,}/g,' ');
 
-        console.log(wardensText);
-
         var mastersText = "";
         var masters = $.each(masters, function (index,value)
         {
@@ -232,8 +230,6 @@ export default class Entry extends Component {
         });
         mastersText = mastersText.substring(0, mastersText.length -2);
         mastersText = mastersText.replace(/\s{2,}/g,' ');
-
-        console.log(mastersText);
 
         return <div style={{marginTop:10}}>
 
