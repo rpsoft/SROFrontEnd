@@ -212,8 +212,8 @@ export default class Entry extends Component {
         // para.innerText.replace(/(\r\n|\n|\r)/gm,"").replace(/ +(?= )/g,'')
         var isCancelled = status.toLowerCase().indexOf("cancelled") > -1 ? true : false
 
-        var mastersHTML = masters.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
-        var wardensHTML = wardens.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
+        // var mastersHTML = masters.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
+        // var wardensHTML = wardens.map( (i,v) => <span key={i}> { i > 0 ? <span>, </span> : <span></span> }  <span dangerouslySetInnerHTML={{__html: v ? v.innerText.trim() : ""}}></span> </span> )
 
         var wardensText = "";
         var wardens = $.each(wardens, function (index,value)
@@ -224,6 +224,16 @@ export default class Entry extends Component {
         wardensText = wardensText.replace(/\s{2,}/g,' ');
 
         console.log(wardensText);
+
+        var mastersText = "";
+        var masters = $.each(masters, function (index,value)
+        {
+          mastersText += value.textContent.trim() + ", ";
+        });
+        mastersText = mastersText.substring(0, mastersText.length -2);
+        mastersText = mastersText.replace(/\s{2,}/g,' ');
+
+        console.log(mastersText);
 
         return <div style={{marginTop:10}}>
 
@@ -247,7 +257,7 @@ export default class Entry extends Component {
                       {/* <div><span className="metadataTitle">Works: </span><span dangerouslySetInnerHTML={{__html: works ? works.innerHTML : ""}}></span></div> */}
                       <div><span className="metadataTitle">Status: </span><span dangerouslySetInnerHTML={{__html: status ? status : ""}}></span></div>
                       <div><span className="metadataTitle">Fee: </span><span className="fee" dangerouslySetInnerHTML={{__html: price ? price : ""}}></span><span style={{marginLeft:5}}>pence</span></div>
-                      <div><span className="metadataTitle">Master: </span>{mastersHTML}</div>
+                      <div><span className="metadataTitle">Master: </span>{mastersText}</div>
                       <div><span className="metadataTitle">Wardens: </span>{wardensText}</div>
                     </div>
 
