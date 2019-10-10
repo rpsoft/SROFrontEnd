@@ -57,6 +57,6 @@ export default function docStyler(doc){
           });
 
           $("span.persName[role~=enterer]",doc).css( "font-weight", "bold" )
-          $("span.persname[role~=enterer]",doc).css( "font-weight", "bold" )
+
 
 }
