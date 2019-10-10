@@ -113,9 +113,9 @@ export default class Entry extends Component {
 
     // 'Enterer's
     var enterersText = "";
-    var enterers = $.each($enterers, function (index, value)
-    {
-      enterersText += value.textContent.trim() + ", ";
+    $.each($enterers, function (index, pers)
+    { 
+      enterersText += pers.firstChild.innerHTML + " " + pers.lastChild.innerHTML + ", ";
     });
     enterersText = enterersText.substring(0, enterersText.length -2);
     enterersText = enterersText.replace(/\s{2,}/g,' ');
